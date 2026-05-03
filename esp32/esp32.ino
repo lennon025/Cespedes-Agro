@@ -8,12 +8,12 @@
 #include "BluetoothSerial.h"
 
 // ==================== CONFIGURACIÓN DE RED ====================
-const char* ssid = "Beeline_2G_F1F558";
-const char* password = "fW3MKUtFoP";
+const char* ssid = "user";// usuario de la wifi
+const char* password = "passwd"; contraseña de la wifi
 
 // ==================== CONFIGURACIÓN MQTT ====================
-const char* brokerPrimario = "192.168.1.2";
-const char* brokerSecundario = "192.168.1.3";
+const char* brokerPrimario = "192.168.1.2"; // IP primario de la orange pi que debe ser LANs 
+const char* brokerSecundario = "192.168.1.3"; //IP Secundario de la orange pi que debe ser Wifi
 const int puertoMQTT = 1883;
 const char* topicoSensores = "cespedes/sensores";
 const char* topicoActuadores = "cespedes/actuadores";
