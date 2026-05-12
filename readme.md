@@ -10,3 +10,6 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 
 **Русский**  
 Подтверждение концепции IoT-системы для городского фермерства. Этот репозиторий содержит код и настройки проекта. Для общего описания проекта (что это, текущее состояние и цели на будущее) без технических деталей, смотрите PDF-файлы в папке `pdf/` (испанский, английский, русский).
+
+Imagen hecha con inteligencia artificial / Изображение, созданное искусственным интеллектом / Image created with artificial intelligence
+<img width="832" height="464" alt="IAgro" src="https://github.com/user-attachments/assets/2f7e5e71-6eea-4fe4-a09a-c9d3a263f5df" />
