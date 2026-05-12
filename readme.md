@@ -13,3 +13,18 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 
 Imagen hecha con inteligencia artificial / Изображение, созданное искусственным интеллектом / Image created with artificial intelligence
 <img width="832" height="464" alt="IAgro" src="https://github.com/user-attachments/assets/2f7e5e71-6eea-4fe4-a09a-c9d3a263f5df" />
+
+<img width="992" height="744" alt="esp32_3" src="https://github.com/user-attachments/assets/02257abf-2fb5-4f13-97bd-53e1932f1931" />
+
+<img width="744" height="992" alt="esp32_4" src="https://github.com/user-attachments/assets/74cfdef8-6253-4c4c-be30-b679b1a3aaa5" />
+
+<img width="992" height="744" alt="esp32_1" src="https://github.com/user-attachments/assets/6253d094-32eb-41ae-aca6-10761cbd9914" />
+
+<img width="744" height="992" alt="esp32_5" src="https://github.com/user-attachments/assets/0e22bd02-97a4-4a38-8889-49bd9cc41059" />
+
+<img width="744" height="992" alt="orangepi1" src="https://github.com/user-attachments/assets/2338301f-a07a-455e-9470-ef4998a1ead5" />
+
+<img width="744" height="992" alt="orangepi2" src="https://github.com/user-attachments/assets/4b995036-3da8-4444-a420-b53c057e06b6" />
+
+<img width="744" height="992" alt="orangepi3" src="https://github.com/user-attachments/assets/49ae5b44-51d7-462d-bb1b-4b7c10a6ecbd" />
+
