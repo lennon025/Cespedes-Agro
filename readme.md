@@ -1,4 +1,7 @@
-<img width="50" height="50" alt="AgroLogo" src="https://github.com/user-attachments/assets/ee95bc57-b333-4b73-8f09-e03f6765b837" /> ## 🌱 **Céspedes Agro**
+<img width="50" height="50" alt="AgroLogo" src="https://github.com/user-attachments/assets/ee95bc57-b333-4b73-8f09-e03f6765b837" /> 
+
+## 🌱 **Céspedes Agro**
+
 **Español**  
 Prueba de concepto de un sistema IoT para agricultura urbana. Este repositorio contiene el código y la configuración del proyecto. Para una descripción general del proyecto (qué es, estado actual y objetivos futuros) sin detalles técnicos, consulta los PDFs en la carpeta `pdf/` (español, inglés, ruso).
 
