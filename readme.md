@@ -6,7 +6,6 @@
 Prueba de concepto de un sistema IoT para agricultura urbana. Este repositorio contiene el código y la configuración del proyecto. Para una descripción general del proyecto (qué es, estado actual y objetivos futuros) sin detalles técnicos, consulta los PDFs en la carpeta `pdf/` (español, inglés, ruso).
 
 [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyect.pdf)
-[📑 Céspedes Agro (PDF)](https://cdn.jsdelivr.net/gh/lennon025/Cespedes-Agro@master/pdf/Proyect.pdf)
 
 **English**  
 Proof of concept of an IoT system for urban farming. This repository contains the code and setup. For a non‑technical project description (what it is, current status and future goals), see the PDFs in the `pdf/` folder (Spanish, English, Russian).
