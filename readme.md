@@ -1,4 +1,4 @@
-<img width="50" height="50" alt="AgroLogo" src="https://github.com/user-attachments/assets/ee95bc57-b333-4b73-8f09-e03f6765b837" /> 
+<img width="100" height="100" alt="AgroLogo" src="https://github.com/user-attachments/assets/ee95bc57-b333-4b73-8f09-e03f6765b837" /> 
 
 ## 🌱 **Céspedes Agro**
 
