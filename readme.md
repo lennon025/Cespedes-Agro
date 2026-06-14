@@ -22,6 +22,7 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 - [📄 Céspedes Agro v2 (English)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Project%206%20-%202026.pdf)
 - [📄 Céspedes Agro v2 (Русский)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Проект%206%20-%202026.pdf)
 - [Code ESP32 v2](https://github.com/lennon025/Cespedes-Agro/blob/master/esp32/esp32_v2.cpp)
+- [**→Web v2 Céspedes.Agro (v2)**](https://lennon025.github.io/Cespedes-Agro/web/index_v2.htm)
 
 Imagen hecha con inteligencia artificial / Изображение, созданное искусственным интеллектом / Image created with artificial intelligence
 <img width="832" height="464" alt="IAgro" src="https://github.com/user-attachments/assets/2f7e5e71-6eea-4fe4-a09a-c9d3a263f5df" />
