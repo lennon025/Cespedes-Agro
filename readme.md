@@ -5,20 +5,17 @@
 **Español**  
 Prueba de concepto de un sistema IoT para agricultura urbana. Este repositorio contiene el código y la configuración del proyecto. Para una descripción general del proyecto (qué es, estado actual y objetivos futuros) sin detalles técnicos, consulta los PDFs en la carpeta `pdf/` (español, inglés, ruso).
 
-[📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto.pdf)
-
-
 **English**  
 Proof of concept of an IoT system for urban farming. This repository contains the code and setup. For a non‑technical project description (what it is, current status and future goals), see the PDFs in the `pdf/` folder (Spanish, English, Russian).
-
-[📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyect.pdf)
 
 **Русский**  
 Подтверждение концепции IoT-системы для городского фермерства. Этот репозиторий содержит код и настройки проекта. Для общего описания проекта (что это, текущее состояние и цели на будущее) без технических деталей, смотрите PDF-файлы в папке `pdf/` (испанский, английский, русский).
 
-[📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/проект.pdf)
+- [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/проект.pdf)
+- [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto.pdf)
+- [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyect.pdf)
 
-**Actualización — junio 2026**  
+**update — 06 - 2026**  
 - [📄 Céspedes Agro v2 (Español)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto%206%20-%202026.pdf)
 - [📄 Céspedes Agro v2 (English)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Project%206%20-%202026.pdf)
 - [📄 Céspedes Agro v2 (Русский)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Проект%206%20-%202026.pdf)
