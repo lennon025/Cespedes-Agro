@@ -15,6 +15,7 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 - [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto.pdf)
 - [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyect.pdf)
 - [Code ESP32](https://github.com/lennon025/Cespedes-Agro/blob/master/esp32/esp32.ino)
+👉 [**Abrir dashboard de control**](web/index.html)
 
 **update — 06 - 2026**  
 - [📄 Céspedes Agro v2 (Español)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto%206%20-%202026.pdf)
