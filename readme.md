@@ -7,9 +7,6 @@ Prueba de concepto de un sistema IoT para agricultura urbana. Este repositorio c
 
 [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto.pdf)
 
-Actualizacion-01
-
-[📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto 6 - 2026.pdf)
 
 **English**  
 Proof of concept of an IoT system for urban farming. This repository contains the code and setup. For a non‑technical project description (what it is, current status and future goals), see the PDFs in the `pdf/` folder (Spanish, English, Russian).
@@ -21,9 +18,10 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 
 [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/проект.pdf)
 
-Обновление-01
-
-[📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Проект 6 - 2026.pdf)
+**Actualización — junio 2026**  
+- [📄 Céspedes Agro v2 (Español)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto%206%20-%202026.pdf)
+- [📄 Céspedes Agro v2 (English)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Project%206%20-%202026.pdf)
+- [📄 Céspedes Agro v2 (Русский)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Проект%206%20-%202026.pdf)
 
 Imagen hecha con inteligencia artificial / Изображение, созданное искусственным интеллектом / Image created with artificial intelligence
 <img width="832" height="464" alt="IAgro" src="https://github.com/user-attachments/assets/2f7e5e71-6eea-4fe4-a09a-c9d3a263f5df" />
