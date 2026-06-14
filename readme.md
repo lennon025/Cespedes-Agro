@@ -41,3 +41,11 @@ Imagen hecha con inteligencia artificial / Изображение, создан�
 
 <img width="558" height="744" alt="orangepi3" src="https://github.com/user-attachments/assets/8fedc9b8-8838-4023-a88c-debe87bf52a9" />
 
+markdown
+## 👤 Autor
+
+**Lennon Perdomo Céspedes**  
+[GitHub](https://github.com/lennon025) · [Email](mailto:lennon.perdomocespedes@gmail.com)
+
+*Siempre pensando en mi Cuba, desde Moscú, Rusia.*
+
