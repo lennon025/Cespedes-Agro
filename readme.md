@@ -43,16 +43,16 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 - [💻 Firmware ESP32 v2.4](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/firmware_esp32/cespedes_agro_v2.4.cpp)
 - [📖 Presentación del proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/presentacion/Cespedes.Agro%20v2.4.pdf)
 
+
 ### 🆕 Novedades de la versión 2.4
 - Dos modos de cultivo: **Doméstico** y **Estructurado**.
 - Base de datos SQLite para histórico de sensores.
 - Script de riego automático con registro de riegos.
-- Editor de cultivos con más de 80 especies y datos de consumo FAO.
-- Firmware ESP32 con soporte para 6 electroválvulas + 2 relés.
-- Interfaz web multilingüe (ES, EN, RU, PT, FR).
+- Editor de cultivos con más de 80 especies y datos de consumo basados en la FAO.
+- Firmware ESP32 con soporte para 6 electroválvulas y 2 relés generales.
+- Interfaz web multilingüe (español, inglés, ruso, portugués y francés).
 - Configuración Bluetooth del ESP32 con comandos en 3 idiomas.
-- Manual de instalación completo.
-
+- Para más detalles, consulte la [presentación del proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/presentacion/Cespedes.Agro%20v2.4.pdf).
 ---
 
 Imagen hecha con inteligencia artificial / Изображение, созданное искусственным интеллектом / Image created with artificial intelligence
