@@ -13,7 +13,7 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 Подтверждение концепции IoT-системы для городского фермерства. Этот репозиторий содержит код и настройки проекта, организованные по версиям. Для общего описания проекта без технических деталей смотрите PDF-файлы в каждой папке версии (испанский, английский, русский).
 
 ---
-## 🌱 **Céspedes Agro 2.0** (Junio 2026)
+## 🌱 **Céspedes Agro 2.0** (Marzo 2026)
 - [📑 Proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/Proyect.pdf)
 - [📑 Proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/Proyecto.pdf)
 - [📑 Проект (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/проект.pdf)
@@ -22,7 +22,7 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 
 ---
 
-## 🌱 **Céspedes Agro 2.2** (Abril 2026)
+## 🌱 **Céspedes Agro 2.2** (Mayo 2026)
 - [📄 Proyecto v2.2 (Español)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.2/pdf/Proyecto%206%20-%202026.pdf)
 - [📄 Proyecto v2.2 (English)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.2/pdf/Proyecto%206%20-%202026.pdf)
 - [📄 Проект v2.2 (Русский)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.2/pdf/Проект%206%20-%202026.pdf)
@@ -31,7 +31,7 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 
 ---
 
-## 🌱 **Céspedes Agro 2.4** (Junio 2026) ← ACTUAL
+## 🌱 **Céspedes Agro 2.4** (Julio 2026) ← ACTUAL
 
 ### 📂 Estructura de la versión 2.4
 - [🌐 Web (index.html)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/web/index.html)
