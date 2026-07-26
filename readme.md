@@ -47,7 +47,7 @@ Imagen hecha con inteligencia artificial / Изображение, создан�
 markdown
 ## 👤 Autor
 
-**Lennon Perdomo Céspedes**  
+**Leno Perdomo Céspedes**  
 [GitHub](https://github.com/lennon025) · [Email](mailto:lennon.perdomocespedes@gmail.com)
 
 *Siempre pensando en mi Cuba, desde Moscú, Rusia.*
