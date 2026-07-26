@@ -1,0 +1,33 @@
+{
+  "areas": [
+    {
+      "alias": "azotea01",
+      "id": "001",
+      "tipo": "domestico"
+    },
+    {
+      "id": "002",
+      "alias": "casa1",
+      "tipo": "estructurado"
+    }
+  ],
+  "lotes": {
+    "001": [
+      {
+        "aguaBaseTotal": 3,
+        "contenedores": 1,
+        "crop": "boniato",
+        "fechaCosechaFin": "2026-11-20",
+        "fechaCosechaInicio": "2026-10-30",
+        "fechaCrecimiento": "2026-09-25",
+        "fechaGerminacion": "2026-07-31",
+        "fechaRelevo": "2026-10-19",
+        "id": "1784318676468-0.kd0hb2jkuk",
+        "personas": 3,
+        "startDate": "2026-07-17",
+        "tierraKg": 18,
+        "volumenSustrato": 35
+      }
+    ]
+  }
+}

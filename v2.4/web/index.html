@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Céspedes · Agro v2.4 — Múltiples Áreas de Cultivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --primary: #1a2f3f; --secondary: #2a4b5c; --accent: #4f9da6;
+            --success: #4caf50; --warning: #ff9800; --danger: #f44336;
+            --card-shadow: 0 12px 24px rgba(0,0,0,0.06);
+            --card-hover-shadow: 0 16px 32px rgba(0,0,0,0.1);
+            --border-radius: 20px;
+        }
+        body { font-family: 'Roboto', sans-serif; background: #f0f2f5; color: #2c3e50; min-height: 100vh; padding-bottom: 30px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .header { background: linear-gradient(90deg, var(--primary), #0f1f2b); color: white; padding: 18px 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border-bottom: 3px solid var(--accent); }
+        .header-container { max-width:1400px; margin:0 auto; display:flex; align-items:center; justify-content:flex-start; }
+        .logo { display: flex; align-items: center; gap: 15px; }
+        .logo-circle { width: 70px; height: 70px; border-radius: 50%; background: white; border: 3px solid var(--accent); overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .logo-circle img { width: 80%; height: 80%; object-fit: contain; }
+        .logo-text { font-size: 2rem; color: white; font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; }
+        .lang-bar { background: white; padding: 12px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.03); border-bottom: 1px solid #e2e8f0; }
+        .lang-container { max-width:1400px; margin:0 auto; padding:0 20px; display:flex; justify-content:flex-end; }
+        .lang-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+        .lang-btn { background: transparent; border: 1px solid #cbd5e1; color: #334155; padding: 8px 16px; border-radius: 30px; font-weight: 500; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; font-size:0.9rem; white-space: nowrap; }
+        .lang-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+        .refresh-info { background: white; border-radius: var(--border-radius); padding: 16px 24px; margin: 25px 0; box-shadow: var(--card-shadow); display: flex; align-items: center; justify-content: space-between; border-left: 6px solid var(--accent); flex-wrap: wrap; gap: 10px; }
+        .mqtt-dot { width:10px; height:10px; border-radius:50%; background:#f44336; display:inline-block; margin-right:5px; transition:0.3s; }
+        .mqtt-dot.connected { background:#4caf50; }
+        .mqtt-status-text { font-size:0.85rem; font-weight:500; display:inline-flex; align-items:center; gap:5px; }
+        .section-title { font-family: 'Montserrat', sans-serif; font-size: 1.6rem; color: var(--primary); margin: 30px 0 20px; display: flex; align-items: center; gap: 10px; border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
+        .section-title i { color: #2196f3; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        @media (max-width: 1000px) { .dashboard-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .dashboard-grid { grid-template-columns: 1fr; } }
+        .dashboard-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        @media (max-width: 1000px) { .dashboard-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .dashboard-grid-4 { grid-template-columns: 1fr; } }
+        .sensor-card { background: white; border-radius: var(--border-radius); padding: 20px; box-shadow: var(--card-shadow); border-top: 5px solid var(--accent); display: flex; flex-direction: column; transition: box-shadow 0.2s, transform 0.2s; }
+        .sensor-card:hover { box-shadow: var(--card-hover-shadow); }
+        .sensor-header { display: flex; align-items: center; margin-bottom: 15px; }
+        .sensor-icon { width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 1.5rem; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .temp-icon { background: linear-gradient(135deg, #ff9800, #ff5722); }
+        .hum-icon { background: linear-gradient(135deg, #2196f3, #1976d2); }
+        .co2-icon { background: linear-gradient(135deg, #8d6e63, #6d4c41); }
+        .agua-icon { background: linear-gradient(135deg, #00acc1, #006064); }
+        .caudal-icon { background: linear-gradient(135deg, #1e88e5, #0d47a1); }
+        .luz-icon { background: linear-gradient(135deg, #fdd835, #fbc02d); }
+        .valvula-icon { background: linear-gradient(135deg, #4f9da6, #2a4b5c); }
+        .valvulaB-icon { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .humificador-icon { background: linear-gradient(135deg, #26a69a, #00897b); }
+        .power-icon { background: linear-gradient(135deg, #607d8b, #455a64); }
+        .presion-icon { background: linear-gradient(135deg, #7b1fa2, #4a148c); }
+        .aire-icon { background: linear-gradient(135deg, #00897b, #004d40); }
+        .meteo-temp-icon { background: linear-gradient(135deg, #e53935, #b71c1c); }
+        .meteo-hum-icon { background: linear-gradient(135deg, #1e88e5, #0d47a1); }
+        .neuron-icon { background: linear-gradient(135deg, #6a1b9a, #4a148c); width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .sensor-title { font-weight: 600; font-size: 1.1rem; color: #1a2f3f; }
+        .sensor-subtitle { font-size: 0.8rem; color: #666; }
+        .sensor-value { font-size: 2.5rem; font-weight: 700; color: #1a2f3f; }
+        .sensor-unit { font-size: 1rem; color: #777; margin-left: 5px; }
+        .sensor-footer { margin-top: auto; font-size: 0.8rem; color: #888; display: flex; justify-content: space-between; padding-top: 10px; }
+        .switch-container { display: flex; align-items: center; justify-content: space-between; margin: 12px 0; padding: 8px 0; border-top: 1px dashed #e0e0e0; }
+        .switch-label { font-size: 0.9rem; color: #555; display: flex; align-items: center; gap: 8px; flex: 1; }
+        .switch { position: relative; display: inline-block; width: 52px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #b0bec5; transition: .3s; border-radius: 28px; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(24px); }
+        .status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-top: 8px; }
+        .status-success { background: #e8f5e9; color: #2e7d32; }
+        .status-danger { background: #ffebee; color: #c62828; }
+        .status-info { background: #e3f2fd; color: #0d47a1; }
+        .status-warning { background: #fff3e0; color: #e65100; }
+        .alert-red { background: #ffebee; border-left: 5px solid #f44336; padding: 12px 15px; margin: 10px 0; border-radius: 12px; color: #c62828; font-weight: bold; display: none; align-items: center; gap: 12px; }
+        .btn { border: none; padding: 12px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 12px rgba(0,0,0,0.12); }
+        .btn-success { background: #4caf50; color: white; }
+        .btn-outline { background: transparent; border: 1px solid #ccc; color: #555; box-shadow: none; }
+        .btn-outline:hover { background: #f5f5f5; }
+        .btn-warning { background: #ff9800; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        .btn-sm { padding: 5px 12px; font-size: 0.8rem; }
+        .plan-section { background: white; border-radius: var(--border-radius); padding: 24px; box-shadow: var(--card-shadow); margin: 30px 0; border-left: 5px solid #6a1b9a; }
+        .plan-header { display: flex; align-items: center; margin-bottom: 20px; gap: 15px; }
+        .plan-header h3 { font-family: 'Montserrat', sans-serif; font-size: 1.5rem; color: var(--primary); }
+        .plan-controls { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 16px; align-items: flex-end; }
+        .plan-controls .form-group { flex: 1 1 180px; min-width: 140px; }
+        .plan-controls-row2 { margin-top: 8px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-weight: 500; color: #2a4b5c; font-size: 0.9rem; }
+        .form-group input, .form-group select { padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 30px; font-size: 1rem; background: white; transition: 0.2s; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent); outline: none; }
+        .crop-group { margin-bottom: 40px; }
+        .plan-table { width: 100%; border-collapse: collapse; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); font-size: 0.9rem; table-layout: auto; }
+        .plan-table th { background: var(--secondary); color: white; padding: 14px 8px; text-align: center; font-weight: 600; white-space: nowrap; }
+        .plan-table td { padding: 10px 8px; text-align: center; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+        .total-row { background: #f1f8e9; font-weight: 700; }
+        .action-btns { display: flex; gap: 5px; justify-content: center; }
+        .info-note { background: #e3f2fd; padding: 14px 20px; border-radius: 16px; margin: 15px 0; color: #0d47a1; font-size: 0.95rem; border-left: 5px solid #2196f3; }
+        .assoc-box, .guide-box { background: #f9fbe7; padding: 16px; border-radius: 16px; margin: 15px 0; border-left: 5px solid #8bc34a; }
+        details { margin-bottom: 8px; }
+        summary { font-weight: 600; cursor: pointer; padding: 8px 0; display: flex; align-items: center; gap: 10px; font-size:1.1rem; }
+        summary i { width: 24px; color: var(--accent); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal { background: white; border-radius: 24px; padding: 30px; width: 90%; max-width: 700px; box-shadow: 0 30px 50px rgba(0,0,0,0.2); }
+        .modal h4 { margin-bottom: 24px; color: var(--primary); font-size:1.5rem; }
+        .modal .form-group { margin-bottom: 16px; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+        .modal .options { display: flex; gap: 20px; margin-bottom: 20px; }
+        .option-card { flex: 1; border: 2px solid #e0e0e0; border-radius: var(--border-radius); padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; background: white; display: flex; flex-direction: column; align-items: center; }
+        .option-card:hover { box-shadow: var(--card-shadow); border-color: var(--accent); }
+        .option-card.selected { border-color: var(--accent); background: #f0f9f9; }
+        .option-card img { width: 100%; height: 120px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; }
+        .option-card .card-title { font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; }
+        .option-card .card-desc { font-size:0.9rem; color:#555; }
+        .tasks-container { background: #fafafa; border-radius: 20px; padding: 20px; margin-top: 20px; }
+        .task-item { padding: 12px 16px; border-radius: 12px; background: white; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .relevo-row { background: #fff8e1; }
+        .footer { text-align: center; margin-top: 40px; color: #666; font-size: 0.95rem; }
+        .table-responsive { overflow-x: auto; border-radius: 16px; }
+        .guide-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 16px; margin-top: 10px; }
+        .guide-card { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 8px; border-left: 4px solid #8bc34a; }
+        .assoc-cards { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+        .assoc-card { background: white; border-radius: 20px; padding: 12px 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 10px; font-size:0.95rem; }
+        .hidden { display: none !important; }
+        .gh-selector-bar { background: white; border-radius: var(--border-radius); padding: 14px 24px; margin: 20px 0; box-shadow: var(--card-shadow); display: flex; align-items: center; gap: 20px; flex-wrap: wrap; border-left: 5px solid #8bc34a; }
+        .gh-select { padding: 10px 16px; border-radius: 30px; border: 1px solid #cbd5e1; background: white; font-weight:500; min-width: 220px; }
+        .hero-section { background: white; border-radius: var(--border-radius); padding: 30px; box-shadow: var(--card-shadow); display: flex; gap: 30px; align-items: stretch; margin-bottom: 30px; flex-wrap: wrap; }
+        .hero-text { flex: 2; min-width: 280px; }
+        .hero-text h2 { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; color: var(--primary); margin-bottom: 15px; }
+        .hero-text p { font-size: 1rem; line-height: 1.6; color: #444; margin-bottom: 12px; text-align: justify; }
+        .hero-image { flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .hero-image img { max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: var(--border-radius); box-shadow: 0 8px 20px rgba(0,0,0,0.1); object-fit: contain; }
+        .specialists-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 20px; }
+        .specialist { text-align: center; margin: 10px; }
+        .specialist-circle { width: 80px; height: 80px; border-radius: 50%; background-size: cover; background-position: center; margin: 0 auto 10px; border: 4px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background-color: #bbb; }
+        .actuators-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        .relays-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
+        .actuator-card { background: white; border-radius: 16px; padding: 15px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; align-items: center; gap: 10px; border-top: 4px solid var(--accent); font-size: 0.9rem; }
+        .actuator-card.valve-card { border-top-color: #4f9da6; }
+        .actuator-card.relay-card { border-top-color: #e67e22; }
+        .actuator-card .actuator-icon { font-size: 1.5rem; color: #4f9da6; }
+        .actuator-card .switch { margin-top: 5px; }
+        .crop-name-cell { font-weight: 500; }
+        #addGhModal input[type="text"] {
+            width: 100%;
+            margin-bottom: 24px;
+            padding: 10px 16px;
+            border: 2px solid #b0bec5;
+            border-radius: 30px;
+            font-size: 1rem;
+            background: #fafafa;
+            transition: border-color 0.2s;
+        }
+        #addGhModal input[type="text"]:focus {
+            border-color: var(--accent);
+            outline: none;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-circle"><img src="https://raw.githubusercontent.com/lennon025/IoT-experimental-para-cultivo-protegido/master/agrox.png" alt="Logo"></div>
+                <span class="logo-text">Céspedes · Agro</span>
+            </div>
+        </div>
+    </div>
+    <div class="lang-bar">
+        <div class="lang-container">
+            <div class="lang-buttons">
+                <button class="lang-btn active" data-lang="es"><i class="fas fa-language"></i> Español</button>
+                <button class="lang-btn" data-lang="en"><i class="fas fa-language"></i> English</button>
+                <button class="lang-btn" data-lang="ru"><i class="fas fa-language"></i> Русский</button>
+                <button class="lang-btn" data-lang="pt"><i class="fas fa-language"></i> Português</button>
+                <button class="lang-btn" data-lang="fr"><i class="fas fa-language"></i> Français</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="refresh-info">
+            <span><i class="fas fa-sync-alt"></i> <span data-i18n="updated">Datos actualizados en tiempo real</span></span>
+            <span><i class="far fa-clock"></i> <span data-i18n="last_reading">Última lectura</span>: <span id="current-time">--:--:--</span></span>
+            <span class="mqtt-status-text"><span id="mqtt-dot" class="mqtt-dot"></span> <span id="mqtt-text" data-i18n="mqtt_disconnected">Desconectado</span></span>
+        </div>
+
+        <div class="gh-selector-bar">
+            <div style="display:flex; align-items:center; gap:10px; flex:1;">
+                <i class="fas fa-leaf" style="color:#4f9da6; font-size:1.2rem;"></i>
+                <select id="greenhouse-select" class="gh-select"><option value="home" selected>🏠 Inicio</option></select>
+                <span id="active-id-badge" class="status-badge status-info hidden">ID: ---</span>
+            </div>
+            <button id="add-gh-btn" class="btn btn-success"><i class="fas fa-plus"></i> <span data-i18n="add_gh">Agregar Área de Cultivo</span></button>
+            <a href="/web/edit.html" class="btn btn-outline" style="text-decoration:none;"><i class="fas fa-edit"></i> <span data-i18n="editor_cultivos">Editor de Cultivos</span></a>
+            <button id="clear-data-btn" class="btn btn-outline" style="border-color:#f44336; color:#f44336;"><i class="fas fa-trash-alt"></i> <span data-i18n="limpiar_datos">Limpiar datos</span></button>
+        </div>
+
+        <div id="app-container">
+            <div id="home-page">
+                <div class="hero-section">
+                    <div class="hero-text">
+                        <h2 data-i18n="hero_title">Agricultura Inteligente de Bajo Costo</h2>
+                        <p data-i18n="hero_p1"><strong>Céspedes.Agro</strong> es una plataforma de agricultura inteligente e Internet de las Cosas (IoT) de bajo costo diseñada para democratizar el acceso a la tecnología agrícola.</p>
+                        <p data-i18n="hero_p2">A través de una arquitectura integrada de extremo a extremo, el ecosistema utiliza microprocesadores equipados con sensores y actuadores para capturar variables agroclimáticas en tiempo real y automatizar tareas críticas como el riego.</p>
+                        <p data-i18n="hero_p3">Orientado a cerrar la brecha digital en el sector agropecuario, Céspedes.Agro sienta las bases técnicas para que entusiastas de la agricultura urbana, pequeños productores, granjas y cooperativas optimicen sus recursos.</p>
+                    </div>
+                    <div class="hero-image" id="hero-image-container"><img id="hero-img" src="/img/001.jpg" alt="Invernadero IA"></div>
+                </div>
+
+                <div class="section-title"><i class="fas fa-cloud-sun-rain"></i> <span data-i18n="weather_station">Estación Meteorológica</span></div>
+                <div class="dashboard-grid-4">
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon meteo-temp-icon"><i class="fas fa-thermometer-full"></i></div><div><div class="sensor-title" data-i18n="meteo_temp">Temperatura</div><div class="sensor-subtitle">BME680</div></div></div><div class="sensor-value"><span id="meteo-temp-value">--</span><span class="sensor-unit">°C</span></div><div class="sensor-footer"><span id="meteo-temp-time">--:--:--</span></div></div>
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon meteo-hum-icon"><i class="fas fa-tint"></i></div><div><div class="sensor-title" data-i18n="meteo_hum">Humedad</div><div class="sensor-subtitle">BME680</div></div></div><div class="sensor-value"><span id="meteo-hum-value">--</span><span class="sensor-unit">%</span></div><div class="sensor-footer"><span id="meteo-hum-time">--:--:--</span></div></div>
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon presion-icon"><i class="fas fa-compress-arrows-alt"></i></div><div><div class="sensor-title" data-i18n="meteo_pres">Presión Atmosférica</div><div class="sensor-subtitle">BME680</div></div></div><div class="sensor-value"><span id="meteo-pres-value">--</span><span class="sensor-unit">hPa</span></div><div class="sensor-footer"><span id="meteo-pres-time">--:--:--</span></div></div>
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon aire-icon"><i class="fas fa-wind"></i></div><div><div class="sensor-title" data-i18n="meteo_aire">Calidad del Aire</div><div class="sensor-subtitle">BME680</div></div></div><div class="sensor-value"><span id="meteo-aire-value">--</span><span class="sensor-unit">IAQ</span></div><div class="sensor-footer"><span id="meteo-aire-time">--:--:--</span></div></div>
+                </div>
+
+                <div class="section-title"><i class="fas fa-water"></i> <span data-i18n="control_termohidraulico">Control Termohidráulico</span></div>
+                <div class="dashboard-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon caudal-icon"><i class="fas fa-water"></i></div><div><div class="sensor-title" data-i18n="caudal">Caudal</div><div class="sensor-subtitle">YF-S201</div></div></div><div class="sensor-value"><span id="meteo-caudal-value">0.0</span><span class="sensor-unit">L</span></div><div class="sensor-footer"><span id="meteo-caudal-time">--:--:--</span></div></div>
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon agua-icon"><i class="fas fa-temperature-low"></i></div><div><div class="sensor-title" data-i18n="temp_agua">Temperatura del agua</div><div class="sensor-subtitle">DS18B20</div></div></div><div class="sensor-value"><span id="meteo-watertemp-value">--</span><span class="sensor-unit">°C</span></div><div class="sensor-footer"><span id="meteo-watertemp-time">--:--:--</span></div></div>
+                </div>
+
+                <div class="section-title"><i class="fas fa-chart-line"></i> <span data-i18n="averages_title">Resumen de datos agroclimáticos de todas las áreas de cultivo</span></div>
+                <div class="dashboard-grid">
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon temp-icon"><i class="fas fa-thermometer-half"></i></div><div><div class="sensor-title" data-i18n="avg_temp">Temp. promedio</div></div></div><div class="sensor-value"><span id="avg-temp">--</span><span class="sensor-unit">°C</span></div></div>
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon hum-icon"><i class="fas fa-droplet"></i></div><div><div class="sensor-title" data-i18n="avg_hum">Hum. promedio</div></div></div><div class="sensor-value"><span id="avg-hum">--</span><span class="sensor-unit">%</span></div></div>
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon luz-icon"><i class="fas fa-sun"></i></div><div><div class="sensor-title" data-i18n="avg_light">Luz promedio</div></div></div><div class="sensor-value"><span id="avg-light">--</span><span class="sensor-unit">lux</span></div></div>
+                </div>
+
+                <div class="section-title"><i class="fas fa-power-off"></i> <span data-i18n="global_control">Control Global</span></div>
+                <div class="dashboard-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon power-icon"><i class="fas fa-bolt"></i></div><div><div class="sensor-title" data-i18n="power_control">Control Central</div><div class="sensor-subtitle" data-i18n="power_cut">Corte de energía total</div></div></div><div class="switch-container"><span class="switch-label"><i class="fas fa-power-off"></i> <span data-i18n="power_switch">Alimentación</span></span><label class="switch"><input type="checkbox" id="power-switch" checked><span class="slider"></span></label></div><div class="sensor-footer"><span id="power-status" class="status-badge status-success"><span data-i18n="on">Encendido</span></span></div></div>
+                    <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon" style="background:linear-gradient(135deg,#607d8b,#455a64);"><i class="fas fa-cog"></i></div><div><div class="sensor-title" data-i18n="turbina">Turbina</div><div class="sensor-subtitle" data-i18n="turbina_desc">Control de bomba principal</div></div></div><div class="switch-container"><span class="switch-label"><i class="fas fa-cog"></i> <span data-i18n="turbina">Turbina</span></span><label class="switch"><input type="checkbox" id="turbina-switch"><span class="slider"></span></label></div><div class="sensor-footer"><span id="turbina-status" class="status-badge status-info"><span data-i18n="off">Apagado</span></span></div></div>
+                </div>
+
+                <div class="assoc-box">
+                    <details><summary><i class="fas fa-hand-holding-heart"></i> <span data-i18n="association_guide">Guía de asociaciones (no competencia)</span></summary><div class="assoc-cards" id="association-cards"></div><p style="margin-top:12px; font-size:0.85rem;"><i class="fas fa-lightbulb"></i> <span data-i18n="avoid">Evita: Tomate con Papa; Pepino con Papa.</span></p></details>
+                </div>
+                <div class="guide-box">
+                    <details><summary><i class="fas fa-seedling"></i> <span data-i18n="natural_fertilizers">Abonos Naturales</span></summary><div class="guide-cards" id="fertilizer-cards"></div></details>
+                </div>
+                <div class="guide-box">
+                    <details><summary><i class="fas fa-bug"></i> <span data-i18n="natural_pesticides">Insecticidas y Fungicidas Naturales</span></summary><div class="guide-cards" id="pesticide-cards"></div></details>
+                </div>
+            </div>
+
+            <div id="greenhouse-page" class="hidden">
+                <div id="gh-title" style="font-size:2rem; font-weight:700; color:var(--primary); margin-bottom:20px;"></div>
+                <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+                    <button id="back-to-home-btn" class="btn btn-outline"><i class="fas fa-arrow-left"></i> <span data-i18n="back">Volver al inicio</span></button>
+                    <div style="display:flex; gap:10px;">
+                        <button id="gh-rename-btn" class="btn btn-outline"><i class="fas fa-pen"></i> <span data-i18n="renombrar">Renombrar</span></button>
+                        <button id="gh-delete-btn" class="btn btn-danger"><i class="fas fa-trash"></i> <span data-i18n="delete_gh">Eliminar esta área</span></button>
+                    </div>
+                </div>
+                <div id="gh-dashboard-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer"><p>Céspedes - Agro v2.4 · <span data-i18n="footer">Sistema de monitoreo y planificación</span></p></div>
+
+    <!-- MODALES -->
+    <div class="modal-overlay" id="addGhModal">
+        <div class="modal">
+            <h4><i class="fas fa-plus-circle"></i> <span data-i18n="add_gh_title">Agregar Área de Cultivo</span></h4>
+            <input type="text" id="gh-alias-input" placeholder="Nombre o alias">
+            <div class="options">
+                <div class="option-card" id="card-estructurado" data-mode="estructurado">
+                    <img src="/img/estructurado.jpg" alt="Modo Estructurado">
+                    <div class="card-title" data-i18n="structured_mode">Modo Estructurado</div>
+                    <div class="card-desc" data-i18n="structured_desc">Para cultivos en filas uniformes con riego automatizado. Ideal para invernaderos o campo abierto.</div>
+                </div>
+                <div class="option-card" id="card-domestico" data-mode="domestico">
+                    <img src="/img/domestico.jpg" alt="Modo Doméstico">
+                    <div class="card-title" data-i18n="domestic_mode">Modo Doméstico</div>
+                    <div class="card-desc" data-i18n="domestic_desc">Huertos caseros, azoteas, macetas. Riego manual o por goteo simple.</div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-success" id="save-add-gh" disabled><span data-i18n="save">Guardar</span></button>
+                <button class="btn btn-outline" id="cancel-add-gh"><span data-i18n="cancel">Cancelar</span></button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="deleteGhModal"><div class="modal"><h4><i class="fas fa-exclamation-triangle"></i> Confirmar eliminación</h4><p>Escribe el ID del área (<strong id="delete-gh-id"></strong>) para confirmar:</p><input type="text" id="delete-gh-id-input" placeholder="ID" style="width:100%; padding:12px; border-radius:30px; border:1px solid #ccc; margin:15px 0;"><div style="display:flex; justify-content:flex-end; gap:10px;"><button class="btn btn-outline" id="cancel-delete-gh">Cancelar</button><button class="btn btn-danger" id="confirm-delete-gh">Eliminar</button></div></div></div>
+    <div class="modal-overlay" id="editStructuredModal">
+        <div class="modal">
+            <h4><i class="fas fa-edit"></i> Editar fila</h4>
+            <div class="form-group"><label>Cultivo</label><select id="edit-structured-crop"></select></div>
+            <div class="form-group"><label>Tipo de siembra</label><select id="edit-structured-planting-type"><option value="semilla">Semilla</option><option value="plantula">Plántula</option><option value="esqueje">Esqueje</option></select></div>
+            <div class="form-group"><label>Posturas</label><input type="number" id="edit-structured-posturas" min="1" step="1"></div>
+            <div class="form-group"><label>Fecha de siembra</label><input type="date" id="edit-structured-date"></div>
+            <div class="form-group"><label>Llave de agua</label><select id="edit-structured-valve"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select></div>
+            <div class="form-group"><label>Hora riego 1</label><input type="time" id="edit-structured-time1"></div>
+            <div class="form-group" id="edit-structured-time2-group" style="display:none;"><label>Hora riego 2</label><input type="time" id="edit-structured-time2"></div>
+            <div class="form-group"><label>Riegos/día</label><select id="edit-structured-irrigations"><option value="1">1</option><option value="2">2</option></select></div>
+            <div class="form-group"><label>Ajuste extra de agua (%)</label><input type="number" id="edit-structured-extra" min="0" max="100" value="0" step="1"></div>
+            <input type="hidden" id="edit-structured-id">
+            <div class="modal-actions"><button class="btn btn-outline" id="cancel-edit-structured">Cancelar</button><button class="btn btn-success" id="save-edit-structured">Guardar</button></div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="editDomesticModal">
+        <div class="modal">
+            <h4><i class="fas fa-edit"></i> Editar lote</h4>
+            <div class="form-group"><label>Categoría</label><select id="edit-domestic-cat"><option value="Alimento">Alimento</option><option value="Flores/Aromáticas">Flores/Aromáticas</option><option value="Medicinal">Medicinal</option></select></div>
+            <div class="form-group"><label>Cultivo</label><select id="edit-domestic-crop"></select></div>
+            <div class="form-group"><label>Tipo de siembra</label><select id="edit-domestic-planting-type"><option value="semilla">Semilla</option><option value="plantula">Plántula</option><option value="esqueje">Esqueje</option></select></div>
+            <div class="form-group" id="edit-domestic-personas-group"><label>Nº personas</label><input type="number" id="edit-domestic-personas" min="1" step="1"></div>
+            <div class="form-group hidden" id="edit-domestic-macetas-group"><label>Nº de macetas</label><input type="number" id="edit-domestic-macetas" min="1" step="1"></div>
+            <div class="form-group"><label>Fecha inicio</label><input type="date" id="edit-domestic-date"></div>
+            <input type="hidden" id="edit-domestic-id">
+            <input type="hidden" id="edit-domestic-area-id">
+            <div class="modal-actions"><button class="btn btn-outline" id="cancel-edit-domestic">Cancelar</button><button class="btn btn-success" id="save-edit-domestic">Guardar</button></div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="relayModal">
+        <div class="modal">
+            <h4><i class="fas fa-calendar-plus"></i> <span data-i18n="relay_modal_title">Añadir relevo en otra área</span></h4>
+            <div class="form-group"><label><span data-i18n="target_area">Área de destino</span></label><select id="relay-target-area"></select></div>
+            <div class="form-group"><label><span data-i18n="valve_select_label">Llave de agua</span></label><select id="relay-valve"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select></div>
+            <div class="form-group"><label><span data-i18n="posturas_label">Cantidad cultivos / fila</span></label><input type="number" id="relay-posturas" min="1" step="1"></div>
+            <div class="form-group"><label><span data-i18n="extra_water_label">Ajuste extra de agua (%)</span></label><input type="number" id="relay-extra" min="0" max="100" value="0" step="1"></div>
+            <div class="form-group"><label><span data-i18n="start_date_relay">Fecha de inicio</span></label><input type="date" id="relay-start-date"></div>
+            <div class="modal-actions"><button class="btn btn-outline" id="cancel-relay">Cancelar</button><button class="btn btn-success" id="confirm-relay">Añadir relevo</button></div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="stageDetailModal"><div class="modal"><h4 id="stageDetailTitle">Detalles de la etapa</h4><div id="stageDetailContent"></div><div class="modal-actions"><button class="btn btn-outline" id="closeStageDetail">Cerrar</button></div></div></div>
+
+    <div class="container" style="margin-top:40px;">
+        <div class="section-title"><i class="fas fa-users"></i> <span data-i18n="specialists">Especialistas</span></div>
+        <div class="specialists-grid" id="specialists-container">
+            <div class="specialist"><div class="specialist-circle" style="background-image:url('/espc/espc1.jpg')"></div><strong>Leno Perdomo Cespedes</strong><br><small>Director de Tecnologia y Fundador</small><br><small style="color:#666;">M.Sc. Informática y Tecnologias Computacionales</small><br><small style="color:#666;">IIoT y Analítica Predictiva</small></div>
+            <div class="specialist"><div class="specialist-circle" style="background-image:url('/espc/espc2.jpg')"></div><strong>Mia</strong><br><small>Directora Tecnica de Investigacion y Operacines</small><br><small style="color:#666;">M.Sc. Agronomia</small><br><small style="color:#666;">Direccion y Negocio</small></div>
+        </div>
+    </div>
+
+    <script>
+        (async function(){
+            // ============================================================
+            // OBJETO DE TRADUCCIONES (i18n) — 5 IDIOMAS
+            // ============================================================
+            const i18n = {
+                es: {
+                    updated:'Datos actualizados en tiempo real',last_reading:'Última lectura',
+                    mqtt_connected:'Conectado',mqtt_disconnected:'Desconectado',
+                    add_gh:'Agregar Área de Cultivo', delete_gh:'Eliminar esta área',
+                    hero_title:'Agricultura Inteligente de Bajo Costo',
+                    hero_p1:'<strong>Céspedes.Agro</strong> es una plataforma de agricultura inteligente e Internet de las Cosas (IoT) de bajo costo diseñada para democratizar el acceso a la tecnología agrícola.',
+                    hero_p2:'A través de una arquitectura integrada de extremo a extremo, el ecosistema utiliza microprocesadores equipados con sensores y actuadores para capturar variables agroclimáticas en tiempo real y automatizar tareas críticas como el riego.',
+                    hero_p3:'Orientado a cerrar la brecha digital en el sector agropecuario, Céspedes.Agro sienta las bases técnicas para que entusiastas de la agricultura urbana, pequeños productores, granjas y cooperativas optimicen sus recursos.',
+                    weather_station:'Estación Meteorológica',meteo_temp:'Temperatura',meteo_hum:'Humedad',meteo_pres:'Presión Atmosférica',meteo_aire:'Calidad del Aire',
+                    averages_title:'Resumen de datos agroclimáticos de todas las áreas de cultivo',avg_temp:'Temp. promedio',avg_hum:'Hum. promedio',avg_light:'Luz promedio',
+                    global_control:'Control Global',power_control:'Control Central',power_cut:'Corte de energía total',power_switch:'Alimentación',extra_btn:'Función Secundaria',on:'Encendido',off:'Apagado',
+                    association_guide:'Guía de asociaciones (no competencia)',avoid:'Evita: Tomate con Papa; Pepino con Papa.',
+                    natural_fertilizers:'Abonos Naturales',natural_pesticides:'Insecticidas y Fungicidas Naturales',
+                    back:'Volver al inicio',add_gh_title:'Agregar Área de Cultivo',cancel:'Cancelar',save:'Guardar',
+                    footer:'Sistema de monitoreo y planificación',
+                    irrigation_control:'Control de Riego y Climatización',temperature:'Temperatura',humidity:'Humedad relativa',co2:'CO2',water_temp:'Temperatura del agua',flow:'Caudal',light:'Luxómetro',
+                    actuators:'Actuadores',valve:'Llave de agua',auto_irrigation:'Control de riego',rain_alert:'Lluvia detectada, posponga el riego',
+                    valve_switch:'Válvula',valve_on_status:'Encendida',valve_off_status:'Apagada',
+                    humidifier:'Humificador',nebulizer:'Nebulizador',humidifier_switch:'Humificador',
+                    lighting:'Luminaria',illumination:'Iluminación',lamp:'Lámpara',
+                    hybrid_planner:'Planificador Dinámico · Riego por Fase y Alertas de Relevo',
+                    domestic_planner_title:'Planificador Doméstico · Flores, Comida y Medicinales',
+                    note_title:'Riego inteligente:',note_text:'El agua diaria se ajusta automáticamente según la fase del cultivo.',
+                    crop:'Cultivo',people:'Nº personas',start_date:'Fecha inicio',add_plan:'Añadir lote',load_example:'Cargar ejemplo 4 pers.',
+                    daily_tasks:'Tareas del Día',no_tasks:'No hay tareas pendientes para hoy',
+                    task_sow_replacement:'🌱 Sembrar relevo',task_change_irrigation:'🌱 Cambiar riego',task_start_harvest:'🍎 Iniciar cosecha',task_end_harvest:'🛑 Finalizar cosecha',
+                    batch_number:'Lote Nº',sowing_date:'Siembra',germination:'Germinación',growth:'Crecimiento',harvest_start:'Inicio Cosecha',harvest_end:'Fin Cosecha',
+                    containers:'Macetas',volume:'Tierra (L)',soil_kg:'Tierra (kg)',water_today:'Vol. riego/planta (L)',water_peak:'Vol. diario total (L)',
+                    relevo_sugerido:'🌱 Relevo sugerido: sembrar',contenedores_el:'contenedores el',btn_add_relevo:'Añadir este relevo',
+                    alert_relevo_proximo:'🟡 Próximo relevo',alert_relevo_hoy:'🔴 ¡RELEVO HOY!',alert_relevo_vencido:'🔴 RELEVO VENCIDO',
+                    soil_note:'Tierra en L (1 kg ≈ 2 L). Agua diaria variable según etapa.',
+                    edit_entry:'Editar entrada',confirm_delete:'¿Eliminar esta fila?',select_date:'Seleccione una fecha',attention:'¡ATENCIÓN!',
+                    structured_planner: 'Planificador Estructurado',
+                    water_valve: 'Llave de agua',
+                    switch_label: 'Interruptor',
+                    smart_irrigation: 'Riego inteligente',
+                    smart_irrigation_text: 'El agua diaria se ajusta automáticamente según la fase del cultivo.',
+                    add_row: 'Añadir fila',
+                    sowing_date_label: 'Fecha de siembra',
+                    seedling_quantity: 'Cantidad cultivos / fila',
+                    posturas_label: 'Cantidad cultivos / fila',
+                    fila_num: 'Fila Nº',
+                    state_col: 'Estado actual',
+                    finalizado: 'Finalizado',
+                    planting_type: 'Tipo de siembra',
+                    seed: 'Semilla',
+                    seedling: 'Plántula',
+                    cutting: 'Esqueje',
+                    valve_num: 'Llave de agua',
+                    irrigation_time: 'Hora de riego',
+                    irrigations_per_day: 'Riegos/día',
+                    water_per_irrigation: 'Vol. riego/planta (L)',
+                    water_daily: 'Vol. diario total (L)',
+                    hour_conflict: 'Ya existe una fila con esa hora de riego. Elija otra.',
+                    stage_details: 'Detalles de la etapa',
+                    extra_water: 'Ajuste extra de agua',
+                    relay_modal_title: 'Añadir relevo en otra área',
+                    target_area: 'Área de destino',
+                    start_date_relay: 'Fecha de inicio',
+                    valve_select_label: 'Llave de agua',
+                    extra_water_label: 'Ajuste extra de agua (%)',
+                    alias_placeholder: 'Nombre o alias',
+                    structured_mode: 'Modo Estructurado',
+                    domestic_mode: 'Modo Doméstico',
+                    structured_desc: 'Para cultivos en filas uniformes con riego automatizado. Ideal para invernaderos o campo abierto.',
+                    domestic_desc: 'Huertos caseros, azoteas, macetas. Riego manual o por goteo simple.',
+                    editor_cultivos: 'Editor de Cultivos',
+                    limpiar_datos: 'Limpiar datos',
+                    renombrar: 'Renombrar',
+                    turbina: 'Turbina',
+                    turbina_desc: 'Control de bomba principal',
+                    caudal: 'Caudal',
+                    temp_agua: 'Temperatura del agua',
+                    control_termohidraulico: 'Control Termohidráulico',
+                    hora_riego_col: 'Hora riego',
+                    stage_details_title: 'Detalles de la etapa',
+                    category_label: 'Categoría',
+                    macetas_label: 'Nº de macetas',
+                    water_info: 'Vol. diario total = riego/planta × macetas.',
+                    crop_tomate:'Tomate',crop_lechuga:'Lechuga',crop_papa:'Papa',crop_pepino:'Pepino',crop_zanahoria:'Zanahoria',
+                    crop_boniato:'Boniato',crop_frijol:'Frijol',crop_rabano:'Rábano',crop_pimiento:'Pimiento',crop_mixhojas:'Mix de Hojas'
+                },
+                en: {
+                    updated:'Data updated in real time',last_reading:'Last reading',
+                    mqtt_connected:'Connected',mqtt_disconnected:'Disconnected',
+                    add_gh:'Add Cultivation Area', delete_gh:'Delete this area',
+                    hero_title:'Low-Cost Smart Agriculture',
+                    hero_p1:'<strong>Céspedes.Agro</strong> is a low-cost IoT smart agriculture platform designed to democratize access to agricultural technology.',
+                    hero_p2:'Through an integrated end‑to‑end architecture, the ecosystem uses microprocessors equipped with sensors and actuators to capture real‑time agroclimatic variables and automate critical tasks such as irrigation.',
+                    hero_p3:'Aimed at bridging the digital divide in agriculture, Céspedes.Agro lays the technical foundations for urban farming enthusiasts, small producers, farms and cooperatives to optimize resources.',
+                    weather_station:'Weather Station',meteo_temp:'Temperature',meteo_hum:'Humidity',meteo_pres:'Atmospheric Pressure',meteo_aire:'Air Quality',
+                    averages_title:'Agroclimatic data summary for all cultivation areas',avg_temp:'Avg Temp',avg_hum:'Avg Hum',avg_light:'Avg Light',
+                    global_control:'Global Control',power_control:'Central Control',power_cut:'Total power cut',power_switch:'Power',extra_btn:'Secondary Function',on:'On',off:'Off',
+                    association_guide:'Companion Planting Guide',avoid:'Avoid: Tomato with Potato; Cucumber with Potato.',
+                    natural_fertilizers:'Natural Fertilizers',natural_pesticides:'Natural Insecticides and Fungicides',
+                    back:'Back to home',add_gh_title:'Add Cultivation Area',cancel:'Cancel',save:'Save',
+                    footer:'Monitoring and Planning System',
+                    irrigation_control:'Irrigation and Climate Control',temperature:'Temperature',humidity:'Relative humidity',co2:'CO2',water_temp:'Water temperature',flow:'Flow rate',light:'Light meter',
+                    actuators:'Actuators',valve:'Solenoid valve',auto_irrigation:'Auto irrigation',rain_alert:'Rain detected, postpone irrigation',
+                    valve_switch:'Valve',valve_on_status:'On',valve_off_status:'Off',
+                    humidifier:'Humidifier',nebulizer:'Nebulizer',humidifier_switch:'Humidifier',
+                    lighting:'Lighting',illumination:'Illumination',lamp:'Lamp',
+                    hybrid_planner:'Dynamic Planner',
+                    domestic_planner_title:'Domestic Planner · Flowers, Food & Medicinal',
+                    note_title:'Smart Irrigation:',note_text:'Daily water adjusts automatically according to crop phase.',
+                    crop:'Crop',people:'People',start_date:'Start date',add_plan:'Add batch',load_example:'Load example (4 pers.)',
+                    daily_tasks:"Today's Tasks",no_tasks:'No pending tasks for today',
+                    task_sow_replacement:'🌱 Sow replacement',task_change_irrigation:'🌱 Change irrigation',task_start_harvest:'🍎 Start harvest',task_end_harvest:'🛑 End harvest',
+                    batch_number:'Batch #',sowing_date:'Sowing',germination:'Germination',growth:'Growth',harvest_start:'Harvest Start',harvest_end:'Harvest End',
+                    containers:'Pots',volume:'Soil (L)',soil_kg:'Soil (kg)',water_today:'Water/plant (L)',water_peak:'Total daily (L)',
+                    relevo_sugerido:'🌱 Suggested relay: sow',contenedores_el:'containers on',btn_add_relevo:'Add this relay',
+                    alert_relevo_proximo:'🟡 Upcoming relay',alert_relevo_hoy:'🔴 RELAY TODAY!',alert_relevo_vencido:'🔴 RELAY OVERDUE',
+                    soil_note:'Soil in L (1 kg ≈ 2 L). Daily water varies by stage.',
+                    edit_entry:'Edit entry',confirm_delete:'Delete this row?',select_date:'Please select a date',attention:'ATTENTION!',
+                    structured_planner: 'Structured Planner',
+                    water_valve: 'Water valve',
+                    switch_label: 'Switch',
+                    smart_irrigation: 'Smart irrigation',
+                    smart_irrigation_text: 'Daily water adjusts automatically according to crop phase.',
+                    add_row: 'Add row',
+                    sowing_date_label: 'Sowing date',
+                    seedling_quantity: 'Crops / row',
+                    posturas_label: 'Crops / row',
+                    fila_num: 'Row #',
+                    state_col: 'Current stage',
+                    finalizado: 'Finished',
+                    planting_type: 'Planting type',
+                    seed: 'Seed',
+                    seedling: 'Seedling',
+                    cutting: 'Cutting',
+                    valve_num: 'Water valve',
+                    irrigation_time: 'Irrigation time',
+                    irrigations_per_day: 'Irrigations/day',
+                    water_per_irrigation: 'Water/plant (L)',
+                    water_daily: 'Total daily (L)',
+                    hour_conflict: 'There is already a row with that irrigation time. Choose another.',
+                    stage_details: 'Stage details',
+                    extra_water: 'Extra water',
+                    relay_modal_title: 'Add relay in another area',
+                    target_area: 'Target area',
+                    start_date_relay: 'Start date',
+                    valve_select_label: 'Water valve',
+                    extra_water_label: 'Extra water (%)',
+                    alias_placeholder: 'Name or alias',
+                    structured_mode: 'Structured Mode',
+                    domestic_mode: 'Domestic Mode',
+                    structured_desc: 'For uniform row crops with automated irrigation. Ideal for greenhouses or open field.',
+                    domestic_desc: 'Home gardens, rooftops, pots. Manual or simple drip irrigation.',
+                    editor_cultivos: 'Crop Editor',
+                    limpiar_datos: 'Clear data',
+                    renombrar: 'Rename',
+                    turbina: 'Pump',
+                    turbina_desc: 'Main pump control',
+                    caudal: 'Flow',
+                    temp_agua: 'Water temperature',
+                    control_termohidraulico: 'Thermo‑hydraulic Control',
+                    hora_riego_col: 'Irrigation time',
+                    stage_details_title: 'Stage details',
+                    category_label: 'Category',
+                    macetas_label: 'No. of pots',
+                    water_info: 'Total daily = water/plant × pots.',
+                    crop_tomate:'Tomato',crop_lechuga:'Lettuce',crop_papa:'Potato',crop_pepino:'Cucumber',crop_zanahoria:'Carrot',
+                    crop_boniato:'Sweet Potato',crop_frijol:'Bean',crop_rabano:'Radish',crop_pimiento:'Pepper',crop_mixhojas:'Leafy Mix'
+                },
+                ru: {
+                    updated:'Данные обновляются в реальном времени',last_reading:'Последнее чтение',
+                    mqtt_connected:'Подключено',mqtt_disconnected:'Отключено',
+                    add_gh:'Добавить зону', delete_gh:'Удалить эту зону',
+                    hero_title:'Умное сельское хозяйство с низкими затратами',
+                    hero_p1:'<strong>Céspedes.Agro</strong> — это IoT‑платформа для умного сельского хозяйства с низкой стоимостью.',
+                    hero_p2:'Благодаря интегрированной архитектуре экосистема использует микропроцессоры с датчиками и исполнительными механизмами.',
+                    hero_p3:'Нацеленный на преодоление цифрового разрыва в сельском хозяйстве, Céspedes.Agro закладывает техническую основу.',
+                    weather_station:'Метеостанция',meteo_temp:'Температура',meteo_hum:'Влажность',meteo_pres:'Атмосферное давление',meteo_aire:'Качество воздуха',
+                    averages_title:'Сводка агроклиматических данных по всем зонам',avg_temp:'Сред. темп.',avg_hum:'Сред. влаж.',avg_light:'Сред. освещ.',
+                    global_control:'Глобальное управление',power_control:'Центральное управление',power_cut:'Полное отключение',power_switch:'Питание',extra_btn:'Вторичная функция',on:'Вкл',off:'Выкл',
+                    association_guide:'Руководство по совместимости растений',avoid:'Избегайте: Томат с Картофелем; Огурец с Картофелем.',
+                    natural_fertilizers:'Натуральные удобрения',natural_pesticides:'Натуральные инсектициды и фунгициды',
+                    back:'На главную',add_gh_title:'Добавить зону',cancel:'Отмена',save:'Сохранить',
+                    footer:'Система мониторинга и планирования',
+                    irrigation_control:'Управление поливом и климатом',temperature:'Температура',humidity:'Относ. влажность',co2:'CO2',water_temp:'Температура воды',flow:'Расход',light:'Освещенность',
+                    actuators:'Исполнительные устройства',valve:'Электроклапан',auto_irrigation:'Автополив',rain_alert:'Обнаружен дождь, отложите полив',
+                    valve_switch:'Клапан',valve_on_status:'Вкл',valve_off_status:'Выкл',
+                    humidifier:'Увлажнитель',nebulizer:'Распылитель',humidifier_switch:'Увлажнитель',
+                    lighting:'Освещение',illumination:'Освещение',lamp:'Лампа',
+                    hybrid_planner:'Динамический планировщик',
+                    domestic_planner_title:'Домашний планировщик · Цветы, Еда и Лекарства',
+                    note_title:'Умный полив:',note_text:'Ежедневный полив регулируется автоматически.',
+                    crop:'Культура',people:'Кол-во человек',start_date:'Дата начала',add_plan:'Добавить партию',load_example:'Загрузить пример (4 чел.)',
+                    daily_tasks:'Задачи на сегодня',no_tasks:'Нет задач на сегодня',
+                    task_sow_replacement:'🌱 Посев замены',task_change_irrigation:'🌱 Изменить полив',task_start_harvest:'🍎 Начать сбор',task_end_harvest:'🛑 Завершить сбор',
+                    batch_number:'Партия №',sowing_date:'Посев',germination:'Всходы',growth:'Рост',harvest_start:'Начало сбора',harvest_end:'Конец сбора',
+                    containers:'Горшки',volume:'Земля (L)',soil_kg:'Земля (кг)',water_today:'Вода/растение (L)',water_peak:'Всего в день (L)',
+                    relevo_sugerido:'🌱 Предлагаемая замена: посеять',contenedores_el:'контейнеров',btn_add_relevo:'Добавить замену',
+                    alert_relevo_proximo:'🟡 Приближается замена',alert_relevo_hoy:'🔴 ЗАМЕНА СЕГОДНЯ!',alert_relevo_vencido:'🔴 ЗАМЕНА ПРОСРОЧЕНА',
+                    soil_note:'Земля в L (1 кг ≈ 2 L).',
+                    edit_entry:'Редактировать',confirm_delete:'Удалить этот ряд?',select_date:'Выберите дату',attention:'ВНИМАНИЕ!',
+                    structured_planner: 'Структурированный планировщик',
+                    water_valve: 'Водяной клапан',
+                    switch_label: 'Переключатель',
+                    smart_irrigation: 'Умный полив',
+                    smart_irrigation_text: 'Ежедневный полив регулируется автоматически в зависимости от фазы.',
+                    add_row: 'Добавить ряд',
+                    sowing_date_label: 'Дата посева',
+                    seedling_quantity: 'Культур / ряд',
+                    posturas_label: 'Культур / ряд',
+                    fila_num: 'Ряд №',
+                    state_col: 'Текущая стадия',
+                    finalizado: 'Завершено',
+                    planting_type: 'Тип посадки',
+                    seed: 'Семена',
+                    seedling: 'Рассада',
+                    cutting: 'Черенок',
+                    valve_num: 'Водяной клапан',
+                    irrigation_time: 'Время полива',
+                    irrigations_per_day: 'Поливов/день',
+                    water_per_irrigation: 'Вода/растение (L)',
+                    water_daily: 'Всего в день (L)',
+                    hour_conflict: 'Уже есть ряд с таким временем полива. Выберите другое.',
+                    stage_details: 'Детали стадии',
+                    extra_water: 'Доп. вода',
+                    relay_modal_title: 'Добавить замену в другую зону',
+                    target_area: 'Целевая зона',
+                    start_date_relay: 'Дата начала',
+                    valve_select_label: 'Водяной клапан',
+                    extra_water_label: 'Доп. вода (%)',
+                    alias_placeholder: 'Имя или псевдоним',
+                    structured_mode: 'Структурированный режим',
+                    domestic_mode: 'Домашний режим',
+                    structured_desc: 'Для рядовых культур с автоматическим поливом. Идеально для теплиц или открытого грунта.',
+                    domestic_desc: 'Домашние огороды, крыши, горшки. Ручной или капельный полив.',
+                    editor_cultivos: 'Редактор культур',
+                    limpiar_datos: 'Очистить данные',
+                    renombrar: 'Переименовать',
+                    turbina: 'Насос',
+                    turbina_desc: 'Управление главным насосом',
+                    caudal: 'Расход',
+                    temp_agua: 'Температура воды',
+                    control_termohidraulico: 'Термогидравлический контроль',
+                    hora_riego_col: 'Время полива',
+                    stage_details_title: 'Детали стадии',
+                    category_label: 'Категория',
+                    macetas_label: 'Количество горшков',
+                    water_info: 'Всего в день = вода/растение × горшки.',
+                    crop_tomate:'Томат',crop_lechuga:'Салат',crop_papa:'Картофель',crop_pepino:'Огурец',crop_zanahoria:'Морковь',
+                    crop_boniato:'Батат',crop_frijol:'Фасоль',crop_rabano:'Редис',crop_pimiento:'Перец',crop_mixhojas:'Микс листьев'
+                },
+                pt: {
+                    updated:'Dados atualizados em tempo real',last_reading:'Última leitura',
+                    mqtt_connected:'Conectado',mqtt_disconnected:'Desconectado',
+                    add_gh:'Adicionar Área de Cultivo', delete_gh:'Remover esta área',
+                    hero_title:'Agricultura Inteligente de Baixo Custo',
+                    hero_p1:'<strong>Céspedes.Agro</strong> é uma plataforma IoT de agricultura inteligente de baixo custo.',
+                    hero_p2:'Através de uma arquitetura integrada, o ecossistema utiliza microprocessadores com sensores e atuadores.',
+                    hero_p3:'Destinado a reduzir a exclusão digital no setor agrícola.',
+                    weather_station:'Estação Meteorológica',meteo_temp:'Temperatura',meteo_hum:'Umidade',meteo_pres:'Pressão Atmosférica',meteo_aire:'Qualidade do Ar',
+                    averages_title:'Resumo dos dados agroclimáticos de todas as áreas',avg_temp:'Temp. média',avg_hum:'Umid. média',avg_light:'Luz média',
+                    global_control:'Controle Global',power_control:'Controle Central',power_cut:'Corte total',power_switch:'Alimentação',extra_btn:'Função Secundária',on:'Ligado',off:'Desligado',
+                    association_guide:'Guia de associações',avoid:'Evite: Tomate com Batata; Pepino com Batata.',
+                    natural_fertilizers:'Fertilizantes Naturais',natural_pesticides:'Inseticidas e Fungicidas Naturais',
+                    back:'Voltar ao início',add_gh_title:'Adicionar Área de Cultivo',cancel:'Cancelar',save:'Salvar',
+                    footer:'Sistema de monitoramento e planejamento',
+                    irrigation_control:'Controle de Irrigação',temperature:'Temperatura',humidity:'Umidade relativa',co2:'CO2',water_temp:'Temperatura da água',flow:'Vazão',light:'Luxímetro',
+                    actuators:'Atuadores',valve:'Eletroválvula',auto_irrigation:'Irrigação automática',rain_alert:'Chuva detectada',
+                    valve_switch:'Válvula',valve_on_status:'Ligada',valve_off_status:'Desligada',
+                    humidifier:'Umidificador',nebulizer:'Nebulizador',humidifier_switch:'Umidificador',
+                    lighting:'Iluminação',illumination:'Iluminação',lamp:'Lâmpada',
+                    hybrid_planner:'Planejador Dinâmico',
+                    domestic_planner_title:'Planejador Doméstico · Flores, Comida e Medicinais',
+                    note_title:'Irrigação inteligente:',note_text:'A água diária ajusta-se automaticamente.',
+                    crop:'Cultura',people:'Pessoas',start_date:'Data início',add_plan:'Adicionar lote',load_example:'Exemplo 4 pes.',
+                    daily_tasks:'Tarefas do Dia',no_tasks:'Nenhuma tarefa',
+                    task_sow_replacement:'🌱 Semear substituição',task_change_irrigation:'🌱 Alterar irrigação',task_start_harvest:'🍎 Iniciar colheita',task_end_harvest:'🛑 Finalizar colheita',
+                    batch_number:'Lote Nº',sowing_date:'Semeadura',germination:'Germinação',growth:'Crescimento',harvest_start:'Início Colheita',harvest_end:'Fim Colheita',
+                    containers:'Vasos',volume:'Terra (L)',soil_kg:'Terra (kg)',water_today:'Água/planta (L)',water_peak:'Total diário (L)',
+                    relevo_sugerido:'🌱 Substituição sugerida',contenedores_el:'recipientes em',btn_add_relevo:'Adicionar',
+                    alert_relevo_proximo:'🟡 Substituição próxima',alert_relevo_hoy:'🔴 SUBSTITUIÇÃO HOJE!',alert_relevo_vencido:'🔴 VENCIDA',
+                    soil_note:'Terra em L (1 kg ≈ 2 L).',
+                    edit_entry:'Editar',confirm_delete:'Excluir esta fila?',select_date:'Selecione uma data',attention:'ATENÇÃO!',
+                    structured_planner: 'Planejador Estruturado',
+                    water_valve: 'Válvula de água',
+                    switch_label: 'Interruptor',
+                    smart_irrigation: 'Irrigação inteligente',
+                    smart_irrigation_text: 'A água diária ajusta-se automaticamente de acordo com a fase.',
+                    add_row: 'Adicionar fila',
+                    sowing_date_label: 'Data de semeadura',
+                    seedling_quantity: 'Cultivos / fila',
+                    posturas_label: 'Cultivos / fila',
+                    fila_num: 'Fila Nº',
+                    state_col: 'Estágio atual',
+                    finalizado: 'Finalizado',
+                    planting_type: 'Tipo de plantio',
+                    seed: 'Semente',
+                    seedling: 'Muda',
+                    cutting: 'Estaca',
+                    valve_num: 'Válvula de água',
+                    irrigation_time: 'Hora de irrigação',
+                    irrigations_per_day: 'Irrigações/dia',
+                    water_per_irrigation: 'Água/planta (L)',
+                    water_daily: 'Total diário (L)',
+                    hour_conflict: 'Já existe uma fila com esse horário de irrigação. Escolha outro.',
+                    stage_details: 'Detalhes da etapa',
+                    extra_water: 'Água extra',
+                    relay_modal_title: 'Adicionar substituição em outra área',
+                    target_area: 'Área de destino',
+                    start_date_relay: 'Data de início',
+                    valve_select_label: 'Válvula de água',
+                    extra_water_label: 'Água extra (%)',
+                    alias_placeholder: 'Nome ou apelido',
+                    structured_mode: 'Modo Estruturado',
+                    domestic_mode: 'Modo Doméstico',
+                    structured_desc: 'Para culturas em fileiras uniformes com irrigação automatizada. Ideal para estufas ou campo aberto.',
+                    domestic_desc: 'Hortas caseiras, terraços, vasos. Irrigação manual ou gotejamento simples.',
+                    editor_cultivos: 'Editor de Cultivos',
+                    limpiar_datos: 'Limpar dados',
+                    renombrar: 'Renomear',
+                    turbina: 'Bomba',
+                    turbina_desc: 'Controle da bomba principal',
+                    caudal: 'Vazão',
+                    temp_agua: 'Temperatura da água',
+                    control_termohidraulico: 'Controle Termo‑hidráulico',
+                    hora_riego_col: 'Hora de irrigação',
+                    stage_details_title: 'Detalhes da etapa',
+                    category_label: 'Categoria',
+                    macetas_label: 'Nº de vasos',
+                    water_info: 'Total diário = água/planta × vasos.',
+                    crop_tomate:'Tomate',crop_lechuga:'Alface',crop_papa:'Batata',crop_pepino:'Pepino',crop_zanahoria:'Cenoura',
+                    crop_boniato:'Batata-doce',crop_frijol:'Feijão',crop_rabano:'Rabanete',crop_pimiento:'Pimentão',crop_mixhojas:'Mix de Folhas'
+                },
+                fr: {
+                    updated:'Données en temps réel',last_reading:'Dernière lecture',
+                    mqtt_connected:'Connecté',mqtt_disconnected:'Déconnecté',
+                    add_gh:'Ajouter zone de culture', delete_gh:'Supprimer cette zone',
+                    hero_title:'Agriculture Intelligente à Bas Coût',
+                    hero_p1:"<strong>Céspedes.Agro</strong> est une plateforme IoT d'agriculture intelligente à faible coût.",
+                    hero_p2:"Grâce à une architecture intégrée, l'écosystème utilise des microprocesseurs.",
+                    hero_p3:"Destiné à réduire la fracture numérique dans le secteur agricole.",
+                    weather_station:'Station Météo',meteo_temp:'Température',meteo_hum:'Humidité',meteo_pres:'Pression Atmosphérique',meteo_aire:"Qualité de l'Air",
+                    averages_title:"Résumé des données agroclimatiques de toutes les zones",avg_temp:'Temp. moyenne',avg_hum:'Hum. moyenne',avg_light:'Lum. moyenne',
+                    global_control:'Contrôle Global',power_control:'Contrôle Central',power_cut:'Coupure totale',power_switch:'Alimentation',extra_btn:'Fonction secondaire',on:'Allumé',off:'Éteint',
+                    association_guide:'Guide des associations',avoid:'Évitez : Tomate avec PDT ; Concombre avec PDT.',
+                    natural_fertilizers:'Engrais naturels',natural_pesticides:'Insecticides naturels',
+                    back:"Retour à l'accueil",add_gh_title:'Ajouter une zone',cancel:'Annuler',save:'Enregistrer',
+                    footer:'Système de surveillance et planification',
+                    irrigation_control:"Contrôle d'irrigation",temperature:'Température',humidity:'Humidité relative',co2:'CO2',water_temp:"Température de l'eau",flow:'Débit',light:'Luxmètre',
+                    actuators:'Actionneurs',valve:'Électrovanne',auto_irrigation:'Irrigation auto',rain_alert:'Pluie détectée',
+                    valve_switch:'Vanne',valve_on_status:'Allumée',valve_off_status:'Éteinte',
+                    humidifier:'Humidificateur',nebulizer:'Nébuliseur',humidifier_switch:'Humidificateur',
+                    lighting:'Éclairage',illumination:'Éclairage',lamp:'Lampe',
+                    hybrid_planner:'Planificateur Dynamique',
+                    domestic_planner_title:'Planificateur Domestique · Fleurs, Nourriture et Médicinales',
+                    note_title:'Irrigation intelligente :',note_text:"L'eau quotidienne s'ajuste automatiquement.",
+                    crop:'Culture',people:'Personnes',start_date:'Date début',add_plan:'Ajouter lot',load_example:'Exemple 4 pers.',
+                    daily_tasks:'Tâches du jour',no_tasks:'Aucune tâche',
+                    task_sow_replacement:'🌱 Semer relève',task_change_irrigation:'🌱 Changer irrigation',task_start_harvest:'🍎 Débuter récolte',task_end_harvest:'🛑 Terminer récolte',
+                    batch_number:'Lot Nº',sowing_date:'Semis',germination:'Germination',growth:'Croissance',harvest_start:'Début récolte',harvest_end:'Fin récolte',
+                    containers:'Pots',volume:'Terre (L)',soil_kg:'Terre (kg)',water_today:'Eau/plante (L)',water_peak:'Total journalier (L)',
+                    relevo_sugerido:'🌱 Relève suggérée',contenedores_el:'conteneurs le',btn_add_relevo:'Ajouter',
+                    alert_relevo_proximo:'🟡 Relève proche',alert_relevo_hoy:"🔴 RELÈVE AUJOURD'HUI !",alert_relevo_vencido:'🔴 RELÈVE DÉPASSÉE',
+                    soil_note:'Terre en L (1 kg ≈ 2 L).',
+                    edit_entry:'Modifier',confirm_delete:'Supprimer cette rangée ?',select_date:'Sélectionnez une date',attention:'ATTENTION !',
+                    structured_planner: 'Planificateur Structuré',
+                    water_valve: "Vanne d'eau",
+                    switch_label: 'Interrupteur',
+                    smart_irrigation: 'Irrigation intelligente',
+                    smart_irrigation_text: "L'eau quotidienne s'ajuste automatiquement selon la phase.",
+                    add_row: 'Ajouter une rangée',
+                    sowing_date_label: 'Date de semis',
+                    seedling_quantity: 'Plants / rangée',
+                    posturas_label: 'Plants / rangée',
+                    fila_num: 'Rangée Nº',
+                    state_col: 'Stade actuel',
+                    finalizado: 'Terminé',
+                    planting_type: 'Type de plantation',
+                    seed: 'Semence',
+                    seedling: 'Plant',
+                    cutting: 'Bouture',
+                    valve_num: "Vanne d'eau",
+                    irrigation_time: "Heure d'arrosage",
+                    irrigations_per_day: 'Arrosages/jour',
+                    water_per_irrigation: 'Eau/plante (L)',
+                    water_daily: 'Total journalier (L)',
+                    hour_conflict: "Il existe déjà une rangée avec cette heure d'arrosage. Choisissez-en une autre.",
+                    stage_details: 'Détails du stade',
+                    extra_water: "Eau supplémentaire",
+                    relay_modal_title: 'Ajouter une relève dans une autre zone',
+                    target_area: 'Zone cible',
+                    start_date_relay: 'Date de début',
+                    valve_select_label: "Vanne d'eau",
+                    extra_water_label: "Eau supplémentaire (%)",
+                    alias_placeholder: 'Nom ou alias',
+                    structured_mode: 'Mode Structuré',
+                    domestic_mode: 'Mode Domestique',
+                    structured_desc: 'Pour des cultures en rangs avec irrigation automatisée. Idéal pour serres ou plein champ.',
+                    domestic_desc: 'Potagers urbains, toits, pots. Arrosage manuel ou goutte‑à‑goutte.',
+                    editor_cultivos: 'Éditeur de cultures',
+                    limpiar_datos: 'Effacer les données',
+                    renombrar: 'Renommer',
+                    turbina: 'Pompe',
+                    turbina_desc: 'Contrôle de la pompe principale',
+                    caudal: 'Débit',
+                    temp_agua: "Température de l'eau",
+                    control_termohidraulico: 'Contrôle thermo‑hydraulique',
+                    hora_riego_col: "Heure d'arrosage",
+                    stage_details_title: 'Détails du stade',
+                    category_label: 'Catégorie',
+                    macetas_label: 'Nº de pots',
+                    water_info: 'Total journalier = eau/plante × pots.',
+                    crop_tomate:'Tomate',crop_lechuga:'Laitue',crop_papa:'Pomme de terre',crop_pepino:'Concombre',crop_zanahoria:'Carotte',
+                    crop_boniato:'Patate douce',crop_frijol:'Haricot',crop_rabano:'Radis',crop_pimiento:'Poivron',crop_mixhojas:'Mélange de feuilles'
+                }
+            };
+
+            // ============================================================
+            // VARIABLES GLOBALES Y FUNCIONES AUXILIARES
+            // ============================================================
+            let currentLang = 'es';
+            function t(key) { return i18n[currentLang]?.[key] || i18n.es[key] || key; }
+
+            // Actualiza las tarjetas de asociaciones de cultivos
+            function updateAssociationCards() {
+                const container = document.getElementById('association-cards');
+                if(!container) return;
+                container.innerHTML = [
+                    {icon:'🥕', combo:`${t('crop_tomate')} + ${t('crop_lechuga')} / Albahaca`},
+                    {icon:'🥒', combo:`${t('crop_pepino')} + ${t('crop_rabano')} / ${t('crop_frijol')}`},
+                    {icon:'🥔', combo:`${t('crop_papa')} + Ejote / Maíz`},
+                    {icon:'🥬', combo:`${t('crop_zanahoria')} + Cebollín`},
+                    {icon:'🍠', combo:`${t('crop_boniato')} + Maíz`},
+                    {icon:'🌽', combo:`Maíz + ${t('crop_frijol')} / Calabaza`}
+                ].map(i => `<div class="assoc-card"><i>${i.icon}</i> ${i.combo}</div>`).join('');
+            }
+
+            // Actualiza las guías de fertilizantes y pesticidas
+            function updateGuideCards() {
+                const fert = document.getElementById('fertilizer-cards');
+                if(fert) fert.innerHTML = [
+                    {icon:'fa-fire', title:t('wood_ash'), desc:t('ash_use')},
+                    {icon:'fa-egg', title:t('eggshell_lemon'), desc:t('eggshell_use')},
+                    {icon:'fa-utensils', title:t('rice_water'), desc:t('rice_use')},
+                    {icon:'fa-coffee', title:t('coffee_grounds'), desc:t('coffee_use')},
+                    {icon:'fa-apple-alt', title:t('peel_tea'), desc:t('peel_use')},
+                    {icon:'fa-leaf', title:t('aloe'), desc:t('aloe_use')},
+                    {icon:'fa-candy-cane', title:t('sugar'), desc:t('sugar_use')}
+                ].map(f => `<div class="guide-card"><i class="fas ${f.icon}"></i><strong>${f.title}</strong><p>${f.desc}</p></div>`).join('');
+                const pest = document.getElementById('pesticide-cards');
+                if(pest) pest.innerHTML = [
+                    {icon:'fa-pepper-hot', title:t('garlic_chili'), desc:t('garlic_use')},
+                    {icon:'fa-lemon', title:t('limonene'), desc:t('limonene_use')},
+                    {icon:'fa-prescription-bottle', title:t('baking_soda'), desc:t('baking_use')},
+                    {icon:'fa-wine-bottle', title:t('vinegar'), desc:t('vinegar_use')},
+                    {icon:'fa-smoking', title:t('cigarette'), desc:t('cigarette_use')},
+                    {icon:'fa-mug-hot', title:t('coffee_ring'), desc:t('coffee_ring_use')},
+                    {icon:'fa-tint', title:t('milk'), desc:t('milk_use')},
+                    {icon:'fa-palette', title:t('sticky_traps'), desc:t('sticky_use')}
+                ].map(p => `<div class="guide-card"><i class="fas ${p.icon}"></i><strong>${p.title}</strong><p>${p.desc}</p></div>`).join('');
+            }
+
+            // ============================================================
+            // DATOS DE CULTIVOS Y ÁREAS (carga desde API)
+            // ============================================================
+            let allCrops = [];
+            async function loadAllCrops() {
+                try {
+                    const resp = await fetch('/api/cultivos');
+                    if (resp.ok) allCrops = await resp.json();
+                } catch(e) {
+                    console.error('Error cargando cultivos', e);
+                }
+            }
+
+            let areas = [], activeAreaId = null, greenhousesData = {};
+            async function loadAreas() {
+                try {
+                    const r = await fetch('/api/areas');
+                    areas = r.ok ? await r.json() : [];
+                } catch {
+                    areas = [];
+                }
+            }
+            async function saveAreas() {
+                await fetch('/api/areas', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(areas)
+                });
+            }
+            function getNextId() {
+                return areas.length ? String(Math.max(...areas.map(a => +a.id)) + 1).padStart(3, '0') : '001';
+            }
+            function refreshGHSelect() {
+                const select = document.getElementById('greenhouse-select');
+                select.innerHTML = '<option value="home">🏠 Inicio</option>';
+                areas.forEach(a => select.innerHTML += `<option value="${a.id}">${a.alias} (ID: ${a.id})</option>`);
+                if (activeAreaId) select.value = activeAreaId;
+                else select.value = 'home';
+            }
+            function showHome() {
+                activeAreaId = null;
+                document.getElementById('home-page').classList.remove('hidden');
+                document.getElementById('greenhouse-page').classList.add('hidden');
+                document.getElementById('active-id-badge').classList.add('hidden');
+                document.getElementById('greenhouse-select').value = 'home';
+                updateAverages();
+            }
+            async function showArea(id) {
+                activeAreaId = id;
+                document.getElementById('home-page').classList.add('hidden');
+                document.getElementById('greenhouse-page').classList.remove('hidden');
+                document.getElementById('active-id-badge').classList.remove('hidden');
+                document.getElementById('active-id-badge').textContent = `ID: ${id}`;
+                document.getElementById('greenhouse-select').value = id;
+                const area = areas.find(a => a.id === id);
+                if (area) document.getElementById('gh-title').textContent = `${area.alias} (ID: ${area.id})`;
+                await renderAreaDashboard(id, area ? area.tipo : 'domestico');
+                if (greenhousesData[id]) updateAreaSensorValues(id, greenhousesData[id]);
+            }
+
+            // ============================================================
+            // RENDERIZADO DEL ÁREA DE CULTIVO (estructurado vs doméstico)
+            // ============================================================
+            async function renderAreaDashboard(id, tipo) {
+                const container = document.getElementById('gh-dashboard-content');
+                if (tipo === 'estructurado') {
+                    if (allCrops.length === 0) await loadAllCrops();
+                    const cultivosOptions = allCrops.map(c =>
+                        `<option value="${c.id}">${c.icon || '🌱'} ${c.nombre}${c.variedad ? ' - ' + c.variedad : ''}</option>`
+                    ).join('');
+                    container.innerHTML = `
+                        <div class="section-title"><i class="fas fa-tint"></i> <span data-i18n="irrigation_control">Control de Riego y Climatización</span></div>
+                        <div class="dashboard-grid">
+                            <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon temp-icon"><i class="fas fa-thermometer-half"></i></div><div><div class="sensor-title" data-i18n="temperature">Temperatura</div><div class="sensor-subtitle">SHT30</div></div></div><div class="sensor-value"><span id="temp-${id}">--</span><span class="sensor-unit">°C</span></div><div class="sensor-footer"><span id="temp-time-${id}">--:--:--</span></div></div>
+                            <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon hum-icon"><i class="fas fa-droplet"></i></div><div><div class="sensor-title" data-i18n="humidity">Humedad relativa</div><div class="sensor-subtitle">SHT30</div></div></div><div class="sensor-value"><span id="hum-${id}">--</span><span class="sensor-unit">%</span></div><div class="sensor-footer"><span id="hum-time-${id}">--:--:--</span></div></div>
+                            <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon luz-icon"><i class="fas fa-sun"></i></div><div><div class="sensor-title" data-i18n="light">Luxómetro</div><div class="sensor-subtitle">BH1750</div></div></div><div class="sensor-value"><span id="luz-${id}">--</span><span class="sensor-unit">lux</span></div><div class="sensor-footer"><span id="luz-time-${id}">--:--:--</span></div></div>
+                        </div>
+                        <div class="section-title"><i class="fas fa-microchip"></i> <span data-i18n="actuators">Actuadores</span></div>
+                        <div class="actuators-grid" id="actuators-container-${id}">
+                            ${['A','B','C','D','E','F'].map(letra => `
+                                <div class="actuator-card valve-card">
+                                    <i class="fas fa-faucet actuator-icon"></i>
+                                    <strong><span data-i18n="water_valve">Llave de agua</span> ${letra}</strong>
+                                    <label class="switch">
+                                        <input type="checkbox" id="valvula-${letra}-${id}">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="relays-row" style="grid-template-columns: repeat(2, 1fr); margin-top:20px;">
+                            <div class="actuator-card relay-card">
+                                <i class="fas fa-power-off actuator-icon" style="color:#e67e22;"></i>
+                                <strong><span data-i18n="switch_label">Interruptor</span> 1</strong>
+                                <label class="switch"><input type="checkbox" id="relay-1-${id}"><span class="slider"></span></label>
+                            </div>
+                            <div class="actuator-card relay-card">
+                                <i class="fas fa-power-off actuator-icon" style="color:#e67e22;"></i>
+                                <strong><span data-i18n="switch_label">Interruptor</span> 2</strong>
+                                <label class="switch"><input type="checkbox" id="relay-2-${id}"><span class="slider"></span></label>
+                            </div>
+                        </div>
+                        <div class="plan-section">
+                            <div class="plan-header"><div class="neuron-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3" stroke="white" stroke-width="2" fill="none"/><circle cx="6" cy="17" r="2.5" stroke="white" stroke-width="2" fill="none"/><circle cx="18" cy="17" r="2.5" stroke="white" stroke-width="2" fill="none"/><path d="M10 10L7 15" stroke="white" stroke-width="2"/><path d="M14 10L17 15" stroke="white" stroke-width="2"/><path d="M12 11V15" stroke="white" stroke-width="2"/><circle cx="12" cy="8" r="1.5" fill="white"/></svg></div><h3><i class="fas fa-calendar-alt"></i> <span data-i18n="structured_planner">Planificador Estructurado</span></h3></div>
+                            <div class="info-note"><i class="fas fa-tint"></i> <strong><span data-i18n="smart_irrigation">Riego inteligente:</span></strong> <span data-i18n="smart_irrigation_text">El agua diaria se ajusta automáticamente según la fase del cultivo.</span></div>
+                            <div class="plan-controls" id="plan-controls-row1-${id}">
+                                <div class="form-group"><label><i class="fas fa-seedling"></i> <span data-i18n="crop">Cultivo</span></label><select id="crop-select-${id}">${cultivosOptions}</select></div>
+                                <div class="form-group"><label><i class="fas fa-seedling"></i> <span data-i18n="planting_type">Tipo de siembra</span></label><select id="planting-type-${id}"><option value="semilla">${t('seed')}</option><option value="plantula">${t('seedling')}</option><option value="esqueje">${t('cutting')}</option></select></div>
+                                <div class="form-group"><label><i class="fas fa-seedling"></i> <span data-i18n="seedling_quantity">Cantidad cultivos / fila</span></label><input type="number" id="posturas-input-${id}" min="1" max="10000" value="100" step="1"></div>
+                                <div class="form-group"><label><i class="fas fa-calendar"></i> <span data-i18n="sowing_date_label">Fecha de siembra</span></label><input type="date" id="start-date-${id}"></div>
+                                <div class="form-group"><label><i class="fas fa-faucet"></i> <span data-i18n="valve_num">Llave de agua</span></label><select id="valve-select-${id}">${['A','B','C','D','E','F'].map(v => `<option value="${v}">${v}</option>`).join('')}</select></div>
+                            </div>
+                            <div class="plan-controls plan-controls-row2" id="plan-controls-row2-${id}">
+                                <div class="form-group"><label><i class="far fa-clock"></i> <span data-i18n="irrigation_time">Hora de riego 1</span></label><input type="time" id="irrigation-time1-${id}" value="06:00"></div>
+                                <div class="form-group" id="irrigation-time2-group-${id}" style="display:none;"><label><i class="far fa-clock"></i> Hora de riego 2</label><input type="time" id="irrigation-time2-${id}" value="18:00"></div>
+                                <div class="form-group"><label><i class="fas fa-redo"></i> <span data-i18n="irrigations_per_day">Riegos/día</span></label><select id="irrigations-per-day-${id}"><option value="1">1</option><option value="2">2</option></select></div>
+                                <div class="form-group"><label><i class="fas fa-tint"></i> <span data-i18n="extra_water">Ajuste extra de agua</span></label><input type="number" id="extra-water-${id}" min="0" max="100" value="0" step="1"></div>
+                                <button class="btn btn-success" id="add-plan-btn-${id}"><i class="fas fa-plus"></i> <span data-i18n="add_row">Añadir fila</span></button>
+                            </div>
+                            <div id="plan-groups-container-${id}"></div>
+                            <div class="info-note"><i class="fas fa-info-circle"></i> <span data-i18n="water_info">Vol. diario total = riego/planta × macetas.</span></div>
+                            <div class="section-title" style="margin-top: 30px; font-size:1.4rem;"><i class="fas fa-tasks"></i> <span data-i18n="daily_tasks">Tareas del Día</span></div>
+                            <div id="tasks-list-${id}" class="tasks-container"><div id="no-tasks-message-${id}" class="status-badge status-info" style="display:block;">✨ <span data-i18n="no_tasks">No hay tareas pendientes para hoy</span></div></div>
+                        </div>
+                    `;
+                    document.getElementById(`irrigations-per-day-${id}`).addEventListener('change', function() {
+                        document.getElementById(`irrigation-time2-group-${id}`).style.display = this.value === '2' ? 'flex' : 'none';
+                    });
+                    initStructuredSwitches(id);
+                    // Carga las filas desde el backend (con migración automática desde localStorage)
+                    await loadAndRenderStructuredPlanner(id);
+                } else {
+                    // --- MODO DOMÉSTICO ---
+                    if (allCrops.length === 0) await loadAllCrops();
+                    const foodCrops = allCrops.filter(c => c.categoria === 'Alimento');
+                    const flowerCrops = allCrops.filter(c => c.categoria === 'Ornamental' || c.categoria === 'Aromática');
+                    const medCrops = allCrops.filter(c => c.categoria === 'Medicinal');
+
+                    function getCropsByCategory(cat) {
+                        if (cat === 'Alimento') return foodCrops;
+                        if (cat === 'Flores/Aromáticas') return flowerCrops;
+                        if (cat === 'Medicinal') return medCrops;
+                        return [];
+                    }
+
+                    container.innerHTML = `
+                        <div class="section-title"><i class="fas fa-tint"></i> <span data-i18n="irrigation_control">Control de Riego y Climatización</span></div>
+                        <div class="dashboard-grid">
+                            <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon temp-icon"><i class="fas fa-thermometer-half"></i></div><div><div class="sensor-title" data-i18n="temperature">Temperatura</div><div class="sensor-subtitle">SHT30</div></div></div><div class="sensor-value"><span id="temp-${id}">--</span><span class="sensor-unit">°C</span></div><div class="sensor-footer"><span id="temp-time-${id}">--:--:--</span></div></div>
+                            <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon hum-icon"><i class="fas fa-droplet"></i></div><div><div class="sensor-title" data-i18n="humidity">Humedad relativa</div><div class="sensor-subtitle">SHT30</div></div></div><div class="sensor-value"><span id="hum-${id}">--</span><span class="sensor-unit">%</span></div><div class="sensor-footer"><span id="hum-time-${id}">--:--:--</span></div></div>
+                            <div class="sensor-card"><div class="sensor-header"><div class="sensor-icon luz-icon"><i class="fas fa-sun"></i></div><div><div class="sensor-title" data-i18n="light">Luxómetro</div><div class="sensor-subtitle">BH1750</div></div></div><div class="sensor-value"><span id="luz-${id}">--</span><span class="sensor-unit">lux</span></div><div class="sensor-footer"><span id="luz-time-${id}">--:--:--</span></div></div>
+                        </div>
+                        <div class="section-title"><i class="fas fa-microchip"></i> <span data-i18n="actuators">Actuadores</span></div>
+                        <div class="dashboard-grid" style="grid-template-columns: repeat(2, 1fr);">
+                            <div class="sensor-card">
+                                <div class="sensor-header"><div class="sensor-icon valvula-icon"><i class="fas fa-faucet"></i></div><div><div class="sensor-title">Electroválvula A</div><div class="sensor-subtitle">Control de riego</div></div></div>
+                                <div id="alerta-lluvia-${id}" class="alert-red"><i class="fas fa-cloud-rain"></i> Lluvia detectada</div>
+                                <div class="switch-container"><span class="switch-label"><i class="fas fa-faucet"></i> Válvula A</span><label class="switch"><input type="checkbox" id="valvula-switch-${id}"><span class="slider"></span></label></div>
+                                <div class="sensor-footer"><span id="valvula-status-${id}" class="status-badge status-info">Apagada</span></div>
+                            </div>
+                            <div class="sensor-card" style="border-top: 5px solid #e67e22;">
+                                <div class="sensor-header"><div class="sensor-icon valvulaB-icon"><i class="fas fa-faucet"></i></div><div><div class="sensor-title">Electroválvula B</div><div class="sensor-subtitle">Control de riego 2</div></div></div>
+                                <div class="switch-container"><span class="switch-label"><i class="fas fa-faucet"></i> Válvula B</span><label class="switch"><input type="checkbox" id="valvulaB-switch-${id}"><span class="slider"></span></label></div>
+                                <div class="sensor-footer"><span id="valvulaB-status-${id}" class="status-badge status-info">Apagada</span></div>
+                            </div>
+                            <div class="sensor-card">
+                                <div class="sensor-header"><div class="sensor-icon humificador-icon"><i class="fas fa-smog"></i></div><div><div class="sensor-title" data-i18n="humidifier">Humificador</div><div class="sensor-subtitle" data-i18n="nebulizer">Nebulizador</div></div></div>
+                                <div class="switch-container"><span class="switch-label"><i class="fas fa-smog"></i> <span data-i18n="humidifier_switch">Humificador</span></span><label class="switch"><input type="checkbox" id="humificador-switch-${id}"><span class="slider"></span></label></div>
+                                <div class="sensor-footer"><span id="humificador-status-${id}" class="status-badge status-info"><span data-i18n="off">Apagado</span></span></div>
+                            </div>
+                            <div class="sensor-card">
+                                <div class="sensor-header"><div class="sensor-icon luz-icon"><i class="fas fa-lightbulb"></i></div><div><div class="sensor-title" data-i18n="lighting">Luminaria</div><div class="sensor-subtitle" data-i18n="illumination">Iluminación</div></div></div>
+                                <div class="switch-container"><span class="switch-label"><i class="fas fa-lightbulb"></i> <span data-i18n="lamp">Lámpara</span></span><label class="switch"><input type="checkbox" id="luz-switch-${id}"><span class="slider"></span></label></div>
+                                <div class="sensor-footer"><span id="luz-status-${id}" class="status-badge status-info"><span data-i18n="off">Apagado</span></span></div>
+                            </div>
+                        </div>
+                        <div class="plan-section">
+                            <div class="plan-header"><div class="neuron-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3" stroke="white" stroke-width="2" fill="none"/><circle cx="6" cy="17" r="2.5" stroke="white" stroke-width="2" fill="none"/><circle cx="18" cy="17" r="2.5" stroke="white" stroke-width="2" fill="none"/><path d="M10 10L7 15" stroke="white" stroke-width="2"/><path d="M14 10L17 15" stroke="white" stroke-width="2"/><path d="M12 11V15" stroke="white" stroke-width="2"/><circle cx="12" cy="8" r="1.5" fill="white"/></svg></div><h3><i class="fas fa-calendar-alt"></i> <span data-i18n="domestic_planner_title">Planificador Doméstico · Flores, Comida y Medicinales</span></h3></div>
+                            <div class="info-note"><i class="fas fa-tint"></i> <strong><span data-i18n="note_title">Riego inteligente:</span></strong> <span data-i18n="note_text">El agua diaria se ajusta automáticamente según la fase del cultivo.</span></div>
+                            <div class="plan-controls">
+                                <div class="form-group"><label><i class="fas fa-tag"></i> <span data-i18n="category_label">Categoría</span></label><select id="cat-select-${id}"><option value="Alimento">Alimento</option><option value="Flores/Aromáticas">Flores/Aromáticas</option><option value="Medicinal">Medicinal</option></select></div>
+                                <div class="form-group"><label><i class="fas fa-seedling"></i> <span data-i18n="crop">Cultivo</span></label><select id="crop-select-${id}"></select></div>
+                                <div class="form-group"><label><i class="fas fa-seedling"></i> <span data-i18n="planting_type">Tipo de siembra</span></label><select id="planting-type-${id}"><option value="semilla">${t('seed')}</option><option value="plantula">${t('seedling')}</option><option value="esqueje">${t('cutting')}</option></select></div>
+                                <div class="form-group" id="personas-group-${id}"><label><i class="fas fa-users"></i> <span data-i18n="people">Nº personas</span></label><input type="number" id="personas-input-${id}" min="1" max="10000" value="4" step="1"></div>
+                                <div class="form-group hidden" id="macetas-group-${id}"><label><i class="fas fa-cubes"></i> <span data-i18n="macetas_label">Nº de macetas</span></label><input type="number" id="macetas-input-${id}" min="1" max="1000" value="1" step="1"></div>
+                                <div class="form-group"><label><i class="fas fa-calendar"></i> <span data-i18n="start_date">Fecha inicio</span></label><input type="date" id="start-date-${id}"></div>
+                                <button class="btn btn-success" id="add-plan-btn-${id}"><i class="fas fa-plus"></i> <span data-i18n="add_plan">Añadir lote</span></button>
+                                <button class="btn btn-outline" id="reset-defaults-${id}"><i class="fas fa-undo-alt"></i> <span data-i18n="load_example">Cargar ejemplo 4 pers.</span></button>
+                            </div>
+                            <div id="plan-groups-container-${id}"></div>
+                            <div class="info-note"><i class="fas fa-info-circle"></i> <span data-i18n="water_info">Vol. diario total = riego/planta × macetas.</span></div>
+                            <div class="section-title" style="margin-top: 30px; font-size:1.4rem;"><i class="fas fa-tasks"></i> <span data-i18n="daily_tasks">Tareas del Día</span></div>
+                            <div id="tasks-list-${id}" class="tasks-container"><div id="no-tasks-message-${id}" class="status-badge status-info" style="display:block;">✨ <span data-i18n="no_tasks">No hay tareas pendientes para hoy</span></div></div>
+                        </div>
+                    `;
+
+                    // Actualiza el selector de cultivos según la categoría elegida
+                    function updateCropSelect(areaId) {
+                        const cat = document.getElementById(`cat-select-${areaId}`).value;
+                        const crops = getCropsByCategory(cat);
+                        const cropSelect = document.getElementById(`crop-select-${areaId}`);
+                        cropSelect.innerHTML = crops.map(c =>
+                            `<option value="${c.id}">${c.icon || '🌱'} ${c.nombre}${c.variedad ? ' - ' + c.variedad : ''}</option>`
+                        ).join('');
+                        const personasGroup = document.getElementById(`personas-group-${areaId}`);
+                        const macetasGroup = document.getElementById(`macetas-group-${areaId}`);
+                        if (cat === 'Alimento') {
+                            personasGroup.classList.remove('hidden');
+                            macetasGroup.classList.add('hidden');
+                        } else {
+                            personasGroup.classList.add('hidden');
+                            macetasGroup.classList.remove('hidden');
+                        }
+                    }
+                    updateCropSelect(id);
+                    document.getElementById(`cat-select-${id}`).addEventListener('change', function() {
+                        updateCropSelect(id);
+                    });
+
+                    initAreaSwitches(id);
+                    // Carga los lotes desde el backend (con migración automática desde localStorage)
+                    await loadAndRenderDomesticPlanner(id);
+                }
+            }
+
+            // ============================================================
+            // FUNCIONES COMUNES DE CÁLCULO
+            // ============================================================
+            function getToday() { return new Date().toISOString().slice(0, 10); }
+            function addDays(dateStr, days) {
+                const d = new Date(dateStr);
+                d.setDate(d.getDate() + days);
+                return d.toISOString().slice(0, 10);
+            }
+            function findCropData(cropId) { return allCrops.find(c => c.id === cropId); }
+
+            // Ajusta los hitos del cultivo según el tipo de siembra
+            function adjustedHitos(crop, plantingType) {
+                const hitos = { ...crop.hitos };
+                if (plantingType === 'plantula') {
+                    const g = hitos.germinacion;
+                    hitos.germinacion = 0;
+                    hitos.crecimiento = Math.max(0, hitos.crecimiento - g);
+                    hitos.cosechaInicio = Math.max(0, hitos.cosechaInicio - g);
+                    hitos.cosechaFin = Math.max(0, hitos.cosechaFin - g);
+                } else if (plantingType === 'esqueje') {
+                    const skip = hitos.germinacion + hitos.crecimiento;
+                    hitos.germinacion = 0;
+                    hitos.crecimiento = 0;
+                    hitos.cosechaInicio = Math.max(0, hitos.cosechaInicio - skip);
+                    hitos.cosechaFin = Math.max(0, hitos.cosechaFin - skip);
+                }
+                return hitos;
+            }
+
+            // Calcula la cantidad de macetas necesarias para un cultivo de alimento
+            function calcularMacetasAlimento(crop, personas) {
+                if (!crop.ratioConsumo || !crop.rendUnidad) return personas; // fallback: 1 maceta por persona
+                const harvestDays = Math.max(1, crop.hitos.cosechaFin - crop.hitos.cosechaInicio);
+                const harvestWeeks = Math.max(1, harvestDays / 7);
+                const weeklyYield = crop.rendUnidad / harvestWeeks;       // kg por maceta por semana
+                const weeklyConsumption = personas * crop.ratioConsumo;   // kg que consume la familia por semana
+                return Math.max(1, Math.ceil(weeklyConsumption / weeklyYield));
+            }
+
+            // ============================================================
+            // PLANIFICADOR ESTRUCTURADO (API + RELEVOS MANUALES)
+            // ============================================================
+
+            // Genera un objeto fila estructurada
+            function generateStructuredRow(cropId, posturas, startDate, plantingType, valve, irrigationTime1, irrigationTime2, irrigationsPerDay, extraPercent) {
+                const crop = findCropData(cropId);
+                if (!crop) return null;
+                const hitos = adjustedHitos(crop, plantingType);
+                return {
+                    id: Date.now() + '-' + Math.random().toString(36),
+                    area_id: activeAreaId,   // se añade para la API
+                    cropId, posturas: Number(posturas), startDate, plantingType, valve,
+                    irrigationTime1, irrigationTime2: irrigationsPerDay == 2 ? irrigationTime2 : null,
+                    irrigationsPerDay: Number(irrigationsPerDay), extraPercent: Number(extraPercent) || 0,
+                    fecha_germinacion: addDays(startDate, hitos.germinacion),
+                    fecha_crecimiento: addDays(startDate, hitos.crecimiento),
+                    fecha_cosecha_inicio: addDays(startDate, hitos.cosechaInicio),
+                    fecha_cosecha_fin: addDays(startDate, hitos.cosechaFin),
+                    icon: crop.icon || '🌱', nombre: crop.nombre, variedad: crop.variedad || ''
+                };
+            }
+
+            // Calcula el agua para una fila estructurada
+            function getWaterForStructuredRow(row) {
+                const crop = findCropData(row.cropId);
+                if (!crop) return { porPlanta: 0, total: 0 };
+                const dias = Math.floor((new Date(getToday()) - new Date(row.startDate)) / (86400000));
+                let coef = 1;
+                if (crop.fasesRiego) {
+                    for (let f of crop.fasesRiego) {
+                        if (dias <= f.hastaDia) { coef = f.coef; break; }
+                    }
+                }
+                const porPlanta = crop.aguaBase * coef * (1 + (row.extraPercent || 0) / 100);
+                const total = porPlanta * row.posturas;
+                return { porPlanta: porPlanta.toFixed(1), total: total.toFixed(1) };
+            }
+
+            // Devuelve el estado fenológico actual de una fila
+            function getCropStage(row) {
+                const today = getToday();
+                const dias = Math.floor((new Date(today) - new Date(row.startDate)) / (86400000));
+                const fGerm = row.fecha_germinacion ? Math.floor((new Date(row.fecha_germinacion) - new Date(row.startDate)) / 86400000) : Infinity;
+                const fCrec = row.fecha_crecimiento ? Math.floor((new Date(row.fecha_crecimiento) - new Date(row.startDate)) / 86400000) : Infinity;
+                const fCosIni = row.fecha_cosecha_inicio ? Math.floor((new Date(row.fecha_cosecha_inicio) - new Date(row.startDate)) / 86400000) : Infinity;
+                const fCosFin = row.fecha_cosecha_fin ? Math.floor((new Date(row.fecha_cosecha_fin) - new Date(row.startDate)) / 86400000) : Infinity;
+                if (dias < 0) return { stage: '⚪ Programada', next: null };
+                let stage = '', nextDays = null;
+                if (dias < fGerm) { stage = '🌱 Pregerminación'; nextDays = fGerm - dias; }
+                else if (dias < fCrec) { stage = '🌿 Germinación'; nextDays = fCrec - dias; }
+                else if (dias < fCosIni) { stage = '🌳 Crecimiento'; nextDays = fCosIni - dias; }
+                else if (dias < fCosFin) { stage = '🍎 Cosecha'; nextDays = fCosFin - dias; }
+                else { stage = '🛑 ' + t('finalizado'); }
+                if (nextDays && nextDays > 0) stage += ` (${nextDays} día${nextDays !== 1 ? 's' : ''})`;
+                return { stage, next: nextDays };
+            }
+
+            // Carga las filas desde la API. Si hay datos viejos en localStorage, los migra.
+            async function loadAndRenderStructuredPlanner(id) {
+                let filas = [];
+                try {
+                    const resp = await fetch(`/api/planificacion/estructurada/${id}`);
+                    if (resp.ok) filas = await resp.json();
+                } catch (e) {
+                    console.error('Error cargando planificación estructurada', e);
+                }
+
+                // Migración automática: si no hay datos en el backend pero sí en localStorage
+                if (filas.length === 0) {
+                    const stored = localStorage.getItem(`filas_${id}`);
+                    if (stored) {
+                        const viejas = JSON.parse(stored);
+                        // Subir cada fila al backend
+                        for (const f of viejas) {
+                            f.area_id = id;
+                            await fetch('/api/planificacion/estructurada', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(f)
+                            });
+                        }
+                        // Eliminar la clave local para no duplicar
+                        localStorage.removeItem(`filas_${id}`);
+                        // Recargar desde el backend
+                        const resp2 = await fetch(`/api/planificacion/estructurada/${id}`);
+                        if (resp2.ok) filas = await resp2.json();
+                    }
+                }
+
+                renderStructuredTable(id, filas);
+                initStructuredPlannerEvents(id);
+            }
+
+            // Guarda las filas en el backend. Borra las que ya no existen.
+            async function saveStructuredFilas(id, filas) {
+                // Obtener las filas actuales del backend para saber cuáles borrar
+                let viejas = [];
+                try {
+                    const resp = await fetch(`/api/planificacion/estructurada/${id}`);
+                    if (resp.ok) viejas = await resp.json();
+                } catch (e) {}
+
+                const idsNuevos = filas.map(f => f.id);
+                for (const v of viejas) {
+                    if (!idsNuevos.includes(v.id)) {
+                        await fetch(`/api/planificacion/estructurada/${v.id}`, { method: 'DELETE' });
+                    }
+                }
+
+                // Guardar/actualizar cada fila
+                for (const f of filas) {
+                    const existe = viejas.some(v => v.id === f.id);
+                    const url = existe
+                        ? `/api/planificacion/estructurada/${f.id}`
+                        : '/api/planificacion/estructurada';
+                    const method = existe ? 'PUT' : 'POST';
+                    await fetch(url, {
+                        method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(f)
+                    });
+                }
+            }
+
+            // Dibuja la tabla de filas del planificador estructurado
+            function renderStructuredTable(id, filas) {
+                const container = document.getElementById(`plan-groups-container-${id}`);
+                if (!filas.length) {
+                    container.innerHTML = `<div style="padding:20px;text-align:center;background:#f8f9fa;border-radius:16px;">🌱 No hay filas planificadas.</div>`;
+                    renderStructuredTasks(id, filas);
+                    return;
+                }
+                let html = '<div class="table-responsive"><table class="plan-table"><thead><tr>';
+                html += `<th data-i18n="fila_num">Fila Nº</th><th>Cultivo</th><th data-i18n="sowing_date">Siembra</th><th data-i18n="valve_num">Llave de agua</th><th data-i18n="hora_riego_col">Hora riego</th><th data-i18n="state_col">Estado actual</th><th data-i18n="posturas_label">Posturas</th><th data-i18n="water_per_irrigation">Vol. riego/planta (L)</th><th data-i18n="water_daily">Vol. diario total (L)</th><th></th></tr></thead><tbody>`;
+                filas.sort((a, b) => a.startDate.localeCompare(b.startDate)).forEach((fila, i) => {
+                    const water = getWaterForStructuredRow(fila);
+                    const stageInfo = getCropStage(fila);
+                    const cropName = `${fila.icon} ${fila.nombre}${fila.variedad ? ' - ' + fila.variedad : ''}`;
+                    const timeDisplay = fila.irrigationTime1 + (fila.irrigationTime2 ? ' / ' + fila.irrigationTime2 : '');
+                    html += `<tr>
+                        <td><strong>${String(i + 1).padStart(3, '0')}</strong></td>
+                        <td class="crop-name-cell">${cropName}</td>
+                        <td>${fila.startDate.split('-').reverse().join('/')}</td>
+                        <td>${fila.valve}</td>
+                        <td>${timeDisplay}</td>
+                        <td><button class="btn btn-outline btn-sm stage-btn" data-filaid="${fila.id}">${stageInfo.stage}</button></td>
+                        <td>${fila.posturas}</td>
+                        <td><strong>${water.porPlanta} L</strong></td>
+                        <td>${water.total} L</td>
+                        <td class="action-btns"><button class="btn btn-outline edit-fila-btn" data-id="${fila.id}"><i class="fas fa-pen"></i></button><button class="btn btn-danger delete-fila-btn" data-id="${fila.id}"><i class="fas fa-trash"></i></button></td>
+                    </tr>`;
+                    const diasRelevo = Math.ceil((new Date(fila.fecha_cosecha_fin + 'T00:00') - new Date(getToday() + 'T00:00')) / 86400000);
+                    let alerta = diasRelevo < 0 ? `<span class="status-badge status-danger">${t('alert_relevo_vencido')}</span>` :
+                                 diasRelevo === 0 ? `<span class="status-badge status-danger">🔴 ${t('alert_relevo_hoy')}</span>` :
+                                 diasRelevo <= 3 ? `<span class="status-badge status-warning">🟡 ${t('alert_relevo_proximo')} (${diasRelevo}d)</span>` :
+                                 `<span class="status-badge status-info">🟢 ${diasRelevo} días</span>`;
+                    html += `<tr class="relevo-row"><td colspan="9"><i class="fas fa-calendar-plus"></i> <strong>${t('relevo_sugerido')} ${fila.posturas} posturas el ${addDays(fila.fecha_cosecha_fin, 1).split('-').reverse().join('/')}</strong> <button class="btn btn-warning btn-sm add-relevo-btn" data-fila-id="${fila.id}"><i class="fas fa-plus"></i> ${t('btn_add_relevo')}</button> ${alerta}</td></tr>`;
+                });
+                html += '</tbody></table></div>';
+                container.innerHTML = html;
+                bindStructuredButtons(id);
+                renderStructuredTasks(id, filas);
+            }
+
+            // Asigna eventos a los botones dentro de la tabla estructurada
+            function bindStructuredButtons(id) {
+                const cont = document.getElementById(`plan-groups-container-${id}`);
+                cont.querySelectorAll('.stage-btn').forEach(b => b.addEventListener('click', function() {
+                    const filaId = this.dataset.filaid;
+                    // Buscar la fila en el array actual (se obtiene del DOM o se recarga)
+                    const filas = JSON.parse(localStorage.getItem(`filas_${id}`) || '[]');
+                    const fila = filas.find(f => f.id === filaId);
+                    if (!fila) return;
+                    const content = `<p><strong>Germinación:</strong> ${fila.fecha_germinacion.split('-').reverse().join('/')}</p><p><strong>Crecimiento:</strong> ${fila.fecha_crecimiento.split('-').reverse().join('/')}</p><p><strong>Inicio cosecha:</strong> ${fila.fecha_cosecha_inicio.split('-').reverse().join('/')}</p><p><strong>Fin cosecha:</strong> ${fila.fecha_cosecha_fin.split('-').reverse().join('/')}</p>`;
+                    document.getElementById('stageDetailContent').innerHTML = content;
+                    document.getElementById('stageDetailTitle').textContent = t('stage_details');
+                    document.getElementById('stageDetailModal').style.display = 'flex';
+                }));
+                document.getElementById('closeStageDetail').addEventListener('click', () => {
+                    document.getElementById('stageDetailModal').style.display = 'none';
+                });
+                cont.querySelectorAll('.edit-fila-btn').forEach(b => b.addEventListener('click', () => openEditStructuredFila(id, b.dataset.id)));
+                cont.querySelectorAll('.delete-fila-btn').forEach(b => b.addEventListener('click', () => onDeleteStructuredFila(id, b.dataset.id)));
+                cont.querySelectorAll('.add-relevo-btn').forEach(b => b.addEventListener('click', async function() {
+                    const filaId = this.dataset.filaId;
+                    // Recargar filas desde el backend
+                    let filas = [];
+                    try {
+                        const resp = await fetch(`/api/planificacion/estructurada/${id}`);
+                        if (resp.ok) filas = await resp.json();
+                    } catch (e) {}
+                    const fila = filas.find(f => f.id === filaId);
+                    if (!fila) return;
+                    const newRow = generateStructuredRow(fila.cropId, fila.posturas, addDays(fila.fecha_cosecha_fin, 1), fila.plantingType, fila.valve, fila.irrigationTime1, fila.irrigationTime2, fila.irrigationsPerDay, fila.extraPercent);
+                    filas.push(newRow);
+                    await saveStructuredFilas(id, filas);
+                    // Recargar y renderizar
+                    const resp2 = await fetch(`/api/planificacion/estructurada/${id}`);
+                    const actualizadas = resp2.ok ? await resp2.json() : filas;
+                    renderStructuredTable(id, actualizadas);
+                }));
+            }
+
+            // Abre el modal de edición de una fila estructurada
+            function openEditStructuredFila(id, filaId) {
+                // Buscar en los datos actuales (pueden estar en localStorage o en backend)
+                const stored = localStorage.getItem(`filas_${id}`);
+                const filas = stored ? JSON.parse(stored) : [];
+                const fila = filas.find(f => f.id === filaId);
+                if (!fila) return;
+                document.getElementById('edit-structured-crop').innerHTML = allCrops.map(c => `<option value="${c.id}" ${c.id === fila.cropId ? 'selected' : ''}>${c.icon} ${c.nombre}${c.variedad ? ' - ' + c.variedad : ''}</option>`).join('');
+                document.getElementById('edit-structured-planting-type').value = fila.plantingType;
+                document.getElementById('edit-structured-posturas').value = fila.posturas;
+                document.getElementById('edit-structured-date').value = fila.startDate;
+                document.getElementById('edit-structured-valve').value = fila.valve;
+                document.getElementById('edit-structured-time1').value = fila.irrigationTime1;
+                document.getElementById('edit-structured-irrigations').value = fila.irrigationsPerDay;
+                document.getElementById('edit-structured-extra').value = fila.extraPercent || 0;
+                const time2Group = document.getElementById('edit-structured-time2-group');
+                document.getElementById('edit-structured-time2').value = fila.irrigationTime2 || '';
+                time2Group.style.display = fila.irrigationsPerDay == 2 ? 'block' : 'none';
+                document.getElementById('edit-structured-id').value = filaId;
+                document.getElementById('editStructuredModal').style.display = 'flex';
+                document.getElementById('edit-structured-irrigations').onchange = function() {
+                    time2Group.style.display = this.value == '2' ? 'block' : 'none';
+                };
+            }
+
+            // Elimina una fila estructurada
+            async function onDeleteStructuredFila(id, filaId) {
+                if (!confirm(t('confirm_delete'))) return;
+                await fetch(`/api/planificacion/estructurada/${filaId}`, { method: 'DELETE' });
+                // Recargar desde el backend
+                const resp = await fetch(`/api/planificacion/estructurada/${id}`);
+                const filas = resp.ok ? await resp.json() : [];
+                renderStructuredTable(id, filas);
+            }
+
+            // Muestra las tareas diarias del estructurado
+            function renderStructuredTasks(id, filas) {
+                const today = getToday();
+                const tasks = [];
+                filas.forEach(fila => {
+                    if (fila.fecha_germinacion === today) tasks.push('🌱 Cambio a fase de germinación');
+                    if (fila.fecha_crecimiento === today) tasks.push('🌿 Inicio de crecimiento');
+                    if (fila.fecha_cosecha_inicio === today) tasks.push('🍎 Inicio de cosecha');
+                    if (fila.fecha_cosecha_fin === today) tasks.push('🛑 Fin de cosecha');
+                });
+                const container = document.getElementById(`tasks-list-${id}`);
+                const noMsg = document.getElementById(`no-tasks-message-${id}`);
+                if (!tasks.length) {
+                    container.innerHTML = '';
+                    container.appendChild(noMsg);
+                    noMsg.style.display = 'block';
+                } else {
+                    noMsg.style.display = 'none';
+                    container.innerHTML = tasks.map(t => `<div class="task-item">${t}</div>`).join('');
+                }
+            }
+
+            // Inicializa los eventos del formulario de añadir fila estructurada
+            function initStructuredPlannerEvents(id) {
+                document.getElementById(`add-plan-btn-${id}`).addEventListener('click', async () => {
+                    const cropId = document.getElementById(`crop-select-${id}`).value;
+                    const plantingType = document.getElementById(`planting-type-${id}`).value;
+                    const posturas = parseInt(document.getElementById(`posturas-input-${id}`).value);
+                    const date = document.getElementById(`start-date-${id}`).value;
+                    const valve = document.getElementById(`valve-select-${id}`).value;
+                    const time1 = document.getElementById(`irrigation-time1-${id}`).value;
+                    const irrigations = document.getElementById(`irrigations-per-day-${id}`).value;
+                    const time2 = irrigations == 2 ? document.getElementById(`irrigation-time2-${id}`).value : null;
+                    const extra = document.getElementById(`extra-water-${id}`).value;
+                    if (!date) return alert(t('select_date'));
+                    const crop = findCropData(cropId);
+                    if (!crop) return alert('Cultivo no válido');
+
+                    // Cargar filas actuales desde el backend
+                    let filas = [];
+                    try {
+                        const resp = await fetch(`/api/planificacion/estructurada/${id}`);
+                        if (resp.ok) filas = await resp.json();
+                    } catch (e) {}
+
+                    // Comprobar conflictos de horario
+                    const conflict = filas.some(f => {
+                        if (f.irrigationTime1 === time1) return true;
+                        if (irrigations == 2 && f.irrigationTime1 === time2) return true;
+                        if (f.irrigationTime2 && (f.irrigationTime2 === time1 || (irrigations == 2 && f.irrigationTime2 === time2))) return true;
+                        return false;
+                    });
+                    if (conflict) { alert(t('hour_conflict')); return; }
+
+                    const newFila = generateStructuredRow(cropId, posturas, date, plantingType, valve, time1, time2, irrigations, extra);
+                    if (!newFila) return;
+                    filas.push(newFila);
+                    await saveStructuredFilas(id, filas);
+                    // Recargar y renderizar
+                    const resp2 = await fetch(`/api/planificacion/estructurada/${id}`);
+                    const actualizadas = resp2.ok ? await resp2.json() : filas;
+                    renderStructuredTable(id, actualizadas);
+                    document.getElementById(`start-date-${id}`).value = '';
+                });
+                document.getElementById(`start-date-${id}`).value = getToday();
+            }
+
+            // Guarda los cambios del modal de edición estructurada
+            document.getElementById('save-edit-structured').addEventListener('click', async () => {
+                const areaId = activeAreaId;
+                const filaId = document.getElementById('edit-structured-id').value;
+                const cropId = document.getElementById('edit-structured-crop').value;
+                const plantingType = document.getElementById('edit-structured-planting-type').value;
+                const posturas = parseInt(document.getElementById('edit-structured-posturas').value);
+                const date = document.getElementById('edit-structured-date').value;
+                const valve = document.getElementById('edit-structured-valve').value;
+                const time1 = document.getElementById('edit-structured-time1').value;
+                const irrigations = document.getElementById('edit-structured-irrigations').value;
+                const time2 = irrigations == 2 ? document.getElementById('edit-structured-time2').value : null;
+                const extra = document.getElementById('edit-structured-extra').value;
+                const crop = findCropData(cropId);
+                if (!crop) return;
+                const hitos = adjustedHitos(crop, plantingType);
+
+                // Actualizar en el backend
+                const payload = {
+                    area_id: areaId,
+                    cropId, posturas, startDate: date, plantingType, valve,
+                    irrigationTime1: time1, irrigationTime2: time2,
+                    irrigationsPerDay: Number(irrigations), extraPercent: Number(extra) || 0,
+                    fecha_germinacion: addDays(date, hitos.germinacion),
+                    fecha_crecimiento: addDays(date, hitos.crecimiento),
+                    fecha_cosecha_inicio: addDays(date, hitos.cosechaInicio),
+                    fecha_cosecha_fin: addDays(date, hitos.cosechaFin),
+                    icon: crop.icon || '🌱', nombre: crop.nombre, variedad: crop.variedad || ''
+                };
+                await fetch(`/api/planificacion/estructurada/${filaId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                document.getElementById('editStructuredModal').style.display = 'none';
+                // Recargar y renderizar
+                const resp = await fetch(`/api/planificacion/estructurada/${areaId}`);
+                const filas = resp.ok ? await resp.json() : [];
+                renderStructuredTable(areaId, filas);
+            });
+            document.getElementById('cancel-edit-structured').addEventListener('click', () => {
+                document.getElementById('editStructuredModal').style.display = 'none';
+            });
+
+            // Inicializa los switches de válvulas y relés del estructurado
+            function initStructuredSwitches(id) {
+                ['A', 'B', 'C', 'D', 'E', 'F'].forEach(letra => {
+                    const chk = document.getElementById(`valvula-${letra}-${id}`);
+                    if (chk) chk.addEventListener('change', function() {
+                        publishActuator(id, `valvula${letra}`, this.checked ? 1 : 0);
+                    });
+                });
+                for (let r = 1; r <= 2; r++) {
+                    const relay = document.getElementById(`relay-${r}-${id}`);
+                    if (relay) relay.addEventListener('change', function() {
+                        publishActuator(id, `activador${r}`, this.checked ? 1 : 0);
+                    });
+                }
+            }
+
+            // ============================================================
+            // PLANIFICADOR DOMÉSTICO (API + RELEVO MANUAL)
+            // ============================================================
+
+            // Calcula el agua para un lote doméstico
+            function getWaterForDomesticLote(lote) {
+                const crop = findCropData(lote.cropId);
+                if (!crop) return { porPlanta: 0, total: 0 };
+                const dias = Math.floor((new Date(getToday()) - new Date(lote.startDate)) / 86400000);
+                let coef = 1;
+                if (crop.fasesRiego) {
+                    for (let f of crop.fasesRiego) {
+                        if (dias <= f.hastaDia) { coef = f.coef; break; }
+                    }
+                }
+                const porPlanta = crop.aguaBase * coef;
+                const total = porPlanta * lote.macetas;
+                return { porPlanta: porPlanta.toFixed(1), total: total.toFixed(1) };
+            }
+
+            // Carga los lotes desde la API. Si hay datos viejos en localStorage, los migra.
+            async function loadAndRenderDomesticPlanner(id) {
+                let lotes = [];
+                try {
+                    const resp = await fetch(`/api/planificacion/domestica/${id}`);
+                    if (resp.ok) lotes = await resp.json();
+                } catch (e) {
+                    console.error('Error cargando planificación doméstica', e);
+                }
+
+                // Migración automática desde localStorage
+                if (lotes.length === 0) {
+                    const stored = localStorage.getItem(`lotes_${id}`);
+                    if (stored) {
+                        const viejos = JSON.parse(stored);
+                        for (const l of viejos) {
+                            l.area_id = id;
+                            // Ajustar nombres de campos al formato de la API
+                            l.fecha_inicio = l.startDate || l.fecha_inicio;
+                            l.fecha_germinacion = l.fechaGerminacion || l.fecha_germinacion;
+                            l.fecha_crecimiento = l.fechaCrecimiento || l.fecha_crecimiento;
+                            l.fecha_cosecha_inicio = l.fechaCosechaInicio || l.fecha_cosecha_inicio;
+                            l.fecha_cosecha_fin = l.fechaCosechaFin || l.fecha_cosecha_fin;
+                            await fetch('/api/planificacion/domestica', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(l)
+                            });
+                        }
+                        localStorage.removeItem(`lotes_${id}`);
+                        const resp2 = await fetch(`/api/planificacion/domestica/${id}`);
+                        if (resp2.ok) lotes = await resp2.json();
+                    }
+                }
+
+                renderDomesticTable(id, lotes);
+                initDomesticPlannerEvents(id);
+            }
+
+            // Guarda los lotes en el backend
+            async function saveDomesticLotes(id, lotes) {
+                let viejos = [];
+                try {
+                    const resp = await fetch(`/api/planificacion/domestica/${id}`);
+                    if (resp.ok) viejos = await resp.json();
+                } catch (e) {}
+
+                const idsNuevos = lotes.map(l => l.id);
+                for (const v of viejos) {
+                    if (!idsNuevos.includes(v.id)) {
+                        await fetch(`/api/planificacion/domestica/${v.id}`, { method: 'DELETE' });
+                    }
+                }
+
+                for (const l of lotes) {
+                    const existe = viejos.some(v => v.id === l.id);
+                    const url = existe
+                        ? `/api/planificacion/domestica/${l.id}`
+                        : '/api/planificacion/domestica';
+                    const method = existe ? 'PUT' : 'POST';
+                    await fetch(url, {
+                        method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(l)
+                    });
+                }
+            }
+
+            // Dibuja la tabla de lotes del planificador doméstico
+            function renderDomesticTable(id, lotes) {
+                const container = document.getElementById(`plan-groups-container-${id}`);
+                if (!lotes.length) {
+                    container.innerHTML = `<div style="padding:20px;text-align:center;background:#f8f9fa;border-radius:16px;">🌱 No hay lotes.</div>`;
+                    renderDomesticTasks(id, lotes);
+                    return;
+                }
+                const groups = {};
+                lotes.forEach(l => {
+                    const key = l.cropId;
+                    if (!groups[key]) groups[key] = [];
+                    groups[key].push(l);
+                });
+                let html = '';
+                for (const cropId in groups) {
+                    const lotesCultivo = groups[cropId].sort((a, b) => a.startDate ? a.startDate.localeCompare(b.startDate) : (a.fecha_inicio || '').localeCompare(b.fecha_inicio || ''));
+                    const crop = findCropData(cropId);
+                    if (!crop) continue;
+                    let totalMacetas = 0, totalTierra = 0, totalAgua = 0;
+                    html += `<div class="crop-group table-responsive"><table class="plan-table"><thead><tr>
+                        <th></th><th data-i18n="batch_number">Lote Nº</th><th data-i18n="sowing_date">Siembra</th><th data-i18n="state_col">Estado</th><th data-i18n="containers">Macetas</th><th data-i18n="volume">Tierra (L)</th><th data-i18n="water_today">Vol. riego/planta (L)</th><th data-i18n="water_peak">Vol. diario total (L)</th><th></th></tr></thead><tbody>`;
+                    lotesCultivo.forEach((lote, i) => {
+                        // Normalizar campos de fecha (vienen del backend con snake_case)
+                        lote.startDate = lote.startDate || lote.fecha_inicio;
+                        lote.fecha_germinacion = lote.fecha_germinacion || lote.fechaGerminacion;
+                        lote.fecha_crecimiento = lote.fecha_crecimiento || lote.fechaCrecimiento;
+                        lote.fecha_cosecha_inicio = lote.fecha_cosecha_inicio || lote.fechaCosechaInicio;
+                        lote.fecha_cosecha_fin = lote.fecha_cosecha_fin || lote.fechaCosechaFin;
+
+                        const water = getWaterForDomesticLote(lote);
+                        const macetas = lote.macetas;
+                        const tierra = macetas * (crop.volumenTierra || 5);
+                        totalMacetas += macetas;
+                        totalTierra += tierra;
+                        totalAgua += parseFloat(water.total);
+                        const stageInfo = getCropStage(lote);
+                        const cropName = `${lote.icon} ${lote.nombre}${lote.variedad ? ' - ' + lote.variedad : ''}`;
+                        html += `<tr>
+                            <td>${lote.icon || '🌱'}</td>
+                            <td><strong>${String(i + 1).padStart(3, '0')}</strong></td>
+                            <td>${(lote.startDate || '').split('-').reverse().join('/')}</td>
+                            <td><button class="btn btn-outline btn-sm stage-btn" data-filaid="${lote.id}">${stageInfo.stage}</button></td>
+                            <td>${macetas}</td><td>${tierra} L</td>
+                            <td><strong>${water.porPlanta} L</strong></td><td>${water.total} L</td>
+                            <td class="action-btns"><button class="btn btn-outline edit-domestic-btn" data-id="${lote.id}"><i class="fas fa-pen"></i></button><button class="btn btn-danger delete-domestic-btn" data-id="${lote.id}"><i class="fas fa-trash"></i></button></td>
+                        </tr>`;
+                        const diasRelevo = Math.ceil((new Date(lote.fecha_cosecha_fin + 'T00:00') - new Date(getToday() + 'T00:00')) / 86400000);
+                        let alerta = diasRelevo < 0 ? `<span class="status-badge status-danger">${t('alert_relevo_vencido')}</span>` :
+                                     diasRelevo === 0 ? `<span class="status-badge status-danger">🔴 ${t('alert_relevo_hoy')}</span>` :
+                                     diasRelevo <= 3 ? `<span class="status-badge status-warning">🟡 ${t('alert_relevo_proximo')} (${diasRelevo}d)</span>` :
+                                     `<span class="status-badge status-info">🟢 ${diasRelevo} días</span>`;
+                        html += `<tr class="relevo-row"><td colspan="9"><i class="fas fa-calendar-plus"></i> <strong>${t('relevo_sugerido')} ${lote.macetas} macetas el ${addDays(lote.fecha_cosecha_fin, 1).split('-').reverse().join('/')}</strong> <button class="btn btn-warning btn-sm add-relevo-btn" data-lote-id="${lote.id}"><i class="fas fa-plus"></i> ${t('btn_add_relevo')}</button> ${alerta}</td></tr>`;
+                    });
+                    html += `<tr class="total-row"><td></td><td colspan="4"><strong>TOTAL ${crop.nombre}${crop.variedad ? ' ' + crop.variedad : ''}</strong></td><td><strong>${totalMacetas}</strong></td><td><strong>${totalTierra} L</strong></td><td>—</td><td><strong>${totalAgua.toFixed(1)} L</strong></td><td></td></tr></tbody></table></div>`;
+                }
+                container.innerHTML = html;
+                bindDomesticButtons(id);
+                renderDomesticTasks(id, lotes);
+            }
+
+            // Asigna eventos a los botones dentro de la tabla doméstica
+            function bindDomesticButtons(id) {
+                const cont = document.getElementById(`plan-groups-container-${id}`);
+                cont.querySelectorAll('.stage-btn').forEach(b => b.addEventListener('click', function() {
+                    const filaId = this.dataset.filaid;
+                    const lotes = JSON.parse(localStorage.getItem(`lotes_${id}`) || '[]');
+                    const lote = lotes.find(l => l.id === filaId);
+                    if (!lote) return;
+                    const content = `<p><strong>Germinación:</strong> ${(lote.fecha_germinacion || lote.fechaGerminacion || '').split('-').reverse().join('/')}</p><p><strong>Crecimiento:</strong> ${(lote.fecha_crecimiento || lote.fechaCrecimiento || '').split('-').reverse().join('/')}</p><p><strong>Inicio cosecha:</strong> ${(lote.fecha_cosecha_inicio || lote.fechaCosechaInicio || '').split('-').reverse().join('/')}</p><p><strong>Fin cosecha:</strong> ${(lote.fecha_cosecha_fin || lote.fechaCosechaFin || '').split('-').reverse().join('/')}</p>`;
+                    document.getElementById('stageDetailContent').innerHTML = content;
+                    document.getElementById('stageDetailTitle').textContent = t('stage_details');
+                    document.getElementById('stageDetailModal').style.display = 'flex';
+                }));
+                cont.querySelectorAll('.edit-domestic-btn').forEach(b => b.addEventListener('click', function() { openEditDomesticLote(id, this.dataset.id); }));
+                cont.querySelectorAll('.delete-domestic-btn').forEach(b => b.addEventListener('click', function() { deleteDomesticLote(id, this.dataset.id); }));
+                cont.querySelectorAll('.add-relevo-btn').forEach(b => b.addEventListener('click', async function() {
+                    const loteId = this.dataset.loteId;
+                    let lotes = [];
+                    try {
+                        const resp = await fetch(`/api/planificacion/domestica/${id}`);
+                        if (resp.ok) lotes = await resp.json();
+                    } catch (e) {}
+                    const lote = lotes.find(l => l.id === loteId);
+                    if (!lote) return;
+                    const crop = findCropData(lote.cropId);
+                    if (!crop) return;
+                    const hitos = adjustedHitos(crop, lote.plantingType || 'semilla');
+                    const nuevaFecha = addDays(lote.fecha_cosecha_fin, 1);
+                    const newLote = {
+                        id: Date.now() + '-' + Math.random().toString(36),
+                        area_id: id,
+                        cropId: lote.cropId,
+                        macetas: lote.macetas,
+                        personas: lote.personas || 1,
+                        fecha_inicio: nuevaFecha,
+                        plantingType: lote.plantingType || 'semilla',
+                        categoria: lote.categoria || 'Alimento',
+                        fecha_germinacion: addDays(nuevaFecha, hitos.germinacion),
+                        fecha_crecimiento: addDays(nuevaFecha, hitos.crecimiento),
+                        fecha_cosecha_inicio: addDays(nuevaFecha, hitos.cosechaInicio),
+                        fecha_cosecha_fin: addDays(nuevaFecha, hitos.cosechaFin),
+                        icon: lote.icon, nombre: lote.nombre, variedad: lote.variedad
+                    };
+                    lotes.push(newLote);
+                    await saveDomesticLotes(id, lotes);
+                    const resp2 = await fetch(`/api/planificacion/domestica/${id}`);
+                    const actualizados = resp2.ok ? await resp2.json() : lotes;
+                    renderDomesticTable(id, actualizados);
+                }));
+            }
+
+            // Abre el modal de edición de un lote doméstico
+            function openEditDomesticLote(id, loteId) {
+                const lotes = JSON.parse(localStorage.getItem(`lotes_${id}`) || '[]');
+                const lote = lotes.find(l => l.id === loteId);
+                if (!lote) return;
+                const crop = findCropData(lote.cropId);
+                const cat = crop ? crop.categoria : 'Alimento';
+                document.getElementById('edit-domestic-cat').value = cat === 'Aromática' ? 'Flores/Aromáticas' : cat;
+                updateEditCropSelect(id, lote.cropId);
+                document.getElementById('edit-domestic-planting-type').value = lote.plantingType || 'semilla';
+                if (cat === 'Alimento') {
+                    document.getElementById('edit-domestic-personas-group').classList.remove('hidden');
+                    document.getElementById('edit-domestic-macetas-group').classList.add('hidden');
+                    document.getElementById('edit-domestic-personas').value = lote.personas || 1;
+                } else {
+                    document.getElementById('edit-domestic-personas-group').classList.add('hidden');
+                    document.getElementById('edit-domestic-macetas-group').classList.remove('hidden');
+                    document.getElementById('edit-domestic-macetas').value = lote.macetas;
+                }
+                document.getElementById('edit-domestic-date').value = lote.startDate || lote.fecha_inicio || '';
+                document.getElementById('edit-domestic-id').value = loteId;
+                document.getElementById('edit-domestic-area-id').value = id;
+                document.getElementById('editDomesticModal').style.display = 'flex';
+            }
+
+            // Actualiza el selector de cultivo en el modal de edición doméstico
+            function updateEditCropSelect(areaId, selectedId) {
+                const cat = document.getElementById('edit-domestic-cat').value;
+                let crops;
+                if (cat === 'Alimento') crops = allCrops.filter(c => c.categoria === 'Alimento');
+                else if (cat === 'Flores/Aromáticas') crops = allCrops.filter(c => c.categoria === 'Ornamental' || c.categoria === 'Aromática');
+                else crops = allCrops.filter(c => c.categoria === 'Medicinal');
+                const sel = document.getElementById('edit-domestic-crop');
+                sel.innerHTML = crops.map(c => `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${c.icon || '🌱'} ${c.nombre}${c.variedad ? ' - ' + c.variedad : ''}</option>`).join('');
+                const personasGroup = document.getElementById('edit-domestic-personas-group');
+                const macetasGroup = document.getElementById('edit-domestic-macetas-group');
+                if (cat === 'Alimento') {
+                    personasGroup.classList.remove('hidden');
+                    macetasGroup.classList.add('hidden');
+                } else {
+                    personasGroup.classList.add('hidden');
+                    macetasGroup.classList.remove('hidden');
+                }
+            }
+
+            // Elimina un lote doméstico
+            async function deleteDomesticLote(id, loteId) {
+                if (!confirm(t('confirm_delete'))) return;
+                await fetch(`/api/planificacion/domestica/${loteId}`, { method: 'DELETE' });
+                const resp = await fetch(`/api/planificacion/domestica/${id}`);
+                const lotes = resp.ok ? await resp.json() : [];
+                renderDomesticTable(id, lotes);
+            }
+
+            // Muestra las tareas diarias del doméstico
+            function renderDomesticTasks(id, lotes) {
+                const today = getToday();
+                const tasks = [];
+                lotes.forEach(lote => {
+                    const germ = lote.fecha_germinacion || lote.fechaGerminacion;
+                    const crec = lote.fecha_crecimiento || lote.fechaCrecimiento;
+                    const cosIni = lote.fecha_cosecha_inicio || lote.fechaCosechaInicio;
+                    const cosFin = lote.fecha_cosecha_fin || lote.fechaCosechaFin;
+                    if (germ === today) tasks.push({ icon: 'fa-seedling', text: '🌱 Cambio a germinación' });
+                    if (crec === today) tasks.push({ icon: 'fa-leaf', text: '🌿 Crecimiento' });
+                    if (cosIni === today) tasks.push({ icon: 'fa-basket-shopping', text: '🍎 Inicio cosecha' });
+                    if (cosFin === today) tasks.push({ icon: 'fa-stop-circle', text: '🛑 Fin cosecha' });
+                });
+                const container = document.getElementById(`tasks-list-${id}`);
+                const noMsg = document.getElementById(`no-tasks-message-${id}`);
+                if (!tasks.length) {
+                    container.innerHTML = '';
+                    container.appendChild(noMsg);
+                    noMsg.style.display = 'block';
+                } else {
+                    noMsg.style.display = 'none';
+                    container.innerHTML = tasks.map(t => `<div class="task-item"><i class="fas ${t.icon}"></i> ${t.text}</div>`).join('');
+                }
+            }
+
+            // Inicializa los eventos del formulario de añadir lote doméstico
+            function initDomesticPlannerEvents(id) {
+                document.getElementById(`add-plan-btn-${id}`).addEventListener('click', async () => {
+                    const cat = document.getElementById(`cat-select-${id}`).value;
+                    const cropId = document.getElementById(`crop-select-${id}`).value;
+                    const plantingType = document.getElementById(`planting-type-${id}`).value;
+                    const date = document.getElementById(`start-date-${id}`).value;
+                    if (!date) return alert(t('select_date'));
+                    const crop = findCropData(cropId);
+                    if (!crop) return alert('Cultivo no válido');
+                    const isFood = cat === 'Alimento';
+                    let macetas = 1;
+                    let personas = 1;
+                    if (isFood) {
+                        personas = parseInt(document.getElementById(`personas-input-${id}`).value);
+                        macetas = calcularMacetasAlimento(crop, personas);
+                    } else {
+                        macetas = parseInt(document.getElementById(`macetas-input-${id}`).value);
+                    }
+                    const hitos = adjustedHitos(crop, plantingType);
+                    const nuevoLote = {
+                        id: Date.now() + '-' + Math.random().toString(36),
+                        area_id: id,
+                        cropId: crop.id,
+                        macetas: macetas,
+                        personas: isFood ? personas : 1,
+                        fecha_inicio: date,
+                        plantingType,
+                        categoria: cat,
+                        fecha_germinacion: addDays(date, hitos.germinacion),
+                        fecha_crecimiento: addDays(date, hitos.crecimiento),
+                        fecha_cosecha_inicio: addDays(date, hitos.cosechaInicio),
+                        fecha_cosecha_fin: addDays(date, hitos.cosechaFin),
+                        icon: crop.icon || '🌱', nombre: crop.nombre, variedad: crop.variedad || ''
+                    };
+                    let lotes = [];
+                    try {
+                        const resp = await fetch(`/api/planificacion/domestica/${id}`);
+                        if (resp.ok) lotes = await resp.json();
+                    } catch (e) {}
+                    lotes.push(nuevoLote);
+                    await saveDomesticLotes(id, lotes);
+                    const resp2 = await fetch(`/api/planificacion/domestica/${id}`);
+                    const actualizados = resp2.ok ? await resp2.json() : lotes;
+                    renderDomesticTable(id, actualizados);
+                    document.getElementById(`start-date-${id}`).value = '';
+                });
+                document.getElementById(`reset-defaults-${id}`).addEventListener('click', async () => {
+                    const hoy = getToday();
+                    const cultivosEjemplo = ['tomate', 'lechuga', 'papa'];
+                    let lotes = [];
+                    for (const cid of cultivosEjemplo) {
+                        const crop = findCropData(cid);
+                        if (crop && crop.categoria === 'Alimento') {
+                            const personas = 4;
+                            const macetas = calcularMacetasAlimento(crop, personas);
+                            const hitos = adjustedHitos(crop, 'semilla');
+                            lotes.push({
+                                id: Date.now() + '-' + Math.random().toString(36),
+                                area_id: id,
+                                cropId: crop.id,
+                                macetas: macetas,
+                                personas: personas,
+                                fecha_inicio: hoy,
+                                plantingType: 'semilla',
+                                categoria: 'Alimento',
+                                fecha_germinacion: addDays(hoy, hitos.germinacion),
+                                fecha_crecimiento: addDays(hoy, hitos.crecimiento),
+                                fecha_cosecha_inicio: addDays(hoy, hitos.cosechaInicio),
+                                fecha_cosecha_fin: addDays(hoy, hitos.cosechaFin),
+                                icon: crop.icon || '🌱', nombre: crop.nombre, variedad: crop.variedad || ''
+                            });
+                        }
+                    }
+                    await saveDomesticLotes(id, lotes);
+                    const resp = await fetch(`/api/planificacion/domestica/${id}`);
+                    const actualizados = resp.ok ? await resp.json() : lotes;
+                    renderDomesticTable(id, actualizados);
+                });
+                document.getElementById(`start-date-${id}`).value = getToday();
+            }
+
+            // Guarda los cambios del modal de edición doméstica
+            document.getElementById('save-edit-domestic').addEventListener('click', async () => {
+                const areaId = document.getElementById('edit-domestic-area-id').value;
+                const loteId = document.getElementById('edit-domestic-id').value;
+                const cat = document.getElementById('edit-domestic-cat').value;
+                const cropId = document.getElementById('edit-domestic-crop').value;
+                const plantingType = document.getElementById('edit-domestic-planting-type').value;
+                const date = document.getElementById('edit-domestic-date').value;
+                const crop = findCropData(cropId);
+                if (!crop) return;
+                const isFood = cat === 'Alimento';
+                let macetas = 1, personas = 1;
+                if (isFood) {
+                    personas = parseInt(document.getElementById('edit-domestic-personas').value);
+                    macetas = calcularMacetasAlimento(crop, personas);
+                } else {
+                    macetas = parseInt(document.getElementById('edit-domestic-macetas').value);
+                }
+                const hitos = adjustedHitos(crop, plantingType);
+                const payload = {
+                    area_id: areaId,
+                    cropId, macetas, personas, fecha_inicio: date, plantingType, categoria: cat,
+                    fecha_germinacion: addDays(date, hitos.germinacion),
+                    fecha_crecimiento: addDays(date, hitos.crecimiento),
+                    fecha_cosecha_inicio: addDays(date, hitos.cosechaInicio),
+                    fecha_cosecha_fin: addDays(date, hitos.cosechaFin),
+                    icon: crop.icon || '🌱', nombre: crop.nombre, variedad: crop.variedad || ''
+                };
+                await fetch(`/api/planificacion/domestica/${loteId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                document.getElementById('editDomesticModal').style.display = 'none';
+                const resp = await fetch(`/api/planificacion/domestica/${areaId}`);
+                const lotes = resp.ok ? await resp.json() : [];
+                renderDomesticTable(areaId, lotes);
+            });
+            document.getElementById('cancel-edit-domestic').addEventListener('click', () => {
+                document.getElementById('editDomesticModal').style.display = 'none';
+            });
+
+            // ============================================================
+            // MQTT / ACTUADORES
+            // ============================================================
+            let mqttClient = null;
+            function publishActuator(id, tipo, estado) {
+                if (!mqttClient || !mqttClient.isConnected()) return;
+                mqttClient.publish(`cespedes/${id}/actuadores`, JSON.stringify({ tipo, estado }));
+            }
+            function initAreaSwitches(id) {
+                document.getElementById(`valvula-switch-${id}`).addEventListener('change', function() {
+                    document.getElementById(`valvula-status-${id}`).innerHTML = this.checked ? 'Encendida' : 'Apagada';
+                    document.getElementById(`valvula-status-${id}`).className = this.checked ? 'status-badge status-success' : 'status-badge status-info';
+                    publishActuator(id, 'valvulaA', this.checked ? 1 : 0);
+                });
+                document.getElementById(`valvulaB-switch-${id}`).addEventListener('change', function() {
+                    document.getElementById(`valvulaB-status-${id}`).innerHTML = this.checked ? 'Encendida' : 'Apagada';
+                    document.getElementById(`valvulaB-status-${id}`).className = this.checked ? 'status-badge status-success' : 'status-badge status-info';
+                    publishActuator(id, 'valvulaB', this.checked ? 1 : 0);
+                });
+                document.getElementById(`humificador-switch-${id}`).addEventListener('change', function() {
+                    document.getElementById(`humificador-status-${id}`).innerHTML = this.checked ? 'Encendido' : 'Apagado';
+                    document.getElementById(`humificador-status-${id}`).className = this.checked ? 'status-badge status-success' : 'status-badge status-info';
+                    publishActuator(id, 'humificador', this.checked ? 1 : 0);
+                });
+                document.getElementById(`luz-switch-${id}`).addEventListener('change', function() {
+                    document.getElementById(`luz-status-${id}`).innerHTML = this.checked ? 'Encendido' : 'Apagado';
+                    document.getElementById(`luz-status-${id}`).className = this.checked ? 'status-badge status-success' : 'status-badge status-info';
+                    publishActuator(id, 'luz', this.checked ? 1 : 0);
+                });
+            }
+
+            const MQTT_BROKER = "192.168.1.71", MQTT_PORT = 9001;
+            function updateMqttStatus(connected) {
+                const dot = document.getElementById('mqtt-dot'), text = document.getElementById('mqtt-text');
+                if (dot && text) {
+                    dot.className = connected ? 'mqtt-dot connected' : 'mqtt-dot';
+                    text.textContent = connected ? t('mqtt_connected') : t('mqtt_disconnected');
+                }
+            }
+            function updateAreaSensorValues(id, data) {
+                document.getElementById(`temp-${id}`).textContent = data.temperatura !== undefined ? data.temperatura.toFixed(1) : '--';
+                document.getElementById(`hum-${id}`).textContent = data.humedad !== undefined ? data.humedad.toFixed(0) : '--';
+                document.getElementById(`luz-${id}`).textContent = data.luz !== undefined ? data.luz.toFixed(0) : '--';
+                const alerta = document.getElementById(`alerta-lluvia-${id}`);
+                if (alerta && data.lluvia !== undefined) alerta.style.display = data.lluvia ? 'flex' : 'none';
+                const now = new Date().toLocaleTimeString();
+                ['temp', 'hum', 'luz'].forEach(s => {
+                    const el = document.getElementById(`${s}-time-${id}`);
+                    if (el) el.textContent = now;
+                });
+            }
+            function updateWeatherStation(data) {
+                document.getElementById('meteo-temp-value').textContent = data.temperatura?.toFixed(1) || '--';
+                document.getElementById('meteo-hum-value').textContent = data.humedad?.toFixed(0) || '--';
+                document.getElementById('meteo-pres-value').textContent = data.presion?.toFixed(1) || '--';
+                document.getElementById('meteo-aire-value').textContent = data.calidad_aire?.toFixed(0) || '--';
+                document.getElementById('meteo-caudal-value').textContent = data.caudal?.toFixed(1) || '0.0';
+                document.getElementById('meteo-watertemp-value').textContent = data.agua_temp?.toFixed(1) || '--';
+            }
+            function updateAverages() {
+                let tempSum = 0, humSum = 0, lightSum = 0, count = 0;
+                for (let id in greenhousesData) {
+                    if (id === '000') continue;
+                    const d = greenhousesData[id];
+                    if (d.temperatura !== undefined) {
+                        tempSum += d.temperatura;
+                        humSum += d.humedad || 0;
+                        lightSum += d.luz || 0;
+                        count++;
+                    }
+                }
+                document.getElementById('avg-temp').textContent = count ? (tempSum / count).toFixed(1) : '--';
+                document.getElementById('avg-hum').textContent = count ? (humSum / count).toFixed(0) : '--';
+                document.getElementById('avg-light').textContent = count ? Math.round(lightSum / count) : '--';
+            }
+            function connectMQTT() {
+                if (mqttClient && mqttClient.isConnected()) return;
+                mqttClient = new Paho.MQTT.Client(MQTT_BROKER, MQTT_PORT, "web_" + Math.random().toString(36).substring(2, 8));
+                mqttClient.onConnectionLost = () => { updateMqttStatus(false); setTimeout(connectMQTT, 5000); };
+                mqttClient.onMessageArrived = (message) => {
+                    try {
+                        const payload = JSON.parse(message.payloadString);
+                        const parts = message.destinationName.split('/');
+                        if (parts.length === 3 && parts[0] === 'cespedes' && parts[2] === 'sensores') {
+                            const areaId = parts[1];
+                            greenhousesData[areaId] = payload;
+                            if (areaId === '000') updateWeatherStation(payload);
+                            else {
+                                if (activeAreaId === areaId) updateAreaSensorValues(areaId, payload);
+                                if (!activeAreaId) updateAverages();
+                            }
+                            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+                        }
+                    } catch (e) {}
+                };
+                mqttClient.connect({
+                    onSuccess: () => { updateMqttStatus(true); mqttClient.subscribe("cespedes/+/sensores"); },
+                    onFailure: () => { updateMqttStatus(false); setTimeout(connectMQTT, 5000); }
+                });
+            }
+
+            // ============================================================
+            // EVENTOS GENERALES DE LA INTERFAZ
+            // ============================================================
+            document.getElementById('gh-rename-btn').addEventListener('click', async () => {
+                if (!activeAreaId) return;
+                const area = areas.find(a => a.id === activeAreaId);
+                if (!area) return;
+                const newAlias = prompt('Nuevo nombre para el área:', area.alias);
+                if (newAlias && newAlias.trim() !== '') {
+                    area.alias = newAlias.trim();
+                    await saveAreas();
+                    refreshGHSelect();
+                    document.getElementById('gh-title').textContent = `${area.alias} (ID: ${area.id})`;
+                    document.getElementById('active-id-badge').textContent = `ID: ${area.id}`;
+                }
+            });
+
+            // Rotación de imágenes del héroe
+            const heroImageFilenames = ['001.jpg', '002.jpg', '003.jpg', '004.jpg', '005.jpg', '006.jpg', '007.jpg', '008.jpg', '009.jpg', '010.jpg', '011.jpg', '012.jpg'];
+            let heroImages = heroImageFilenames.map(f => `/img/${f}`), heroInterval = null, currentHeroIndex = 0;
+            function startHeroRotation() {
+                if (heroInterval) clearInterval(heroInterval);
+                if (heroImages.length > 1) {
+                    heroInterval = setInterval(() => {
+                        currentHeroIndex = (currentHeroIndex + 1) % heroImages.length;
+                        document.getElementById('hero-img').src = heroImages[currentHeroIndex];
+                    }, 5000);
+                } else if (heroImages.length === 1) {
+                    document.getElementById('hero-img').src = heroImages[0];
+                }
+            }
+
+            // Aplicación del idioma seleccionado
+            async function applyLanguage(lang) {
+                currentLang = lang;
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                const activeBtn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+                if (activeBtn) activeBtn.classList.add('active');
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = t(key);
+                    else el.innerHTML = t(key);
+                });
+                const aliasInput = document.getElementById('gh-alias-input');
+                if (aliasInput) aliasInput.placeholder = t('alias_placeholder');
+                updateAssociationCards();
+                updateGuideCards();
+                if (activeAreaId) {
+                    const area = areas.find(a => a.id === activeAreaId);
+                    if (area && area.tipo === 'estructurado') await renderAreaDashboard(activeAreaId, 'estructurado');
+                    else {
+                        const resp = await fetch(`/api/planificacion/domestica/${activeAreaId}`);
+                        const lotes = resp.ok ? await resp.json() : [];
+                        renderDomesticTable(activeAreaId, lotes);
+                    }
+                }
+                updateMqttStatus(mqttClient && mqttClient.isConnected());
+            }
+
+            document.getElementById('greenhouse-select').addEventListener('change', e => {
+                if (e.target.value === 'home') showHome();
+                else showArea(e.target.value);
+            });
+
+            // Modal de agregar área de cultivo
+            const modal = document.getElementById('addGhModal'), aliasInput = document.getElementById('gh-alias-input'), saveBtn = document.getElementById('save-add-gh');
+            let selectedMode = null;
+            document.getElementById('add-gh-btn').addEventListener('click', () => {
+                modal.style.display = 'flex'; aliasInput.value = ''; selectedMode = null;
+                document.getElementById('card-estructurado').classList.remove('selected');
+                document.getElementById('card-domestico').classList.remove('selected');
+                saveBtn.disabled = true;
+            });
+            document.getElementById('cancel-add-gh').addEventListener('click', () => modal.style.display = 'none');
+            document.getElementById('card-estructurado').addEventListener('click', function() {
+                this.classList.add('selected'); document.getElementById('card-domestico').classList.remove('selected');
+                selectedMode = 'estructurado'; saveBtn.disabled = !(aliasInput.value.trim() && selectedMode);
+            });
+            document.getElementById('card-domestico').addEventListener('click', function() {
+                this.classList.add('selected'); document.getElementById('card-estructurado').classList.remove('selected');
+                selectedMode = 'domestico'; saveBtn.disabled = !(aliasInput.value.trim() && selectedMode);
+            });
+            aliasInput.addEventListener('input', () => { saveBtn.disabled = !(aliasInput.value.trim() && selectedMode); });
+            saveBtn.addEventListener('click', async () => {
+                const alias = aliasInput.value.trim();
+                if (!alias || !selectedMode) return;
+                const newId = getNextId();
+                areas.push({ id: newId, alias, tipo: selectedMode });
+                await saveAreas();
+                refreshGHSelect();
+                modal.style.display = 'none';
+                showArea(newId);
+            });
+
+            // Eliminar área
+            document.getElementById('gh-delete-btn').addEventListener('click', () => {
+                if (activeAreaId) {
+                    document.getElementById('delete-gh-id').textContent = activeAreaId;
+                    document.getElementById('delete-gh-id-input').value = '';
+                    document.getElementById('deleteGhModal').style.display = 'flex';
+                }
+            });
+            document.getElementById('cancel-delete-gh').addEventListener('click', () => document.getElementById('deleteGhModal').style.display = 'none');
+            document.getElementById('confirm-delete-gh').addEventListener('click', async () => {
+                if (document.getElementById('delete-gh-id-input').value.trim() === activeAreaId) {
+                    areas = areas.filter(a => a.id !== activeAreaId);
+                    await saveAreas();
+                    document.getElementById('deleteGhModal').style.display = 'none';
+                    showHome();
+                    refreshGHSelect();
+                } else alert('ID incorrecto');
+            });
+            document.getElementById('back-to-home-btn').addEventListener('click', showHome);
+
+            // Switches de control global
+            document.getElementById('power-switch').addEventListener('change', function() {
+                const st = document.getElementById('power-status');
+                st.innerHTML = this.checked ? '<span data-i18n="on">Encendido</span>' : '<span data-i18n="off">Apagado</span>';
+                st.className = this.checked ? 'status-badge status-success' : 'status-badge status-danger';
+            });
+            document.getElementById('turbina-switch').addEventListener('change', function() {
+                const st = document.getElementById('turbina-status');
+                st.innerHTML = this.checked ? 'Encendida' : 'Apagada';
+                st.className = this.checked ? 'status-badge status-success' : 'status-badge status-info';
+                if (mqttClient && mqttClient.isConnected()) mqttClient.publish('cespedes/global/turbina', JSON.stringify({ estado: this.checked ? 1 : 0 }));
+            });
+
+            // Limpiar áreas sin datos
+            document.getElementById('clear-data-btn').addEventListener('click', async () => {
+                const before = areas.length;
+                const areasConDatos = [];
+                for (let a of areas) {
+                    const resp = await fetch(`/api/planificacion/domestica/${a.id}`);
+                    const lotes = resp.ok ? await resp.json() : [];
+                    if (lotes.length > 0) areasConDatos.push(a);
+                }
+                if (areasConDatos.length < before) {
+                    areas = areasConDatos;
+                    await saveAreas();
+                    refreshGHSelect();
+                    if (!areas.some(a => a.id === activeAreaId)) showHome();
+                    alert(`Se eliminaron ${before - areasConDatos.length} áreas sin planificación.`);
+                } else {
+                    alert('No hay áreas fantasma para limpiar.');
+                }
+            });
+
+            // Botones de idioma
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', function() { applyLanguage(this.dataset.lang); }));
+
+            // ============================================================
+            // ARRANQUE DE LA APLICACIÓN
+            // ============================================================
+            await loadAllCrops();
+            await loadAreas();
+            refreshGHSelect();
+            showHome();
+            applyLanguage('es');
+            startHeroRotation();
+            updateAssociationCards();
+            updateGuideCards();
+            connectMQTT();
+            setInterval(() => { document.getElementById('current-time').textContent = new Date().toLocaleTimeString(); }, 1000);
+        })();
+    </script>
+</body>
+</html>

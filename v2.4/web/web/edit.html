@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Cultivos — Céspedes.Agro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --primary: #1a2f3f; --secondary: #2a4b5c; --accent: #4f9da6;
+            --success: #4caf50; --warning: #ff9800; --danger: #f44336;
+            --card-shadow: 0 12px 24px rgba(0,0,0,0.06);
+        }
+        body { font-family: 'Roboto', sans-serif; background: #f0f2f5; color: #2c3e50; min-height: 100vh; }
+        .container { max-width: 1400px; margin:0 auto; padding: 20px; }
+
+        .header {
+            background: linear-gradient(90deg, var(--primary), #0f1f2b); color: white;
+            padding: 18px 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border-bottom: 3px solid var(--accent);
+        }
+        .header-container { max-width:1400px; margin:0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .logo-area { display: flex; align-items: center; gap: 20px; }
+        .logo { display: flex; align-items: center; gap: 15px; }
+        .logo-circle {
+            width: 70px; height: 70px; border-radius: 50%; background: white;
+            border: 3px solid var(--accent); overflow: hidden; display: flex;
+            align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .logo-circle img { width: 80%; height: 80%; object-fit: contain; }
+        .logo-text { font-size: 2rem; color: white; font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; }
+        .page-subtitle {
+            font-size: 1.3rem; font-weight: 400; color: white;
+            border-left: 2px solid var(--accent); padding-left: 15px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .back-btn {
+            background: var(--accent); color: white; border: none; padding: 10px 22px; border-radius: 30px;
+            font-weight: 600; cursor: pointer; text-decoration: none; display: flex; align-items: center;
+            gap: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); font-size: 0.95rem;
+        }
+        .lang-bar { background: white; padding: 12px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.03); border-bottom: 1px solid #e2e8f0; margin-bottom: 25px; }
+        .lang-container { max-width:1400px; margin:0 auto; padding:0 20px; display:flex; justify-content:flex-end; }
+        .lang-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+        .lang-btn {
+            background: transparent; border: 1px solid #cbd5e1; color: #334155;
+            padding: 8px 16px; border-radius: 30px; font-weight: 500; cursor: pointer;
+            transition: 0.2s; display: flex; align-items: center; gap: 6px; font-size:0.9rem;
+        }
+        .lang-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+        .toolbar {
+            background: white; border-radius: 20px; padding: 16px 24px;
+            box-shadow: var(--card-shadow); display: flex; justify-content: space-between;
+            align-items: center; margin: 20px 0; flex-wrap: wrap; gap: 15px;
+        }
+        .crop-count { background: var(--secondary); color: white; padding: 8px 18px; border-radius: 20px; font-weight: 500; }
+        .btn {
+            border: none; padding: 10px 20px; border-radius: 30px; font-weight: 600;
+            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+        .btn-success { background: var(--success); color: white; }
+        .btn-outline { background: transparent; border: 1px solid #ccc; color: #555; box-shadow: none; }
+        .btn-outline:hover { background: #f5f5f5; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-sm { padding: 5px 12px; font-size: 0.8rem; }
+
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th { background: var(--secondary); color: white; padding: 14px; text-align: left; font-weight: 600; white-space: nowrap; }
+        td { padding: 12px 14px; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+        tr:hover { background: #f8f9fa; }
+        .help-header-btn {
+            background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5);
+            color: white; border-radius: 50%; width: 32px; height: 32px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: bold; cursor: pointer; transition: 0.2s;
+        }
+        .help-header-btn:hover { background: rgba(255,255,255,0.4); }
+
+        .card-grid { display: none; }
+        @media (max-width: 768px) {
+            .table-wrapper { display: none; }
+            .card-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+            .crop-card {
+                background: white; border-radius: 20px; padding: 18px;
+                box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 12px;
+                border-left: 5px solid var(--accent);
+            }
+            .card-row { display: flex; justify-content: space-between; align-items: center; }
+            .card-actions { display: flex; gap: 10px; margin-top: 8px; }
+        }
+
+        .modal-overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.4); display: none; justify-content: center; align-items: center; z-index:1000;
+        }
+        .modal {
+            background: white; border-radius: 24px; padding: 30px; width: 90%; max-width: 750px;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.15); max-height: 85vh; overflow-y: auto;
+            animation: modalIn 0.2s ease;
+        }
+        @keyframes modalIn { from { opacity:0; transform: scale(0.95); } to { opacity:1; transform: scale(1); } }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: inherit;
+        }
+        .form-row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .form-row .form-group { flex: 1; min-width: 150px; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .tooltip-icon { color: var(--accent); margin-left: 5px; cursor: help; position: relative; }
+        .tooltip-text {
+            display: none; position: absolute; background: #ffffff; color: #1e293b;
+            padding: 12px 16px; border-radius: 14px; box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.85rem; line-height: 1.5; width: 240px; bottom: 140%; left: 50%;
+            transform: translateX(-50%); z-index: 2000;
+            border: 1px solid #e2e8f0;
+            white-space: normal; text-transform: none; font-weight: 400;
+            letter-spacing: 0.01em;
+        }
+        .tooltip-icon:hover .tooltip-text { display: block; }
+
+        .step-indicator { display: flex; gap: 12px; margin-bottom: 20px; }
+        .step-dot { width: 12px; height: 12px; border-radius: 50%; background: #e0e0e0; transition: 0.2s; }
+        .step-dot.active { background: var(--accent); width: 28px; border-radius: 6px; }
+        .form-step { display: none; }
+        .form-step.active { display: block; }
+
+        .help-content { font-size: 0.95rem; line-height: 1.6; }
+        .help-content pre { background: #f1f5f9; padding: 15px; border-radius: 12px; overflow-x: auto; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo">
+                    <div class="logo-circle">
+                        <img src="https://raw.githubusercontent.com/lennon025/IoT-experimental-para-cultivo-protegido/master/agrox.png" alt="Logo">
+                    </div>
+                    <span class="logo-text">Céspedes · Agro</span>
+                </div>
+                <div class="page-subtitle" data-i18n="subtitle">Editor de Cultivos</div>
+            </div>
+            <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> <span data-i18n="back">Volver al inicio</span></a>
+        </div>
+    </div>
+
+    <div class="lang-bar">
+        <div class="lang-container">
+            <div class="lang-buttons">
+                <button class="lang-btn active" data-lang="es">🇪🇸 Español</button>
+                <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+                <button class="lang-btn" data-lang="ru">🇷🇺 Русский</button>
+                <button class="lang-btn" data-lang="pt">🇧🇷 Português</button>
+                <button class="lang-btn" data-lang="fr">🇫🇷 Français</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="toolbar">
+            <div style="display:flex; align-items:center; gap:15px;">
+                <span class="crop-count" id="crop-counter" data-i18n="counter">Mostrando 0-0 de 0 cultivos</span>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-outline" id="export-btn"><i class="fas fa-download"></i> <span data-i18n="export">Exportar</span></button>
+                <button class="btn btn-outline" id="import-btn"><i class="fas fa-upload"></i> <span data-i18n="import">Importar</span></button>
+                <button class="btn btn-success" id="add-crop-btn"><i class="fas fa-plus"></i> <span data-i18n="add_crop">Agregar cultivo</span></button>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="crops-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th data-i18n="icon">Icono</th>
+                        <th data-i18n="name">Nombre</th>
+                        <th data-i18n="variety">Variedad</th>
+                        <th data-i18n="category">Categoría</th>
+                        <th data-i18n="water">Agua</th>
+                        <th data-i18n="ratio_consumo">Consumo (kg/sem/pers)</th>
+                        <th data-i18n="rend_unidad">Rend. (kg/cont)</th>
+                        <th></th>
+                        <th style="text-align:center;">
+                            <button class="help-header-btn" id="help-header-btn" title="Ayuda">?</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="card-grid" id="cards-container"></div>
+    </div>
+
+    <!-- Modal Agregar/Editar Cultivo (4 pasos) -->
+    <div class="modal-overlay" id="cropModal">
+        <div class="modal">
+            <h3 id="modal-title">Nuevo Cultivo</h3>
+            <input type="hidden" id="crop-id">
+            <div class="step-indicator">
+                <span class="step-dot active" data-step="1"></span>
+                <span class="step-dot" data-step="2"></span>
+                <span class="step-dot" data-step="3"></span>
+                <span class="step-dot" data-step="4"></span>
+            </div>
+
+            <div class="form-step active" data-step="1">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="name">Nombre *</label>
+                        <i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_name"></span></i>
+                        <input type="text" id="crop-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="variety">Variedad</label>
+                        <i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_variety"></span></i>
+                        <input type="text" id="crop-variedad">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="icon">Icono</label>
+                        <i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_icon"></span></i>
+                        <select id="crop-icon">
+                            <option value="🍅">🍅 Tomate</option><option value="🥬">🥬 Lechuga</option><option value="🥔">🥔 Papa / Raíz</option>
+                            <option value="🥒">🥒 Pepino</option><option value="🍓">🍓 Fresa</option><option value="🌶️">🌶️ Pimiento</option>
+                            <option value="🥕">🥕 Zanahoria</option><option value="🍆">🍆 Berenjena</option>
+                            <option value="🥑">🥑 Aguacate</option><option value="🧄">🧄 Ajo</option>
+                            <option value="🧅">🧅 Cebolla</option><option value="🍄">🍄 Hongo</option>
+                            <option value="🌽">🌽 Maíz</option><option value="🍇">🍇 Uva</option><option value="🍉">🍉 Sandía</option>
+                            <option value="🍊">🍊 Naranja</option><option value="🍋">🍋 Limón</option><option value="🍌">🍌 Plátano</option>
+                            <option value="🍑">🍑 Melocotón</option><option value="🍒">🍒 Cereza</option>
+                            <option value="🫘">🫘 Frijol / Legumbre</option><option value="🌰">🌰 Nuez / Seco</option>
+                            <option value="🌸">🌸 Flor</option><option value="🌿">🌿 Hierba</option><option value="🌱">🌱 Planta</option><option value="🍎">🍎 Fruta</option><option value="🌳">🌳 Árbol</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="category">Categoría</label>
+                        <i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_category"></span></i>
+                        <select id="crop-category">
+                            <option value="Alimento">Alimento</option>
+                            <option value="Aromática">Aromática</option>
+                            <option value="Medicinal">Medicinal</option>
+                            <option value="Ornamental">Ornamental</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="vol_tierra">Vol. mín. tierra (L)</label>
+                        <i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_vol_tierra"></span></i>
+                        <input type="number" id="crop-voltierra" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="agua_base">Agua base (L/planta/día)</label>
+                        <i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_agua_base"></span></i>
+                        <input type="number" id="crop-agua" step="0.1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="ratio_consumo">Consumo semanal (kg/sem/persona)</label>
+                        <i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_ratio_consumo"></span></i>
+                        <input type="number" id="crop-ratioconsumo" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="rend_unidad">Rendimiento por contenedor (kg)</label>
+                        <i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_rend_unidad"></span></i>
+                        <input type="number" id="crop-rendunidad" step="0.01" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="2">
+                <h4 style="margin-bottom:15px;">🌡️ <span data-i18n="climate_title">Parámetros climáticos</span> <span style="color:red;">*</span></h4>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="temp_min">Temp. mín (°C) *</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_temp_min"></span></i><input type="number" id="crop-tmin" step="0.1" required></div>
+                    <div class="form-group"><label data-i18n="temp_max">Temp. máx (°C) *</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_temp_max"></span></i><input type="number" id="crop-tmax" step="0.1" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="temp_ideal_min">Temp. ideal mín (°C) *</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_temp_ideal_min"></span></i><input type="number" id="crop-timin" step="0.1" required></div>
+                    <div class="form-group"><label data-i18n="temp_ideal_max">Temp. ideal máx (°C) *</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_temp_ideal_max"></span></i><input type="number" id="crop-timax" step="0.1" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="hum_min">Hum. mín (%) *</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_hum_min"></span></i><input type="number" id="crop-hmin" step="0.1" required></div>
+                    <div class="form-group"><label data-i18n="hum_max">Hum. máx (%) *</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_hum_max"></span></i><input type="number" id="crop-hmax" step="0.1" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="hum_ideal_min">Hum. ideal mín (%) *</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_hum_ideal_min"></span></i><input type="number" id="crop-himin" step="0.1" required></div>
+                    <div class="form-group"><label data-i18n="hum_ideal_max">Hum. ideal máx (%) *</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_hum_ideal_max"></span></i><input type="number" id="crop-himax" step="0.1" required></div>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="3">
+                <h4 style="margin-bottom:15px;">📅 <span data-i18n="cycle_title">Ciclo y fases de riego</span></h4>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="sem_min">Semanas ciclo (mín)</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_sem_min"></span></i><input type="number" id="crop-semmin" step="1"></div>
+                    <div class="form-group"><label data-i18n="sem_max">Semanas ciclo (máx)</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_sem_max"></span></i><input type="number" id="crop-semmax" step="1"></div>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="phases">Fases de riego (día, coeficiente)</label>
+                    <i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_phases"></span></i>
+                    <div id="phases-container"></div>
+                    <button type="button" class="btn btn-outline btn-sm" id="add-phase-btn"><span data-i18n="add_phase">+ Añadir fase</span></button>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="germ">Días a germinación</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_germ"></span></i><input type="number" id="crop-germ"></div>
+                    <div class="form-group"><label data-i18n="grow">Días a crecimiento</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_grow"></span></i><input type="number" id="crop-crec"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="harv_start">Días a inicio cosecha</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_harv_start"></span></i><input type="number" id="crop-cosecha-ini"></div>
+                    <div class="form-group"><label data-i18n="harv_end">Días a fin cosecha</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_harv_end"></span></i><input type="number" id="crop-cosecha-fin"></div>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="4">
+                <h4 style="margin-bottom:15px;">💡 <span data-i18n="optional_title">Parámetros opcionales</span></h4>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="lum_min">Lúmenes mín</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_lum_min"></span></i><input type="number" id="crop-lummin" step="100"></div>
+                    <div class="form-group"><label data-i18n="lum_max">Lúmenes máx</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_lum_max"></span></i><input type="number" id="crop-lummax" step="100"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="water_temp_min">Temp. agua mín (°C)</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_water_temp_min"></span></i><input type="number" id="crop-watertempmin" step="0.1"></div>
+                    <div class="form-group"><label data-i18n="water_temp_max">Temp. agua máx (°C)</label><i class="fas fa-info-circle tooltip-icon"><span class="tooltip-text" data-i18n="help_water_temp_max"></span></i><input type="number" id="crop-watertempmax" step="0.1"></div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="prev-step-btn" style="visibility:hidden;"><span data-i18n="prev">Anterior</span></button>
+                <div>
+                    <button class="btn btn-outline" id="cancel-crop-btn"><span data-i18n="cancel">Cancelar</span></button>
+                    <button class="btn btn-success" id="next-step-btn"><span data-i18n="next">Siguiente</span></button>
+                    <button class="btn btn-success" id="save-crop-btn" style="display:none;"><span data-i18n="save">Guardar</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="importModal">
+        <div class="modal">
+            <h3 data-i18n="import_title">📥 Importar cultivos</h3>
+            <p data-i18n="import_desc">Selecciona un archivo .json o pega su contenido.</p>
+            <input type="file" id="import-file" accept=".json" style="margin-bottom:15px; width:100%;">
+            <textarea id="import-json" style="width:100%; height:200px;" placeholder="..."></textarea>
+            <div class="modal-actions">
+                <button class="btn btn-success" id="confirm-import-btn"><span data-i18n="import_btn">Importar</span></button>
+                <button class="btn btn-outline" id="cancel-import-btn"><span data-i18n="cancel">Cancelar</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal" style="max-width:500px;">
+            <h3 data-i18n="delete_title">⚠️ Eliminar cultivo</h3>
+            <p data-i18n="delete_confirm">Escribe el nombre exacto para confirmar:</p>
+            <input type="text" id="delete-name-input" style="width:100%; margin:15px 0;">
+            <div class="modal-actions">
+                <button class="btn btn-danger" id="confirm-delete-btn"><span data-i18n="delete_btn">Eliminar</span></button>
+                <button class="btn btn-outline" id="cancel-delete-btn"><span data-i18n="cancel">Cancelar</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal" style="max-width:800px;">
+            <h3 data-i18n="help_title">❓ Ayuda del Editor de Cultivos</h3>
+            <div class="help-content" id="help-content"></div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="cancel-help-btn"><span data-i18n="close">Cerrar</span></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = '/api/cultivos';
+        let allCrops = [];
+        let editMode = false;
+        let currentDeleteCrop = null;
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        const i18n = {
+            es: {
+                subtitle:'Editor de Cultivos', back:'Volver al inicio',
+                counter:'Mostrando {0}-{1} de {2} cultivos',
+                export:'Exportar', import:'Importar', add_crop:'Agregar cultivo',
+                icon:'Icono', name:'Nombre', variety:'Variedad', category:'Categoría', water:'Agua',
+                ratio_consumo:'Consumo (kg/sem/pers)', rend_unidad:'Rend. (kg/cont)',
+                new_crop:'Nuevo Cultivo', edit_crop:'Editar Cultivo',
+                vol_tierra:'Vol. mín. tierra (L)', agua_base:'Agua base (L/planta/día)',
+                climate_title:'Parámetros climáticos',
+                temp_min:'Temp. mín (°C) *', temp_max:'Temp. máx (°C) *',
+                temp_ideal_min:'Temp. ideal mín (°C) *', temp_ideal_max:'Temp. ideal máx (°C) *',
+                hum_min:'Hum. mín (%) *', hum_max:'Hum. máx (%) *',
+                hum_ideal_min:'Hum. ideal mín (%) *', hum_ideal_max:'Hum. ideal máx (%) *',
+                cycle_title:'Ciclo y fases de riego',
+                sem_min:'Semanas ciclo (mín)', sem_max:'Semanas ciclo (máx)',
+                phases:'Fases de riego (día, coeficiente)', add_phase:'+ Añadir fase',
+                germ:'Días a germinación', grow:'Días a crecimiento',
+                harv_start:'Días a inicio cosecha', harv_end:'Días a fin cosecha',
+                optional_title:'Parámetros opcionales',
+                lum_min:'Lúmenes mín', lum_max:'Lúmenes máx',
+                water_temp_min:'Temp. agua mín (°C)', water_temp_max:'Temp. agua máx (°C)',
+                prev:'Anterior', next:'Siguiente', save:'Guardar', cancel:'Cancelar', close:'Cerrar',
+                import_title:'📥 Importar cultivos', import_desc:'Selecciona un archivo .json o pega su contenido.',
+                import_btn:'Importar', import_ok:'✅ Agregados: {0} | 🔄 Actualizados: {1}',
+                delete_title:'⚠️ Eliminar cultivo', delete_confirm:'Escribe el nombre exacto para confirmar:',
+                delete_btn:'Eliminar', delete_wrong:'El nombre no coincide.',
+                help_title:'❓ Ayuda del Editor de Cultivos',
+                help_import_desc:'Permite cargar una lista de cultivos desde un archivo JSON. Si un cultivo ya existe (mismo ID), se actualizará; si no, se agregará.',
+                help_export_desc:'Descarga la base de datos actual de cultivos en un archivo JSON, útil para copias de seguridad o para compartir con otros agricultores.',
+                help_params_title:'📋 Parámetros necesarios para agregar un cultivo',
+                help_params_list:
+`1. Identificación
+• Nombre * → Nombre común del cultivo (ej: "Tomate", "Lechuga").
+• Variedad → Tipo o variedad específica (ej: "Cherry", "Romana"). Opcional.
+• Icono → Emoji representativo (🍅, 🥬, 🌹…). Se elige de un selector. Opcional pero recomendado.
+• Categoría → Clasificación: Alimento, Medicinal, Ornamental, Otro. Opcional.
+
+2. Necesidades básicas
+• Volumen mínimo de tierra (L) → Tierra necesaria en maceta o contenedor. Opcional.
+• Agua base (L/planta/día) * → Agua diaria que consume una planta adulta en condiciones normales.
+• Consumo semanal (kg/sem/persona) → Kilogramos que consume una persona por semana de este cultivo. Solo para planificador doméstico.
+• Rendimiento por contenedor (kg) → Kilogramos que produce un contenedor en un ciclo. Solo para planificador doméstico.
+
+3. Parámetros climáticos
+• Temp. mín (°C) * → Temperatura más baja que soporta sin daños.
+• Temp. máx (°C) * → Temperatura más alta que soporta sin estrés.
+• Temp. ideal mín (°C) * → Rango inferior para crecimiento óptimo.
+• Temp. ideal máx (°C) * → Rango superior para crecimiento óptimo.
+• Hum. mín (%) → Humedad ambiental mínima tolerable. Opcional.
+• Hum. máx (%) → Humedad ambiental máxima tolerable. Opcional.
+• Hum. ideal mín (%) → Humedad ideal baja para el desarrollo. Opcional.
+• Hum. ideal máx (%) → Humedad ideal alta para el desarrollo. Opcional.
+
+4. Ciclo del cultivo
+• Semanas ciclo (mín) → Duración mínima del cultivo desde siembra hasta cosecha. Opcional.
+• Semanas ciclo (máx) → Duración máxima del cultivo. Opcional.
+• Fases de riego → Lista de fases con:
+   - Día límite (ej: 15, 30, 60) y Coeficiente (0‑1) que multiplica el agua base en esa etapa. Opcional.
+
+5. Hitos del cultivo (días desde la siembra) *
+• Días a germinación → Días hasta que la semilla germina.
+• Días a crecimiento → Días hasta que alcanza el tamaño adulto.
+• Días a inicio cosecha → Días hasta el primer momento de recolección.
+• Días a fin cosecha → Días hasta que termina la cosecha.
+
+6. Parámetros opcionales avanzados
+• Lúmenes mín → Luz mínima necesaria (lux o lúmenes). Opcional.
+• Lúmenes máx → Luz máxima recomendada. Opcional.
+• Temp. agua mín (°C) → Temperatura mínima del agua de riego. Opcional.
+• Temp. agua máx (°C) → Temperatura máxima del agua de riego. Opcional.`,
+                help_name:'Nombre común del cultivo, por ejemplo "Tomate".',
+                help_variety:'Variedad o tipo específico (opcional).',
+                help_icon:'Elige un emoji que represente visualmente el cultivo.',
+                help_category:'Clasificación: Alimento, Medicinal, Ornamental u Otro.',
+                help_vol_tierra:'Cantidad mínima de tierra que necesita la planta en una maceta o contenedor.',
+                help_agua_base:'Agua diaria que consume una planta adulta en condiciones normales.',
+                help_ratio_consumo:'Kilogramos de este alimento que consume una persona a la semana. Se usa para calcular cuántos contenedores necesita una familia.',
+                help_rend_unidad:'Producción en kilogramos de una planta o contenedor durante todo su ciclo de cultivo.',
+                help_temp_min:'Temperatura mínima que soporta la planta sin daños.',
+                help_temp_max:'Temperatura máxima que soporta sin estrés.',
+                help_temp_ideal_min:'Rango inferior ideal para el crecimiento óptimo.',
+                help_temp_ideal_max:'Rango superior ideal para el crecimiento óptimo.',
+                help_hum_min:'Humedad ambiental mínima tolerable.',
+                help_hum_max:'Humedad ambiental máxima tolerable.',
+                help_hum_ideal_min:'Humedad ideal baja para el desarrollo.',
+                help_hum_ideal_max:'Humedad ideal alta para el desarrollo.',
+                help_sem_min:'Semanas mínimas que dura el cultivo desde la siembra hasta la cosecha.',
+                help_sem_max:'Semanas máximas que puede durar el cultivo.',
+                help_phases:'Define cómo varía el agua necesaria durante el crecimiento. Cada fase tiene un día límite y un coeficiente (0-1) que multiplica el agua base.',
+                help_germ:'Días desde la siembra hasta que la semilla germina.',
+                help_grow:'Días hasta que la planta alcanza su tamaño adulto.',
+                help_harv_start:'Días hasta el primer momento de recolección.',
+                help_harv_end:'Días hasta que termina el período de cosecha.',
+                help_lum_min:'Cantidad mínima de luz necesaria (lux o lúmenes).',
+                help_lum_max:'Cantidad máxima de luz recomendada.',
+                help_water_temp_min:'Temperatura mínima del agua de riego.',
+                help_water_temp_max:'Temperatura máxima del agua de riego.'
+            },
+            en: {
+                subtitle:'Crop Editor', back:'Back to home',
+                counter:'Showing {0}-{1} of {2} crops',
+                export:'Export', import:'Import', add_crop:'Add crop',
+                icon:'Icon', name:'Name', variety:'Variety', category:'Category', water:'Water',
+                ratio_consumo:'Consumption (kg/wk/pers)', rend_unidad:'Yield (kg/cont)',
+                new_crop:'New Crop', edit_crop:'Edit Crop',
+                vol_tierra:'Min. soil vol. (L)', agua_base:'Base water (L/plant/day)',
+                climate_title:'Climatic parameters',
+                temp_min:'Min temp (°C) *', temp_max:'Max temp (°C) *',
+                temp_ideal_min:'Ideal min temp (°C) *', temp_ideal_max:'Ideal max temp (°C) *',
+                hum_min:'Min humidity (%) *', hum_max:'Max humidity (%) *',
+                hum_ideal_min:'Ideal min humidity (%) *', hum_ideal_max:'Ideal max humidity (%) *',
+                cycle_title:'Cycle and irrigation phases',
+                sem_min:'Cycle weeks (min)', sem_max:'Cycle weeks (max)',
+                phases:'Irrigation phases (day, coefficient)', add_phase:'+ Add phase',
+                germ:'Days to germination', grow:'Days to growth',
+                harv_start:'Days to harvest start', harv_end:'Days to harvest end',
+                optional_title:'Optional parameters',
+                lum_min:'Lumens min', lum_max:'Lumens max',
+                water_temp_min:'Min water temp (°C)', water_temp_max:'Max water temp (°C)',
+                prev:'Previous', next:'Next', save:'Save', cancel:'Cancel', close:'Close',
+                import_title:'📥 Import crops', import_desc:'Select a .json file or paste its content.',
+                import_btn:'Import', import_ok:'✅ Added: {0} | 🔄 Updated: {1}',
+                delete_title:'⚠️ Delete crop', delete_confirm:'Type the exact crop name to confirm:',
+                delete_btn:'Delete', delete_wrong:'Name does not match.',
+                help_title:'❓ Crop Editor Help',
+                help_import_desc:'Load a list of crops from a JSON file. If a crop already exists (same ID), it will be updated; otherwise, it will be added.',
+                help_export_desc:'Download the current crop database as a JSON file, useful for backups or sharing.',
+                help_params_title:'📋 Parameters needed to add a crop',
+                help_params_list:
+`1. Identification
+• Name * → Common crop name (e.g. "Tomato", "Lettuce").
+• Variety → Specific type or variety (e.g. "Cherry", "Romaine"). Optional.
+• Icon → Representative emoji (🍅, 🥬, 🌹…). Chosen from a picker. Optional but recommended.
+• Category → Classification: Food, Medicinal, Ornamental, Other. Optional.
+
+2. Basic needs
+• Min. soil volume (L) → Soil needed in a pot or container. Optional.
+• Base water (L/plant/day) * → Daily water consumption of an adult plant under normal conditions.
+• Weekly consumption (kg/wk/person) → Kilograms a person eats of this crop per week. For domestic planner only.
+• Yield per container (kg) → Kilograms produced by one container in a full cycle. For domestic planner only.
+
+3. Climatic parameters
+• Min temp (°C) * → Lowest temperature tolerated without damage.
+• Max temp (°C) * → Highest temperature tolerated without stress.
+• Ideal min temp (°C) * → Lower range for optimal growth.
+• Ideal max temp (°C) * → Upper range for optimal growth.
+• Min humidity (%) → Minimum tolerable ambient humidity. Optional.
+• Max humidity (%) → Maximum tolerable ambient humidity. Optional.
+• Ideal min humidity (%) → Ideal low humidity for development. Optional.
+• Ideal max humidity (%) → Ideal high humidity for development. Optional.
+
+4. Crop cycle
+• Cycle weeks (min) → Minimum weeks from sowing to harvest. Optional.
+• Cycle weeks (max) → Maximum weeks the crop can last. Optional.
+• Irrigation phases → List of phases with:
+   - Day limit (e.g. 15, 30, 60) and Coefficient (0‑1) multiplying base water. Optional.
+
+5. Crop milestones (days from sowing) *
+• Days to germination → Days until the seed germinates.
+• Days to growth → Days until the plant reaches adult size.
+• Days to harvest start → Days until the first harvest moment.
+• Days to harvest end → Days until the end of the harvest period.
+
+6. Advanced optional parameters
+• Lumens min → Minimum light needed (lux or lumens). Optional.
+• Lumens max → Maximum recommended light. Optional.
+• Min water temp (°C) → Minimum irrigation water temperature. Optional.
+• Max water temp (°C) → Maximum irrigation water temperature. Optional.`,
+                help_name:'Common crop name, e.g. "Tomato".',
+                help_variety:'Specific variety or type (optional).',
+                help_icon:'Choose an emoji that visually represents the crop.',
+                help_category:'Classification: Food, Medicinal, Ornamental or Other.',
+                help_vol_tierra:'Minimum amount of soil for a pot or container.',
+                help_agua_base:'Daily water consumption of an adult plant under normal conditions.',
+                help_ratio_consumo:'Kilograms of this food a person eats per week. Used to calculate how many containers a family needs.',
+                help_rend_unidad:'Kilograms produced by one plant or container during its full crop cycle.',
+                help_temp_min:'Minimum tolerated temperature.',
+                help_temp_max:'Maximum tolerated temperature without stress.',
+                help_temp_ideal_min:'Lower optimal range for growth.',
+                help_temp_ideal_max:'Upper optimal range for growth.',
+                help_hum_min:'Minimum tolerable ambient humidity.',
+                help_hum_max:'Maximum tolerable ambient humidity.',
+                help_hum_ideal_min:'Ideal low humidity for development.',
+                help_hum_ideal_max:'Ideal high humidity for development.',
+                help_sem_min:'Minimum weeks from sowing to harvest.',
+                help_sem_max:'Maximum weeks the crop can last.',
+                help_phases:'Defines how water demand changes during growth. Each phase has a day limit and a coefficient (0-1) that multiplies base water.',
+                help_germ:'Days from sowing to germination.',
+                help_grow:'Days to reach adult size.',
+                help_harv_start:'Days until the first harvest moment.',
+                help_harv_end:'Days until the end of the harvest period.',
+                help_lum_min:'Minimum light needed (lux/lumens).',
+                help_lum_max:'Maximum recommended light.',
+                help_water_temp_min:'Minimum irrigation water temperature.',
+                help_water_temp_max:'Maximum irrigation water temperature.'
+            },
+            ru: {
+                subtitle:'Редактор культур', back:'На главную',
+                counter:'Показаны {0}-{1} из {2} культур',
+                export:'Экспорт', import:'Импорт', add_crop:'Добавить культуру',
+                icon:'Иконка', name:'Название', variety:'Сорт', category:'Категория', water:'Вода',
+                ratio_consumo:'Потребление (кг/нед/чел)', rend_unidad:'Урожай (кг/конт)',
+                new_crop:'Новая культура', edit_crop:'Редактировать культуру',
+                vol_tierra:'Мин. объём почвы (л)', agua_base:'Базовая вода (л/раст/день)',
+                climate_title:'Климатические параметры',
+                temp_min:'Мин. темп. (°C) *', temp_max:'Макс. темп. (°C) *',
+                temp_ideal_min:'Идеал. мин. темп. (°C) *', temp_ideal_max:'Идеал. макс. темп. (°C) *',
+                hum_min:'Мин. влажность (%) *', hum_max:'Макс. влажность (%) *',
+                hum_ideal_min:'Идеал. мин. влажность (%) *', hum_ideal_max:'Идеал. макс. влажность (%) *',
+                cycle_title:'Цикл и фазы полива',
+                sem_min:'Недель (мин)', sem_max:'Недель (макс)',
+                phases:'Фазы полива (день, коэф.)', add_phase:'+ Добавить фазу',
+                germ:'Дни до всходов', grow:'Дни до роста',
+                harv_start:'Дни до начала сбора', harv_end:'Дни до конца сбора',
+                optional_title:'Дополнительные параметры',
+                lum_min:'Люмены мин', lum_max:'Люмены макс',
+                water_temp_min:'Мин. темп. воды (°C)', water_temp_max:'Макс. темп. воды (°C)',
+                prev:'Назад', next:'Далее', save:'Сохранить', cancel:'Отмена', close:'Закрыть',
+                import_title:'📥 Импорт культур', import_desc:'Выберите .json файл или вставьте содержимое.',
+                import_btn:'Импортировать', import_ok:'✅ Добавлено: {0} | 🔄 Обновлено: {1}',
+                delete_title:'⚠️ Удалить культуру', delete_confirm:'Введите точное название для подтверждения:',
+                delete_btn:'Удалить', delete_wrong:'Название не совпадает.',
+                help_title:'❓ Справка редактора культур',
+                help_import_desc:'Загрузите список культур из файла JSON. Если культура с таким ID уже существует, она будет обновлена, иначе — добавлена.',
+                help_export_desc:'Скачайте текущую базу культур в JSON-файле для резервного копирования или обмена.',
+                help_params_title:'📋 Параметры для добавления культуры',
+                help_params_list:
+`1. Идентификация
+• Название * → Обычное название культуры.
+• Сорт → Конкретный сорт (необязательно).
+• Иконка → Эмодзи (🍅, 🥬, 🌹…). Выбирается из списка.
+• Категория → Пища, Лекарственное, Декоративное, Другое.
+
+2. Основные потребности
+• Мин. объём почвы (л) → Объём почвы для контейнера.
+• Базовая вода (л/раст/день) * → Ежедневное потребление воды взрослым растением.
+• Еженедельное потребление → Килограммы, потребляемые человеком в неделю.
+• Урожай с контейнера → Килограммы с одного контейнера за цикл.
+
+3. Климатические параметры
+• Мин. темп. (°C) * → Минимальная температура без повреждений.
+• Макс. темп. (°C) * → Максимальная температура без стресса.
+• Идеал. мин. темп. (°C) * → Нижняя граница идеального роста.
+• Идеал. макс. темп. (°C) * → Верхняя граница идеального роста.
+• Мин. влажность (%) → Минимальная допустимая влажность.
+• Макс. влажность (%) → Максимальная допустимая влажность.
+• Идеал. мин. влажность (%) → Идеальная низкая влажность.
+• Идеал. макс. влажность (%) → Идеальная высокая влажность.
+
+4. Цикл культуры
+• Недель (мин) → Минимальное количество недель от посева до урожая.
+• Недель (макс) → Максимальная продолжительность культуры.
+• Фазы полива → Список фаз с днём и коэффициентом (0‑1).
+
+5. Вехи (дни от посева) *
+• Дни до всходов → Дни до прорастания.
+• Дни до роста → Дни до взрослого размера.
+• Дни до начала сбора → Дни до первого сбора.
+• Дни до конца сбора → Дни до окончания сбора.
+
+6. Дополнительные параметры
+• Люмены мин → Минимальная освещённость.
+• Люмены макс → Максимальная рекомендуемая освещённость.
+• Мин. темп. воды (°C) → Минимальная температура поливной воды.
+• Макс. темп. воды (°C) → Максимальная температура поливной воды.`,
+                help_name:'Обычное название культуры.',
+                help_variety:'Сорт (необязательно).',
+                help_icon:'Эмодзи для визуального представления.',
+                help_category:'Категория: Пища, Лекарственное, Декоративное, Другое.',
+                help_vol_tierra:'Минимальный объём почвы для контейнера.',
+                help_agua_base:'Ежедневное потребление воды взрослым растением.',
+                help_ratio_consumo:'Килограммы продукта, потребляемые одним человеком в неделю.',
+                help_rend_unidad:'Килограммы, производимые одним растением или контейнером за полный цикл.',
+                help_temp_min:'Минимальная температура.',
+                help_temp_max:'Максимальная температура.',
+                help_temp_ideal_min:'Нижняя граница идеального роста.',
+                help_temp_ideal_max:'Верхняя граница идеального роста.',
+                help_hum_min:'Минимальная влажность.',
+                help_hum_max:'Максимальная влажность.',
+                help_hum_ideal_min:'Идеальная низкая влажность.',
+                help_hum_ideal_max:'Идеальная высокая влажность.',
+                help_sem_min:'Минимальное количество недель от посева до урожая.',
+                help_sem_max:'Максимальная продолжительность культуры.',
+                help_phases:'Определяет изменение потребности в воде.',
+                help_germ:'Дни от посева до всходов.',
+                help_grow:'Дни до достижения взрослого размера.',
+                help_harv_start:'Дни до первого сбора урожая.',
+                help_harv_end:'Дни до окончания сбора.',
+                help_lum_min:'Минимальная освещённость (люксы/люмены).',
+                help_lum_max:'Максимальная рекомендуемая освещённость.',
+                help_water_temp_min:'Минимальная температура поливной воды.',
+                help_water_temp_max:'Максимальная температура поливной воды.'
+            },
+            pt: {
+                subtitle:'Editor de Culturas', back:'Voltar ao início',
+                counter:'Mostrando {0}-{1} de {2} culturas',
+                export:'Exportar', import:'Importar', add_crop:'Adicionar cultura',
+                icon:'Ícone', name:'Nome', variety:'Variedade', category:'Categoria', water:'Água',
+                ratio_consumo:'Consumo (kg/sem/pessoa)', rend_unidad:'Rend. (kg/cont)',
+                new_crop:'Nova Cultura', edit_crop:'Editar Cultura',
+                vol_tierra:'Vol. mín. terra (L)', agua_base:'Água base (L/planta/dia)',
+                climate_title:'Parâmetros climáticos',
+                temp_min:'Temp. mín (°C) *', temp_max:'Temp. máx (°C) *',
+                temp_ideal_min:'Temp. ideal mín (°C) *', temp_ideal_max:'Temp. ideal máx (°C) *',
+                hum_min:'Umidade mín (%) *', hum_max:'Umidade máx (%) *',
+                hum_ideal_min:'Umidade ideal mín (%) *', hum_ideal_max:'Umidade ideal máx (%) *',
+                cycle_title:'Ciclo e fases de irrigação',
+                sem_min:'Sem. ciclo (mín)', sem_max:'Sem. ciclo (máx)',
+                phases:'Fases de irrigação (dia, coeficiente)', add_phase:'+ Adicionar fase',
+                germ:'Dias para germinação', grow:'Dias para crescimento',
+                harv_start:'Dias para início colheita', harv_end:'Dias para fim colheita',
+                optional_title:'Parâmetros opcionais',
+                lum_min:'Lúmens mín', lum_max:'Lúmens máx',
+                water_temp_min:'Temp. água mín (°C)', water_temp_max:'Temp. água máx (°C)',
+                prev:'Anterior', next:'Próximo', save:'Salvar', cancel:'Cancelar', close:'Fechar',
+                import_title:'📥 Importar culturas', import_desc:'Selecione um arquivo .json ou cole o conteúdo.',
+                import_btn:'Importar', import_ok:'✅ Adicionados: {0} | 🔄 Atualizados: {1}',
+                delete_title:'⚠️ Excluir cultura', delete_confirm:'Digite o nome exato para confirmar:',
+                delete_btn:'Excluir', delete_wrong:'Nome não coincide.',
+                help_title:'❓ Ajuda do Editor de Culturas',
+                help_import_desc:'Carregue uma lista de culturas de um arquivo JSON. Se uma cultura com o mesmo ID já existir, ela será atualizada; caso contrário, será adicionada.',
+                help_export_desc:'Baixe o banco de dados atual em um arquivo JSON, útil para backups ou compartilhamento.',
+                help_params_title:'📋 Parâmetros necessários para adicionar uma cultura',
+                help_params_list:
+`1. Identificação
+• Nome * → Nome comum da cultura.
+• Variedade → Tipo ou variedade específica. Opcional.
+• Ícone → Emoji representativo. Opcional mas recomendado.
+• Categoria → Alimento, Medicinal, Ornamental, Outro.
+
+2. Necessidades básicas
+• Vol. mín. terra (L) → Terra necessária no vaso. Opcional.
+• Água base (L/planta/dia) * → Consumo diário de uma planta adulta.
+• Consumo semanal → Quilos que uma pessoa come por semana.
+• Rendimento por contêiner → Quilos produzidos por um contêiner em um ciclo.
+
+3. Parâmetros climáticos
+• Temp. mín (°C) * → Temperatura mais baixa tolerada.
+• Temp. máx (°C) * → Temperatura mais alta sem estresse.
+• Temp. ideal mín (°C) * → Faixa inferior ideal.
+• Temp. ideal máx (°C) * → Faixa superior ideal.
+• Umidade mín (%) → Umidade mínima tolerável.
+• Umidade máx (%) → Umidade máxima tolerável.
+• Umidade ideal mín (%) → Umidade ideal baixa.
+• Umidade ideal máx (%) → Umidade ideal alta.
+
+4. Ciclo da cultura
+• Sem. ciclo (mín) → Semanas mínimas até a colheita.
+• Sem. ciclo (máx) → Semanas máximas da cultura.
+• Fases de irrigação → Lista de fases com dia e coeficiente (0‑1).
+
+5. Marcos (dias desde a semeadura) *
+• Dias para germinação → Até a germinação.
+• Dias para crescimento → Até o tamanho adulto.
+• Dias para início colheita → Até a primeira colheita.
+• Dias para fim colheita → Até o fim da colheita.
+
+6. Parâmetros avançados opcionais
+• Lúmens mín → Luz mínima necessária.
+• Lúmens máx → Luz máxima recomendada.
+• Temp. água mín (°C) → Temperatura mínima da água.
+• Temp. água máx (°C) → Temperatura máxima da água.`,
+                help_name:'Nome comum da cultura.',
+                help_variety:'Variedade (opcional).',
+                help_icon:'Emoji representativo.',
+                help_category:'Categoria: Alimento, Medicinal, Ornamental, Outro.',
+                help_vol_tierra:'Volume mínimo de terra para um vaso.',
+                help_agua_base:'Consumo diário de água de uma planta adulta.',
+                help_ratio_consumo:'Quilos deste alimento que uma pessoa consome por semana.',
+                help_rend_unidad:'Quilos produzidos por uma planta ou contêiner durante todo o ciclo.',
+                help_temp_min:'Temperatura mínima suportada.',
+                help_temp_max:'Temperatura máxima suportada.',
+                help_temp_ideal_min:'Faixa ideal inferior.',
+                help_temp_ideal_max:'Faixa ideal superior.',
+                help_hum_min:'Umidade mínima tolerável.',
+                help_hum_max:'Umidade máxima tolerável.',
+                help_hum_ideal_min:'Umidade ideal baixa.',
+                help_hum_ideal_max:'Umidade ideal alta.',
+                help_sem_min:'Semanas mínimas do plantio à colheita.',
+                help_sem_max:'Semanas máximas da cultura.',
+                help_phases:'Define variação da necessidade de água.',
+                help_germ:'Dias até germinação.',
+                help_grow:'Dias até tamanho adulto.',
+                help_harv_start:'Dias até início da colheita.',
+                help_harv_end:'Dias até fim da colheita.',
+                help_lum_min:'Luminosidade mínima (lux/lúmens).',
+                help_lum_max:'Luminosidade máxima recomendada.',
+                help_water_temp_min:'Temperatura mínima da água de irrigação.',
+                help_water_temp_max:'Temperatura máxima da água de irrigação.'
+            },
+            fr: {
+                subtitle:'Éditeur de cultures', back:"Retour à l'accueil",
+                counter:'Affichage {0}-{1} sur {2} cultures',
+                export:'Exporter', import:'Importer', add_crop:'Ajouter culture',
+                icon:'Icône', name:'Nom', variety:'Variété', category:'Catégorie', water:'Eau',
+                ratio_consumo:'Conso. (kg/sem/pers)', rend_unidad:'Rend. (kg/cont)',
+                new_crop:'Nouvelle culture', edit_crop:'Modifier la culture',
+                vol_tierra:'Vol. min. terre (L)', agua_base:'Eau de base (L/plante/j)',
+                climate_title:'Paramètres climatiques',
+                temp_min:'Temp. min (°C) *', temp_max:'Temp. max (°C) *',
+                temp_ideal_min:'Temp. idéale min (°C) *', temp_ideal_max:'Temp. idéale max (°C) *',
+                hum_min:'Hum. min (%) *', hum_max:'Hum. max (%) *',
+                hum_ideal_min:'Hum. idéale min (%) *', hum_ideal_max:'Hum. idéale max (%) *',
+                cycle_title:'Cycle et phases d’arrosage',
+                sem_min:'Sem. cycle (min)', sem_max:'Sem. cycle (max)',
+                phases:'Phases d’arrosage (jour, coefficient)', add_phase:'+ Ajouter phase',
+                germ:'Jours à germination', grow:'Jours à croissance',
+                harv_start:'Jours à début récolte', harv_end:'Jours à fin récolte',
+                optional_title:'Paramètres optionnels',
+                lum_min:'Lumens min', lum_max:'Lumens max',
+                water_temp_min:'Temp. eau min (°C)', water_temp_max:'Temp. eau max (°C)',
+                prev:'Précédent', next:'Suivant', save:'Enregistrer', cancel:'Annuler', close:'Fermer',
+                import_title:'📥 Importer cultures', import_desc:'Sélectionnez un fichier .json ou collez son contenu.',
+                import_btn:'Importer', import_ok:'✅ Ajoutés : {0} | 🔄 Mis à jour : {1}',
+                delete_title:'⚠️ Supprimer culture', delete_confirm:'Tapez le nom exact pour confirmer :',
+                delete_btn:'Supprimer', delete_wrong:'Le nom ne correspond pas.',
+                help_title:'❓ Aide de l’éditeur',
+                help_import_desc:"Chargez une liste de cultures depuis un fichier JSON. Si une culture avec le même ID existe déjà, elle sera mise à jour, sinon ajoutée.",
+                help_export_desc:"Téléchargez la base de données actuelle en fichier JSON, utile pour les sauvegardes ou le partage.",
+                help_params_title:'📋 Paramètres nécessaires pour ajouter une culture',
+                help_params_list:
+`1. Identification
+• Nom * → Nom commun de la culture.
+• Variété → Type ou variété spécifique. Optionnel.
+• Icône → Emoji représentatif (🍅, 🥬, 🌹…).
+• Catégorie → Aliment, Médicinal, Ornemental, Autre.
+
+2. Besoins de base
+• Vol. min. terre (L) → Terre nécessaire en pot.
+• Eau de base (L/plante/j) * → Consommation quotidienne adulte.
+• Consommation hebdo → Kilos qu'une personne mange par semaine.
+• Rendement par conteneur → Kilos produits par un conteneur en un cycle.
+
+3. Paramètres climatiques
+• Temp. min (°C) * → Température minimale tolérée.
+• Temp. max (°C) * → Température maximale tolérée.
+• Temp. idéale min (°C) * → Plage idéale basse.
+• Temp. idéale max (°C) * → Plage idéale haute.
+• Hum. min (%) → Humidité minimale tolérable.
+• Hum. max (%) → Humidité maximale tolérable.
+• Hum. idéale min (%) → Humidité idéale basse.
+• Hum. idéale max (%) → Humidité idéale haute.
+
+4. Cycle de culture
+• Sem. cycle (min) → Semaines minimales du semis à la récolte.
+• Sem. cycle (max) → Semaines maximales possibles.
+• Phases d’arrosage → Jours et coefficient (0‑1).
+
+5. Jalons (jours depuis le semis) *
+• Jours à germination → Jusqu’à la germination.
+• Jours à croissance → Jusqu’à la taille adulte.
+• Jours à début récolte → Premier jour de récolte.
+• Jours à fin récolte → Dernier jour de récolte.
+
+6. Paramètres avancés optionnels
+• Lumens min → Éclairement minimum.
+• Lumens max → Éclairement maximum recommandé.
+• Temp. eau min (°C) → Température d’eau minimale.
+• Temp. eau max (°C) → Température d’eau maximale.`,
+                help_name:'Nom commun de la culture.',
+                help_variety:'Variété (optionnel).',
+                help_icon:'Emoji représentant la culture.',
+                help_category:'Catégorie : Aliment, Médicinal, Ornemental, Autre.',
+                help_vol_tierra:'Volume minimum de terre dans un pot.',
+                help_agua_base:"Consommation d'eau quotidienne d'une plante adulte.",
+                help_ratio_consumo:'Kilogrammes de cet aliment consommés par une personne en une semaine.',
+                help_rend_unidad:'Kilogrammes produits par une plante ou un conteneur pendant tout son cycle.',
+                help_temp_min:'Température minimale tolérée.',
+                help_temp_max:'Température maximale tolérée.',
+                help_temp_ideal_min:'Plage idéale basse.',
+                help_temp_ideal_max:'Plage idéale haute.',
+                help_hum_min:'Humidité minimale tolérable.',
+                help_hum_max:'Humidité maximale tolérable.',
+                help_hum_ideal_min:'Humidité idéale basse.',
+                help_hum_ideal_max:'Humidité idéale haute.',
+                help_sem_min:'Semaines minimales du semis à la récolte.',
+                help_sem_max:'Semaines maximales possibles.',
+                help_phases:"Définit l'évolution des besoins en eau.",
+                help_germ:'Jours entre le semis et la germination.',
+                help_grow:'Jours avant taille adulte.',
+                help_harv_start:'Jours avant début récolte.',
+                help_harv_end:'Jours avant fin récolte.',
+                help_lum_min:'Éclairement lumineux minimum (lux/lumens).',
+                help_lum_max:'Éclairement lumineux maximum recommandé.',
+                help_water_temp_min:"Température minimale de l'eau d'irrigation.",
+                help_water_temp_max:"Température maximale de l'eau d'irrigation."
+            }
+        };
+
+        let currentLang = 'es';
+        function t(key, ...params) {
+            let str = (i18n[currentLang] && i18n[currentLang][key]) || i18n.es[key] || key;
+            params.forEach((p, i) => str = str.replace(`{${i}}`, p));
+            return str;
+        }
+
+        function applyLanguage() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (el.tagName === 'INPUT' && el.type === 'text' && key === 'delete_confirm') return;
+                el.textContent = t(key);
+            });
+            document.querySelectorAll('.tooltip-text[data-i18n]').forEach(el => {
+                el.textContent = t(el.getAttribute('data-i18n'));
+            });
+            document.getElementById('import-json').placeholder = t('import_desc');
+            updateCropCount();
+            if (document.getElementById('cropModal').style.display === 'flex') {
+                document.getElementById('modal-title').textContent = editMode ? t('edit_crop') : t('new_crop');
+            }
+            updateHelpModal();
+        }
+
+        function updateHelpModal() {
+            const helpHtml = `
+                <p><strong>📥 ${t('import')}:</strong> ${t('help_import_desc')}</p>
+                <p><strong>📤 ${t('export')}:</strong> ${t('help_export_desc')}</p>
+                <h4>${t('help_params_title')}</h4>
+                <pre>${t('help_params_list')}</pre>
+            `;
+            document.getElementById('help-content').innerHTML = helpHtml;
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentLang = this.dataset.lang;
+                localStorage.setItem('cropEditorLang', currentLang);
+                applyLanguage();
+            });
+        });
+
+        const savedLang = localStorage.getItem('cropEditorLang');
+        if (savedLang && i18n[savedLang]) {
+            currentLang = savedLang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.lang-btn[data-lang="${currentLang}"]`).classList.add('active');
+        }
+
+        function updateCropCount() {
+            const sorted = [...allCrops].sort((a,b) => a.nombre.localeCompare(b.nombre));
+            document.getElementById('crop-counter').textContent = sorted.length ? 
+                t('counter', 1, sorted.length, sorted.length) : t('counter', 0, 0, 0);
+        }
+
+        function renderCrops() {
+            const sorted = [...allCrops].sort((a,b) => a.nombre.localeCompare(b.nombre));
+            updateCropCount();
+            const tbody = document.querySelector('#crops-table tbody');
+            tbody.innerHTML = sorted.map((c,i) => `
+                <tr>
+                    <td>${i+1}</td>
+                    <td style="font-size:1.5rem;">${c.icon||'🌱'}</td>
+                    <td><strong>${c.nombre}</strong></td>
+                    <td>${c.variedad||'—'}</td>
+                    <td>${c.categoria||'—'}</td>
+                    <td>${c.aguaBase} L/d</td>
+                    <td>${c.ratioConsumo != null ? c.ratioConsumo : '—'}</td>
+                    <td>${c.rendUnidad != null ? c.rendUnidad : '—'}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm edit-btn" data-id="${c.id}"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="${c.id}" data-name="${c.nombre}"><i class="fas fa-trash"></i></button>
+                    </td>
+                    <td></td>
+                </tr>
+            `).join('');
+            const cardsContainer = document.getElementById('cards-container');
+            cardsContainer.innerHTML = sorted.map((c,i) => `
+                <div class="crop-card">
+                    <div class="card-row"><span style="font-size:2rem;">${c.icon||'🌱'}</span><strong>#${i+1}</strong></div>
+                    <div class="card-row"><span>${c.nombre}</span><span>${c.variedad||''}</span></div>
+                    <div class="card-row"><span>${c.categoria||'—'}</span><span>Agua: ${c.aguaBase} L/d</span></div>
+                    <div class="card-row"><span>Consumo: ${c.ratioConsumo != null ? c.ratioConsumo : '—'}</span><span>Rend.: ${c.rendUnidad != null ? c.rendUnidad : '—'}</span></div>
+                    <div class="card-actions">
+                        <button class="btn btn-warning btn-sm edit-btn" data-id="${c.id}">✏️</button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="${c.id}" data-name="${c.nombre}">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+            document.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', () => editCrop(b.dataset.id)));
+            document.querySelectorAll('.delete-btn').forEach(b => b.addEventListener('click', () => {
+                currentDeleteCrop = { id: b.dataset.id, name: b.dataset.name };
+                document.getElementById('delete-name-input').value = '';
+                document.getElementById('deleteModal').style.display = 'flex';
+            }));
+        }
+
+        async function loadCrops() {
+            try {
+                const resp = await fetch(API);
+                allCrops = await resp.json();
+                renderCrops();
+            } catch(e) { console.error(e); }
+        }
+
+        function updateStepDisplay() {
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+            document.querySelectorAll('.step-dot').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.step-dot[data-step="${currentStep}"]`).classList.add('active');
+            document.getElementById('prev-step-btn').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+            document.getElementById('next-step-btn').style.display = currentStep === totalSteps ? 'none' : 'inline-flex';
+            document.getElementById('save-crop-btn').style.display = currentStep === totalSteps ? 'inline-flex' : 'none';
+        }
+
+        document.getElementById('next-step-btn').addEventListener('click', () => {
+            if (currentStep < totalSteps) { currentStep++; updateStepDisplay(); }
+        });
+        document.getElementById('prev-step-btn').addEventListener('click', () => {
+            if (currentStep > 1) { currentStep--; updateStepDisplay(); }
+        });
+
+        document.getElementById('add-crop-btn').addEventListener('click', () => {
+            editMode = false;
+            document.getElementById('crop-id').value = '';
+            document.getElementById('crop-name').value = '';
+            document.getElementById('crop-variedad').value = '';
+            document.getElementById('crop-voltierra').value = '';
+            document.getElementById('crop-agua').value = '';
+            document.getElementById('crop-ratioconsumo').value = '';
+            document.getElementById('crop-rendunidad').value = '';
+            document.getElementById('crop-tmin').value = '';
+            document.getElementById('crop-tmax').value = '';
+            document.getElementById('crop-timin').value = '';
+            document.getElementById('crop-timax').value = '';
+            document.getElementById('crop-hmin').value = '';
+            document.getElementById('crop-hmax').value = '';
+            document.getElementById('crop-himin').value = '';
+            document.getElementById('crop-himax').value = '';
+            document.getElementById('crop-semmin').value = '';
+            document.getElementById('crop-semmax').value = '';
+            document.getElementById('crop-germ').value = '';
+            document.getElementById('crop-crec').value = '';
+            document.getElementById('crop-cosecha-ini').value = '';
+            document.getElementById('crop-cosecha-fin').value = '';
+            document.getElementById('crop-lummin').value = '';
+            document.getElementById('crop-lummax').value = '';
+            document.getElementById('crop-watertempmin').value = '';
+            document.getElementById('crop-watertempmax').value = '';
+            document.getElementById('phases-container').innerHTML = '';
+            document.getElementById('modal-title').textContent = t('new_crop');
+            currentStep = 1;
+            updateStepDisplay();
+            document.getElementById('cropModal').style.display = 'flex';
+        });
+
+        document.getElementById('cancel-crop-btn').addEventListener('click', () => {
+            document.getElementById('cropModal').style.display = 'none';
+        });
+
+        async function editCrop(id) {
+            editMode = true;
+            const resp = await fetch(`${API}/${id}`);
+            const crop = await resp.json();
+            document.getElementById('crop-id').value = crop.id;
+            document.getElementById('crop-name').value = crop.nombre;
+            document.getElementById('crop-variedad').value = crop.variedad || '';
+            document.getElementById('crop-icon').value = crop.icon;
+            document.getElementById('crop-category').value = crop.categoria || 'Alimento';
+            document.getElementById('crop-voltierra').value = crop.volumenTierra || '';
+            document.getElementById('crop-agua').value = crop.aguaBase;
+            document.getElementById('crop-ratioconsumo').value = crop.ratioConsumo || '';
+            document.getElementById('crop-rendunidad').value = crop.rendUnidad || '';
+            if(crop.clima) {
+                document.getElementById('crop-tmin').value = crop.clima.tempMin ?? '';
+                document.getElementById('crop-tmax').value = crop.clima.tempMax ?? '';
+                document.getElementById('crop-timin').value = crop.clima.tempIdealMin ?? '';
+                document.getElementById('crop-timax').value = crop.clima.tempIdealMax ?? '';
+                document.getElementById('crop-hmin').value = crop.clima.humMin ?? '';
+                document.getElementById('crop-hmax').value = crop.clima.humMax ?? '';
+                document.getElementById('crop-himin').value = crop.clima.humIdealMin ?? '';
+                document.getElementById('crop-himax').value = crop.clima.humIdealMax ?? '';
+            }
+            document.getElementById('crop-semmin').value = crop.semanasCicloMin || '';
+            document.getElementById('crop-semmax').value = crop.semanasCicloMax || '';
+            document.getElementById('crop-germ').value = crop.hitos.germinacion;
+            document.getElementById('crop-crec').value = crop.hitos.crecimiento;
+            document.getElementById('crop-cosecha-ini').value = crop.hitos.cosechaInicio;
+            document.getElementById('crop-cosecha-fin').value = crop.hitos.cosechaFin;
+            document.getElementById('crop-lummin').value = crop.lumenMin || '';
+            document.getElementById('crop-lummax').value = crop.lumenMax || '';
+            document.getElementById('crop-watertempmin').value = crop.waterTempMin || '';
+            document.getElementById('crop-watertempmax').value = crop.waterTempMax || '';
+            const container = document.getElementById('phases-container');
+            container.innerHTML = '';
+            if(crop.fasesRiego) crop.fasesRiego.forEach(f => addPhaseRow(f.hastaDia, f.coef));
+            document.getElementById('modal-title').textContent = t('edit_crop');
+            currentStep = 1;
+            updateStepDisplay();
+            document.getElementById('cropModal').style.display = 'flex';
+        }
+
+        function addPhaseRow(dia='', coef='') {
+            const div = document.createElement('div');
+            div.className = 'phase-row';
+            div.innerHTML = `<input type="number" placeholder="Día" value="${dia}" min="0" style="width:80px;">
+                             <input type="number" placeholder="Coef" value="${coef}" step="0.1" min="0" max="1" style="width:80px;">
+                             <button type="button" class="btn btn-outline btn-sm remove-phase">✕</button>`;
+            div.querySelector('.remove-phase').addEventListener('click', () => div.remove());
+            document.getElementById('phases-container').appendChild(div);
+        }
+        document.getElementById('add-phase-btn').addEventListener('click', () => addPhaseRow());
+
+        document.getElementById('save-crop-btn').addEventListener('click', async () => {
+            const id = document.getElementById('crop-id').value || Date.now().toString();
+            const phases = [];
+            document.querySelectorAll('.phase-row').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                phases.push({ hastaDia: parseInt(inputs[0].value), coef: parseFloat(inputs[1].value) });
+            });
+            const tmin = parseFloat(document.getElementById('crop-tmin').value);
+            const tmax = parseFloat(document.getElementById('crop-tmax').value);
+            if (isNaN(tmin) || isNaN(tmax)) { alert('Temperatura mínima y máxima obligatorias'); return; }
+            const cultivo = {
+                id, nombre: document.getElementById('crop-name').value,
+                variedad: document.getElementById('crop-variedad').value,
+                icon: document.getElementById('crop-icon').value,
+                categoria: document.getElementById('crop-category').value,
+                volumenTierra: parseFloat(document.getElementById('crop-voltierra').value) || null,
+                aguaBase: parseFloat(document.getElementById('crop-agua').value),
+                ratioConsumo: parseFloat(document.getElementById('crop-ratioconsumo').value) || null,
+                rendUnidad: parseFloat(document.getElementById('crop-rendunidad').value) || null,
+                semanasCicloMin: parseInt(document.getElementById('crop-semmin').value) || null,
+                semanasCicloMax: parseInt(document.getElementById('crop-semmax').value) || null,
+                fasesRiego: phases,
+                hitos: {
+                    germinacion: parseInt(document.getElementById('crop-germ').value),
+                    crecimiento: parseInt(document.getElementById('crop-crec').value),
+                    cosechaInicio: parseInt(document.getElementById('crop-cosecha-ini').value),
+                    cosechaFin: parseInt(document.getElementById('crop-cosecha-fin').value)
+                },
+                clima: {
+                    tempMin: tmin, tempMax: tmax,
+                    tempIdealMin: parseFloat(document.getElementById('crop-timin').value) || null,
+                    tempIdealMax: parseFloat(document.getElementById('crop-timax').value) || null,
+                    humMin: parseFloat(document.getElementById('crop-hmin').value) || null,
+                    humMax: parseFloat(document.getElementById('crop-hmax').value) || null,
+                    humIdealMin: parseFloat(document.getElementById('crop-himin').value) || null,
+                    humIdealMax: parseFloat(document.getElementById('crop-himax').value) || null
+                },
+                lumenMin: document.getElementById('crop-lummin').value ? parseFloat(document.getElementById('crop-lummin').value) : null,
+                lumenMax: document.getElementById('crop-lummax').value ? parseFloat(document.getElementById('crop-lummax').value) : null,
+                waterTempMin: document.getElementById('crop-watertempmin').value ? parseFloat(document.getElementById('crop-watertempmin').value) : null,
+                waterTempMax: document.getElementById('crop-watertempmax').value ? parseFloat(document.getElementById('crop-watertempmax').value) : null
+            };
+            const method = editMode ? 'PUT' : 'POST';
+            const url = editMode ? `${API}/${id}` : API;
+            await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(cultivo) });
+            document.getElementById('cropModal').style.display = 'none';
+            loadCrops();
+        });
+
+        document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+            if (document.getElementById('delete-name-input').value.trim() !== currentDeleteCrop.name) {
+                alert(t('delete_wrong')); return;
+            }
+            await fetch(`${API}/${currentDeleteCrop.id}`, { method: 'DELETE' });
+            document.getElementById('deleteModal').style.display = 'none';
+            loadCrops();
+        });
+        document.getElementById('cancel-delete-btn').addEventListener('click', () => document.getElementById('deleteModal').style.display = 'none');
+
+        document.getElementById('export-btn').addEventListener('click', async () => {
+            const resp = await fetch(API);
+            const data = await resp.json();
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cultivos.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('import-btn').addEventListener('click', () => document.getElementById('importModal').style.display = 'flex');
+        document.getElementById('cancel-import-btn').addEventListener('click', () => document.getElementById('importModal').style.display = 'none');
+        document.getElementById('confirm-import-btn').addEventListener('click', async () => {
+            const raw = document.getElementById('import-json').value.trim();
+            if (!raw) return alert('Pega un JSON válido.');
+            try {
+                const cultivos = JSON.parse(raw);
+                const resp = await fetch(`${API}/importar`, {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(cultivos)
+                });
+                const result = await resp.json();
+                alert(t('import_ok', result.agregados, result.actualizados));
+                document.getElementById('importModal').style.display = 'none';
+                loadCrops();
+            } catch(e) { alert('❌ JSON inválido'); }
+        });
+        document.getElementById('import-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = ev => document.getElementById('import-json').value = ev.target.result;
+            reader.readAsText(file);
+        });
+
+        function openHelpModal() {
+            updateHelpModal();
+            document.getElementById('helpModal').style.display = 'flex';
+        }
+        document.getElementById('help-header-btn').addEventListener('click', openHelpModal);
+        document.getElementById('cancel-help-btn').addEventListener('click', () => document.getElementById('helpModal').style.display = 'none');
+
+        applyLanguage();
+        loadCrops();
+    </script>
+</body>
+</html>

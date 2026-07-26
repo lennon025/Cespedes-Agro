@@ -1,0 +1,4157 @@
+[
+  {
+    "id": "tomate",
+    "nombre": "Tomate",
+    "variedad": "Est\u00e1ndar",
+    "icon": "\ud83c\udf45",
+    "categoria": "Alimento",
+    "volumenTierra": 20,
+    "aguaBase": 3.5,
+    "semanasCicloMin": 13,
+    "semanasCicloMax": 17,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.6
+      },
+      {
+        "hastaDia": 30,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 60,
+        "coef": 1.15
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 30,
+      "cosechaInicio": 75,
+      "cosechaFin": 110
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 27,
+      "humMin": 40,
+      "humMax": 80,
+      "humIdealMin": 50,
+      "humIdealMax": 70
+    },
+    "lumenMin": 15000,
+    "lumenMax": 40000,
+    "waterTempMin": 18,
+    "waterTempMax": 25,
+    "ratioConsumo": 0.5,
+    "rendUnidad": 4
+  },
+  {
+    "id": "lechuga",
+    "nombre": "Lechuga",
+    "variedad": "Romana",
+    "icon": "\ud83e\udd6c",
+    "categoria": "Alimento",
+    "volumenTierra": 5,
+    "aguaBase": 0.8,
+    "semanasCicloMin": 5,
+    "semanasCicloMax": 8,
+    "fasesRiego": [
+      {
+        "hastaDia": 10,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 25,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 40,
+        "coef": 1
+      },
+      {
+        "hastaDia": 56,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 20,
+      "cosechaInicio": 35,
+      "cosechaFin": 56
+    },
+    "clima": {
+      "tempMin": 4,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 20,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 15,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 0.3
+  },
+  {
+    "id": "papa",
+    "nombre": "Papa",
+    "variedad": "Blanca",
+    "icon": "\ud83e\udd54",
+    "categoria": "Alimento",
+    "volumenTierra": 25,
+    "aguaBase": 2.5,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 20,
+    "fasesRiego": [
+      {
+        "hastaDia": 25,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 80,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 45,
+      "cosechaInicio": 70,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 30,
+      "tempIdealMin": 15,
+      "tempIdealMax": 20,
+      "humMin": 50,
+      "humMax": 85,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 12000,
+    "lumenMax": 30000,
+    "waterTempMin": 14,
+    "waterTempMax": 20,
+    "ratioConsumo": 0.6,
+    "rendUnidad": 1.5
+  },
+  {
+    "id": "pepino",
+    "nombre": "Pepino",
+    "variedad": "Largo",
+    "icon": "\ud83e\udd52",
+    "categoria": "Alimento",
+    "volumenTierra": 15,
+    "aguaBase": 2.5,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 10,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 25,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 50,
+        "coef": 1
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 20,
+      "cosechaInicio": 30,
+      "cosechaFin": 60
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 35,
+      "tempIdealMin": 22,
+      "tempIdealMax": 28,
+      "humMin": 60,
+      "humMax": 85,
+      "humIdealMin": 65,
+      "humIdealMax": 80
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 18,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.3,
+    "rendUnidad": 4
+  },
+  {
+    "id": "fresa",
+    "nombre": "Fresa",
+    "variedad": "Fres\u00f3n",
+    "icon": "\ud83c\udf53",
+    "categoria": "Alimento",
+    "volumenTierra": 10,
+    "aguaBase": 1.5,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.6
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 150,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 200,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 30,
+      "cosechaInicio": 60,
+      "cosechaFin": 180
+    },
+    "clima": {
+      "tempMin": 2,
+      "tempMax": 30,
+      "tempIdealMin": 14,
+      "tempIdealMax": 25,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 14,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 0.6
+  },
+  {
+    "id": "pimiento",
+    "nombre": "Pimiento",
+    "variedad": "Dulce",
+    "icon": "\ud83c\udf36\ufe0f",
+    "categoria": "Alimento",
+    "volumenTierra": 15,
+    "aguaBase": 2,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 35,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 70,
+        "coef": 1.05
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 35,
+      "cosechaInicio": 60,
+      "cosechaFin": 90
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 55,
+      "humIdealMax": 75
+    },
+    "lumenMin": 18000,
+    "lumenMax": 40000,
+    "waterTempMin": 18,
+    "waterTempMax": 25,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 1.5
+  },
+  {
+    "id": "zanahoria",
+    "nombre": "Zanahoria",
+    "variedad": "Nantesa",
+    "icon": "\ud83e\udd55",
+    "categoria": "Alimento",
+    "volumenTierra": 10,
+    "aguaBase": 1.5,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 70,
+        "coef": 1
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 35,
+      "cosechaInicio": 60,
+      "cosechaFin": 80
+    },
+    "clima": {
+      "tempMin": 4,
+      "tempMax": 30,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 12000,
+    "lumenMax": 30000,
+    "waterTempMin": 15,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 0.3
+  },
+  {
+    "id": "berenjena",
+    "nombre": "Berenjena",
+    "variedad": "Negra",
+    "icon": "\ud83c\udf46",
+    "categoria": "Alimento",
+    "volumenTierra": 20,
+    "aguaBase": 2.5,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 16,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 70,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 8,
+      "crecimiento": 35,
+      "cosechaInicio": 60,
+      "cosechaFin": 90
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 35,
+      "tempIdealMin": 22,
+      "tempIdealMax": 28,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 55,
+      "humIdealMax": 75
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 3
+  },
+  {
+    "id": "sandia",
+    "nombre": "Sand\u00eda",
+    "variedad": "Rayada",
+    "icon": "\ud83c\udf49",
+    "categoria": "Alimento",
+    "volumenTierra": 30,
+    "aguaBase": 4,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 35,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 60,
+        "coef": 1.05
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 8,
+      "crecimiento": 30,
+      "cosechaInicio": 55,
+      "cosechaFin": 75
+    },
+    "clima": {
+      "tempMin": 18,
+      "tempMax": 35,
+      "tempIdealMin": 23,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 80,
+      "humIdealMin": 50,
+      "humIdealMax": 70
+    },
+    "lumenMin": 25000,
+    "lumenMax": 50000,
+    "waterTempMin": 20,
+    "waterTempMax": 28,
+    "ratioConsumo": 0.3,
+    "rendUnidad": 7
+  },
+  {
+    "id": "brocoli",
+    "nombre": "Br\u00f3coli",
+    "variedad": "Calabrese",
+    "icon": "\ud83e\udd66",
+    "categoria": "Alimento",
+    "volumenTierra": 15,
+    "aguaBase": 2,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 35,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 60,
+        "coef": 1.05
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 30,
+      "cosechaInicio": 50,
+      "cosechaFin": 70
+    },
+    "clima": {
+      "tempMin": 4,
+      "tempMax": 24,
+      "tempIdealMin": 15,
+      "tempIdealMax": 18,
+      "humMin": 60,
+      "humMax": 80,
+      "humIdealMin": 70,
+      "humIdealMax": 75
+    },
+    "lumenMin": 12000,
+    "lumenMax": 28000,
+    "waterTempMin": 14,
+    "waterTempMax": 20,
+    "ratioConsumo": 0.15,
+    "rendUnidad": 0.5
+  },
+  {
+    "id": "albahaca",
+    "nombre": "Albahaca",
+    "variedad": "Genovesa",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 5,
+    "aguaBase": 0.5,
+    "semanasCicloMin": 4,
+    "semanasCicloMax": 6,
+    "fasesRiego": [
+      {
+        "hastaDia": 10,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 25,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 45,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 15,
+      "cosechaInicio": 25,
+      "cosechaFin": 50
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 75,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 18,
+    "waterTempMax": 25
+  },
+  {
+    "id": "manzanilla",
+    "nombre": "Manzanilla",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83c\udf38",
+    "categoria": "Medicinal",
+    "volumenTierra": 8,
+    "aguaBase": 0.6,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 35,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 55,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 75,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 25,
+      "cosechaInicio": 45,
+      "cosechaFin": 65
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 30,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 40,
+      "humMax": 75,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "lavanda",
+    "nombre": "Lavanda",
+    "variedad": "Inglesa",
+    "icon": "\ud83c\udf38",
+    "categoria": "Medicinal",
+    "volumenTierra": 10,
+    "aguaBase": 0.5,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 16,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.3
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.6
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0.4
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 40,
+      "cosechaInicio": 80,
+      "cosechaFin": 110
+    },
+    "clima": {
+      "tempMin": -5,
+      "tempMax": 35,
+      "tempIdealMin": 15,
+      "tempIdealMax": 25,
+      "humMin": 30,
+      "humMax": 70,
+      "humIdealMin": 40,
+      "humIdealMax": 60
+    },
+    "lumenMin": 20000,
+    "lumenMax": 45000,
+    "waterTempMin": 12,
+    "waterTempMax": 20
+  },
+  {
+    "id": "rosal",
+    "nombre": "Rosal",
+    "variedad": "H\u00edbrido de t\u00e9",
+    "icon": "\ud83c\udf39",
+    "categoria": "Ornamental",
+    "volumenTierra": 15,
+    "aguaBase": 1.5,
+    "semanasCicloMin": 20,
+    "semanasCicloMax": 52,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 365,
+        "coef": 1
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 60,
+      "cosechaInicio": 90,
+      "cosechaFin": 365
+    },
+    "clima": {
+      "tempMin": -2,
+      "tempMax": 35,
+      "tempIdealMin": 18,
+      "tempIdealMax": 24,
+      "humMin": 40,
+      "humMax": 80,
+      "humIdealMin": 50,
+      "humIdealMax": 70
+    },
+    "lumenMin": 15000,
+    "lumenMax": 40000,
+    "waterTempMin": 15,
+    "waterTempMax": 24
+  },
+  {
+    "id": "cebolla",
+    "nombre": "Cebolla",
+    "variedad": "Blanca",
+    "icon": "\ud83e\uddc5",
+    "categoria": "Alimento",
+    "volumenTierra": 10,
+    "aguaBase": 1.2,
+    "semanasCicloMin": 14,
+    "semanasCicloMax": 20,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 70,
+        "coef": 1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0.5
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 30,
+      "cosechaInicio": 80,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 15,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.3,
+    "rendUnidad": 0.3
+  },
+  {
+    "id": "ajo",
+    "nombre": "Ajo",
+    "variedad": "Blanco",
+    "icon": "\ud83e\uddc4",
+    "categoria": "Alimento",
+    "volumenTierra": 10,
+    "aguaBase": 0.8,
+    "semanasCicloMin": 16,
+    "semanasCicloMax": 24,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.3
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.6
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0.4
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 45,
+      "cosechaInicio": 90,
+      "cosechaFin": 120
+    },
+    "clima": {
+      "tempMin": 3,
+      "tempMax": 25,
+      "tempIdealMin": 12,
+      "tempIdealMax": 20,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 8000,
+    "lumenMax": 20000,
+    "waterTempMin": 12,
+    "waterTempMax": 18,
+    "ratioConsumo": 0.05,
+    "rendUnidad": 0.05
+  },
+  {
+    "id": "calabacin",
+    "nombre": "Calabac\u00edn",
+    "variedad": "Verde",
+    "icon": "\ud83e\udd52",
+    "categoria": "Alimento",
+    "volumenTierra": 20,
+    "aguaBase": 2.2,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 12,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 30,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 55,
+        "coef": 1
+      },
+      {
+        "hastaDia": 75,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 6,
+      "crecimiento": 25,
+      "cosechaInicio": 40,
+      "cosechaFin": 65
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 18000,
+    "lumenMax": 35000,
+    "waterTempMin": 18,
+    "waterTempMax": 25,
+    "ratioConsumo": 0.3,
+    "rendUnidad": 4
+  },
+  {
+    "id": "maiz",
+    "nombre": "Ma\u00edz",
+    "variedad": "Dulce",
+    "icon": "\ud83c\udf3d",
+    "categoria": "Alimento",
+    "volumenTierra": 25,
+    "aguaBase": 3,
+    "semanasCicloMin": 9,
+    "semanasCicloMax": 13,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 60,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 30,
+      "cosechaInicio": 60,
+      "cosechaFin": 80
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 50,
+      "humMax": 85,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 25000,
+    "lumenMax": 50000,
+    "waterTempMin": 18,
+    "waterTempMax": 25,
+    "ratioConsumo": 0.5,
+    "rendUnidad": 0.3
+  },
+  {
+    "id": "remolacha",
+    "nombre": "Remolacha",
+    "variedad": "Roja",
+    "icon": "\ud83e\udd6c",
+    "categoria": "Alimento",
+    "volumenTierra": 10,
+    "aguaBase": 1.2,
+    "semanasCicloMin": 9,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 60,
+        "coef": 1
+      },
+      {
+        "hastaDia": 75,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 30,
+      "cosechaInicio": 50,
+      "cosechaFin": 70
+    },
+    "clima": {
+      "tempMin": 4,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 14,
+    "waterTempMax": 20,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.3
+  },
+  {
+    "id": "apio",
+    "nombre": "Apio",
+    "variedad": "Verde",
+    "icon": "\ud83e\udd6c",
+    "categoria": "Alimento",
+    "volumenTierra": 10,
+    "aguaBase": 1,
+    "semanasCicloMin": 14,
+    "semanasCicloMax": 18,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 90,
+        "coef": 1
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 12,
+      "crecimiento": 40,
+      "cosechaInicio": 80,
+      "cosechaFin": 110
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 25,
+      "tempIdealMin": 15,
+      "tempIdealMax": 20,
+      "humMin": 60,
+      "humMax": 85,
+      "humIdealMin": 70,
+      "humIdealMax": 80
+    },
+    "lumenMin": 10000,
+    "lumenMax": 22000,
+    "waterTempMin": 14,
+    "waterTempMax": 20,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.5
+  },
+  {
+    "id": "coliflor",
+    "nombre": "Coliflor",
+    "variedad": "Blanca",
+    "icon": "\ud83e\udd66",
+    "categoria": "Alimento",
+    "volumenTierra": 15,
+    "aguaBase": 1.8,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 35,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 60,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 30,
+      "cosechaInicio": 55,
+      "cosechaFin": 75
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 24,
+      "tempIdealMin": 15,
+      "tempIdealMax": 20,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 12000,
+    "lumenMax": 28000,
+    "waterTempMin": 14,
+    "waterTempMax": 20,
+    "ratioConsumo": 0.15,
+    "rendUnidad": 0.7
+  },
+  {
+    "id": "espinaca",
+    "nombre": "Espinaca",
+    "variedad": "Savoy",
+    "icon": "\ud83e\udd6c",
+    "categoria": "Alimento",
+    "volumenTierra": 5,
+    "aguaBase": 0.6,
+    "semanasCicloMin": 4,
+    "semanasCicloMax": 7,
+    "fasesRiego": [
+      {
+        "hastaDia": 10,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 25,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 15,
+      "cosechaInicio": 30,
+      "cosechaFin": 45
+    },
+    "clima": {
+      "tempMin": 2,
+      "tempMax": 25,
+      "tempIdealMin": 12,
+      "tempIdealMax": 18,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 8000,
+    "lumenMax": 20000,
+    "waterTempMin": 12,
+    "waterTempMax": 18,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.2
+  },
+  {
+    "id": "acelga",
+    "nombre": "Acelga",
+    "variedad": "Verde",
+    "icon": "\ud83e\udd6c",
+    "categoria": "Alimento",
+    "volumenTierra": 8,
+    "aguaBase": 1,
+    "semanasCicloMin": 7,
+    "semanasCicloMax": 10,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 35,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 55,
+        "coef": 1
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 25,
+      "cosechaInicio": 40,
+      "cosechaFin": 60
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 14,
+    "waterTempMax": 20,
+    "ratioConsumo": 0.15,
+    "rendUnidad": 0.5
+  },
+  {
+    "id": "calabaza",
+    "nombre": "Calabaza",
+    "variedad": "Butternut",
+    "icon": "\ud83c\udf83",
+    "categoria": "Alimento",
+    "volumenTierra": 30,
+    "aguaBase": 2.5,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 16,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 80,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 8,
+      "crecimiento": 35,
+      "cosechaInicio": 70,
+      "cosechaFin": 95
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 30,
+      "tempIdealMin": 20,
+      "tempIdealMax": 25,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 18,
+    "waterTempMax": 24,
+    "ratioConsumo": 0.3,
+    "rendUnidad": 4
+  },
+  {
+    "id": "cebollino",
+    "nombre": "Cebollino",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83e\uddc5",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 5,
+    "aguaBase": 0.4,
+    "semanasCicloMin": 4,
+    "semanasCicloMax": 6,
+    "fasesRiego": [
+      {
+        "hastaDia": 10,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 25,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 45,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 20,
+      "cosechaInicio": 30,
+      "cosechaFin": 55
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 8000,
+    "lumenMax": 20000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "cilantro",
+    "nombre": "Cilantro",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 5,
+    "aguaBase": 0.4,
+    "semanasCicloMin": 4,
+    "semanasCicloMax": 6,
+    "fasesRiego": [
+      {
+        "hastaDia": 10,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 25,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 45,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 20,
+      "cosechaInicio": 30,
+      "cosechaFin": 50
+    },
+    "clima": {
+      "tempMin": 7,
+      "tempMax": 30,
+      "tempIdealMin": 18,
+      "tempIdealMax": 24,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 16,
+    "waterTempMax": 22
+  },
+  {
+    "id": "perejil",
+    "nombre": "Perejil",
+    "variedad": "Liso",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 5,
+    "aguaBase": 0.5,
+    "semanasCicloMin": 4,
+    "semanasCicloMax": 7,
+    "fasesRiego": [
+      {
+        "hastaDia": 12,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 30,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 65,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 20,
+      "cosechaInicio": 35,
+      "cosechaFin": 60
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 10000,
+    "lumenMax": 22000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "menta",
+    "nombre": "Menta",
+    "variedad": "Piperita",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 8,
+    "aguaBase": 0.5,
+    "semanasCicloMin": 6,
+    "semanasCicloMax": 10,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0.9
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 25,
+      "cosechaInicio": 40,
+      "cosechaFin": 80
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 30,
+      "tempIdealMin": 15,
+      "tempIdealMax": 25,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 10000,
+    "lumenMax": 28000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "oregano",
+    "nombre": "Or\u00e9gano",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 8,
+    "aguaBase": 0.3,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.3
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.6
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.5
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 30,
+      "cosechaInicio": 50,
+      "cosechaFin": 90
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 30,
+      "tempIdealMin": 18,
+      "tempIdealMax": 25,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "tomillo",
+    "nombre": "Tomillo",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 8,
+    "aguaBase": 0.3,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.3
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0.4
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 35,
+      "cosechaInicio": 55,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 3,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "romero",
+    "nombre": "Romero",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 10,
+    "aguaBase": 0.4,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 18,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.2
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 150,
+        "coef": 0.4
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 45,
+      "cosechaInicio": 70,
+      "cosechaFin": 130
+    },
+    "clima": {
+      "tempMin": 2,
+      "tempMax": 32,
+      "tempIdealMin": 15,
+      "tempIdealMax": 25,
+      "humMin": 30,
+      "humMax": 65,
+      "humIdealMin": 40,
+      "humIdealMax": 55
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 14,
+    "waterTempMax": 20
+  },
+  {
+    "id": "salvia",
+    "nombre": "Salvia",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Medicinal",
+    "volumenTierra": 10,
+    "aguaBase": 0.4,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.3
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.6
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0.5
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 35,
+      "cosechaInicio": 55,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 30,
+      "tempIdealMin": 15,
+      "tempIdealMax": 25,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 15000,
+    "lumenMax": 30000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "eneldo",
+    "nombre": "Eneldo",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 8,
+    "aguaBase": 0.4,
+    "semanasCicloMin": 4,
+    "semanasCicloMax": 6,
+    "fasesRiego": [
+      {
+        "hastaDia": 10,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 25,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 55,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 20,
+      "cosechaInicio": 30,
+      "cosechaFin": 50
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "estragon",
+    "nombre": "Estrag\u00f3n",
+    "variedad": "Franc\u00e9s",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Arom\u00e1tica",
+    "volumenTierra": 8,
+    "aguaBase": 0.4,
+    "semanasCicloMin": 6,
+    "semanasCicloMax": 10,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 65,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 30,
+      "cosechaInicio": 45,
+      "cosechaFin": 75
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 24,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 12000,
+    "lumenMax": 28000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "girasol",
+    "nombre": "Girasol",
+    "variedad": "Anual",
+    "icon": "\ud83c\udf3b",
+    "categoria": "Ornamental",
+    "volumenTierra": 20,
+    "aguaBase": 1.5,
+    "semanasCicloMin": 9,
+    "semanasCicloMax": 13,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 80,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 8,
+      "crecimiento": 35,
+      "cosechaInicio": 70,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 8,
+      "tempMax": 30,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 80,
+      "humIdealMin": 50,
+      "humIdealMax": 70
+    },
+    "lumenMin": 30000,
+    "lumenMax": 60000,
+    "waterTempMin": 18,
+    "waterTempMax": 25
+  },
+  {
+    "id": "clavel",
+    "nombre": "Clavel",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83c\udf38",
+    "categoria": "Ornamental",
+    "volumenTierra": 10,
+    "aguaBase": 0.8,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 18,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 40,
+      "cosechaInicio": 80,
+      "cosechaFin": 120
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "tulipan",
+    "nombre": "Tulip\u00e1n",
+    "variedad": "Darwin",
+    "icon": "\ud83c\udf37",
+    "categoria": "Ornamental",
+    "volumenTierra": 10,
+    "aguaBase": 0.6,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 40,
+      "cosechaInicio": 70,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 2,
+      "tempMax": 22,
+      "tempIdealMin": 10,
+      "tempIdealMax": 18,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 12000,
+    "lumenMax": 30000,
+    "waterTempMin": 12,
+    "waterTempMax": 18
+  },
+  {
+    "id": "margarita",
+    "nombre": "Margarita",
+    "variedad": "Blanca",
+    "icon": "\ud83c\udf3c",
+    "categoria": "Ornamental",
+    "volumenTierra": 8,
+    "aguaBase": 0.5,
+    "semanasCicloMin": 6,
+    "semanasCicloMax": 10,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 65,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 25,
+      "cosechaInicio": 45,
+      "cosechaFin": 70
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 30,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "orquidea",
+    "nombre": "Orqu\u00eddea",
+    "variedad": "Phalaenopsis",
+    "icon": "\ud83c\udf38",
+    "categoria": "Ornamental",
+    "volumenTierra": 5,
+    "aguaBase": 0.2,
+    "semanasCicloMin": 16,
+    "semanasCicloMax": 52,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.2
+      },
+      {
+        "hastaDia": 180,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 365,
+        "coef": 0.3
+      }
+    ],
+    "hitos": {
+      "germinacion": 30,
+      "crecimiento": 90,
+      "cosechaInicio": 180,
+      "cosechaFin": 365
+    },
+    "clima": {
+      "tempMin": 15,
+      "tempMax": 30,
+      "tempIdealMin": 20,
+      "tempIdealMax": 25,
+      "humMin": 60,
+      "humMax": 90,
+      "humIdealMin": 70,
+      "humIdealMax": 85
+    },
+    "lumenMin": 5000,
+    "lumenMax": 15000,
+    "waterTempMin": 18,
+    "waterTempMax": 25
+  },
+  {
+    "id": "lirio",
+    "nombre": "Lirio",
+    "variedad": "Blanco",
+    "icon": "\ud83c\udf38",
+    "categoria": "Ornamental",
+    "volumenTierra": 10,
+    "aguaBase": 0.7,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 40,
+      "cosechaInicio": 70,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 25,
+      "tempIdealMin": 15,
+      "tempIdealMax": 20,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 15,
+    "waterTempMax": 22
+  },
+  {
+    "id": "gladiolo",
+    "nombre": "Gladiolo",
+    "variedad": "H\u00edbrido",
+    "icon": "\ud83c\udf38",
+    "categoria": "Ornamental",
+    "volumenTierra": 12,
+    "aguaBase": 0.9,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0.9
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 35,
+      "cosechaInicio": 60,
+      "cosechaFin": 90
+    },
+    "clima": {
+      "tempMin": 8,
+      "tempMax": 28,
+      "tempIdealMin": 18,
+      "tempIdealMax": 24,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 16,
+    "waterTempMax": 22
+  },
+  {
+    "id": "petunia",
+    "nombre": "Petunia",
+    "variedad": "Colgante",
+    "icon": "\ud83c\udf38",
+    "categoria": "Ornamental",
+    "volumenTierra": 8,
+    "aguaBase": 0.6,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0.9
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 30,
+      "cosechaInicio": 50,
+      "cosechaFin": 80
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 28,
+      "tempIdealMin": 18,
+      "tempIdealMax": 24,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 12000,
+    "lumenMax": 28000,
+    "waterTempMin": 16,
+    "waterTempMax": 22
+  },
+  {
+    "id": "geranio",
+    "nombre": "Geranio",
+    "variedad": "Zonal",
+    "icon": "\ud83c\udf38",
+    "categoria": "Ornamental",
+    "volumenTierra": 10,
+    "aguaBase": 0.7,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 18,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0.9
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 40,
+      "cosechaInicio": 70,
+      "cosechaFin": 120
+    },
+    "clima": {
+      "tempMin": 8,
+      "tempMax": 30,
+      "tempIdealMin": 18,
+      "tempIdealMax": 24,
+      "humMin": 50,
+      "humMax": 75,
+      "humIdealMin": 60,
+      "humIdealMax": 70
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 16,
+    "waterTempMax": 22
+  },
+  {
+    "id": "begonia",
+    "nombre": "Begonia",
+    "variedad": "Floraci\u00f3n",
+    "icon": "\ud83c\udf38",
+    "categoria": "Ornamental",
+    "volumenTierra": 8,
+    "aguaBase": 0.5,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 40,
+      "cosechaInicio": 65,
+      "cosechaFin": 90
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 28,
+      "tempIdealMin": 18,
+      "tempIdealMax": 24,
+      "humMin": 60,
+      "humMax": 85,
+      "humIdealMin": 65,
+      "humIdealMax": 80
+    },
+    "lumenMin": 8000,
+    "lumenMax": 20000,
+    "waterTempMin": 18,
+    "waterTempMax": 24
+  },
+  {
+    "id": "dalia",
+    "nombre": "Dalia",
+    "variedad": "Decorativa",
+    "icon": "\ud83c\udf38",
+    "categoria": "Ornamental",
+    "volumenTierra": 15,
+    "aguaBase": 1,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 25,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 90,
+        "coef": 1
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 40,
+      "cosechaInicio": 70,
+      "cosechaFin": 95
+    },
+    "clima": {
+      "tempMin": 8,
+      "tempMax": 28,
+      "tempIdealMin": 18,
+      "tempIdealMax": 24,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 18,
+    "waterTempMax": 24
+  },
+  {
+    "id": "crisantemo",
+    "nombre": "Crisantemo",
+    "variedad": "Coreano",
+    "icon": "\ud83c\udf38",
+    "categoria": "Ornamental",
+    "volumenTierra": 12,
+    "aguaBase": 0.8,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0.9
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 45,
+      "cosechaInicio": 75,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 25,
+      "tempIdealMin": 15,
+      "tempIdealMax": 20,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 12000,
+    "lumenMax": 28000,
+    "waterTempMin": 15,
+    "waterTempMax": 20
+  },
+  {
+    "id": "helecho",
+    "nombre": "Helecho",
+    "variedad": "Culantrillo",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Ornamental",
+    "volumenTierra": 8,
+    "aguaBase": 0.4,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 52,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 180,
+        "coef": 0.6
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 60,
+      "cosechaInicio": 90,
+      "cosechaFin": 365
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 28,
+      "tempIdealMin": 18,
+      "tempIdealMax": 24,
+      "humMin": 60,
+      "humMax": 90,
+      "humIdealMin": 70,
+      "humIdealMax": 85
+    },
+    "lumenMin": 3000,
+    "lumenMax": 10000,
+    "waterTempMin": 18,
+    "waterTempMax": 25
+  },
+  {
+    "id": "potus",
+    "nombre": "Potus",
+    "variedad": "Dorado",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Ornamental",
+    "volumenTierra": 5,
+    "aguaBase": 0.3,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 52,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.3
+      },
+      {
+        "hastaDia": 180,
+        "coef": 0.5
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 60,
+      "cosechaInicio": 90,
+      "cosechaFin": 365
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 30,
+      "tempIdealMin": 18,
+      "tempIdealMax": 26,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 3000,
+    "lumenMax": 10000,
+    "waterTempMin": 18,
+    "waterTempMax": 25
+  },
+  {
+    "id": "ficus",
+    "nombre": "Ficus",
+    "variedad": "Benjamina",
+    "icon": "\ud83c\udf33",
+    "categoria": "Ornamental",
+    "volumenTierra": 20,
+    "aguaBase": 0.8,
+    "semanasCicloMin": 20,
+    "semanasCicloMax": 52,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 365,
+        "coef": 0.6
+      }
+    ],
+    "hitos": {
+      "germinacion": 30,
+      "crecimiento": 90,
+      "cosechaInicio": 180,
+      "cosechaFin": 365
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 30,
+      "tempIdealMin": 18,
+      "tempIdealMax": 25,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 8000,
+    "lumenMax": 20000,
+    "waterTempMin": 18,
+    "waterTempMax": 25
+  },
+  {
+    "id": "aguacate",
+    "nombre": "Aguacate",
+    "variedad": "Hass",
+    "icon": "\ud83e\udd51",
+    "categoria": "Alimento",
+    "volumenTierra": 40,
+    "aguaBase": 5,
+    "semanasCicloMin": 52,
+    "semanasCicloMax": 104,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 150,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 365,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 730,
+        "coef": 0.9
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 90,
+      "cosechaInicio": 365,
+      "cosechaFin": 730
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 30,
+      "tempIdealMin": 20,
+      "tempIdealMax": 25,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 25000,
+    "lumenMax": 50000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 15
+  },
+  {
+    "id": "naranja",
+    "nombre": "Naranja",
+    "variedad": "Valencia",
+    "icon": "\ud83c\udf4a",
+    "categoria": "Alimento",
+    "volumenTierra": 40,
+    "aguaBase": 4.5,
+    "semanasCicloMin": 52,
+    "semanasCicloMax": 104,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 180,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 365,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 730,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 120,
+      "cosechaInicio": 365,
+      "cosechaFin": 730
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 80,
+      "humIdealMin": 50,
+      "humIdealMax": 70
+    },
+    "lumenMin": 30000,
+    "lumenMax": 60000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.3,
+    "rendUnidad": 10
+  },
+  {
+    "id": "limon",
+    "nombre": "Lim\u00f3n",
+    "variedad": "Eureka",
+    "icon": "\ud83c\udf4b",
+    "categoria": "Alimento",
+    "volumenTierra": 35,
+    "aguaBase": 4,
+    "semanasCicloMin": 52,
+    "semanasCicloMax": 104,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 180,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 365,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 730,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 120,
+      "cosechaInicio": 365,
+      "cosechaFin": 730
+    },
+    "clima": {
+      "tempMin": 7,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 80,
+      "humIdealMin": 50,
+      "humIdealMax": 70
+    },
+    "lumenMin": 28000,
+    "lumenMax": 55000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 8
+  },
+  {
+    "id": "platano",
+    "nombre": "Pl\u00e1tano",
+    "variedad": "Cavendish",
+    "icon": "\ud83c\udf4c",
+    "categoria": "Alimento",
+    "volumenTierra": 50,
+    "aguaBase": 6,
+    "semanasCicloMin": 40,
+    "semanasCicloMax": 60,
+    "fasesRiego": [
+      {
+        "hastaDia": 90,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 270,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 420,
+        "coef": 1.2
+      }
+    ],
+    "hitos": {
+      "germinacion": 30,
+      "crecimiento": 180,
+      "cosechaInicio": 300,
+      "cosechaFin": 420
+    },
+    "clima": {
+      "tempMin": 15,
+      "tempMax": 35,
+      "tempIdealMin": 24,
+      "tempIdealMax": 30,
+      "humMin": 60,
+      "humMax": 90,
+      "humIdealMin": 70,
+      "humIdealMax": 85
+    },
+    "lumenMin": 30000,
+    "lumenMax": 60000,
+    "waterTempMin": 24,
+    "waterTempMax": 30,
+    "ratioConsumo": 0.5,
+    "rendUnidad": 10
+  },
+  {
+    "id": "mango",
+    "nombre": "Mango",
+    "variedad": "Osteen",
+    "icon": "\ud83e\udd6d",
+    "categoria": "Alimento",
+    "volumenTierra": 50,
+    "aguaBase": 5,
+    "semanasCicloMin": 52,
+    "semanasCicloMax": 104,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 180,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 365,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 730,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 150,
+      "cosechaInicio": 365,
+      "cosechaFin": 730
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 38,
+      "tempIdealMin": 24,
+      "tempIdealMax": 30,
+      "humMin": 40,
+      "humMax": 80,
+      "humIdealMin": 50,
+      "humIdealMax": 70
+    },
+    "lumenMin": 35000,
+    "lumenMax": 65000,
+    "waterTempMin": 22,
+    "waterTempMax": 28,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 10
+  },
+  {
+    "id": "pina",
+    "nombre": "Pi\u00f1a",
+    "variedad": "Cayena",
+    "icon": "\ud83c\udf4d",
+    "categoria": "Alimento",
+    "volumenTierra": 30,
+    "aguaBase": 2.5,
+    "semanasCicloMin": 14,
+    "semanasCicloMax": 20,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 150,
+        "coef": 1
+      },
+      {
+        "hastaDia": 200,
+        "coef": 0.6
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 60,
+      "cosechaInicio": 120,
+      "cosechaFin": 180
+    },
+    "clima": {
+      "tempMin": 15,
+      "tempMax": 35,
+      "tempIdealMin": 22,
+      "tempIdealMax": 28,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 25000,
+    "lumenMax": 50000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 2
+  },
+  {
+    "id": "papaya",
+    "nombre": "Papaya",
+    "variedad": "Maradol",
+    "icon": "\ud83c\udf48",
+    "categoria": "Alimento",
+    "volumenTierra": 30,
+    "aguaBase": 4,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 80,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 35,
+      "cosechaInicio": 60,
+      "cosechaFin": 90
+    },
+    "clima": {
+      "tempMin": 18,
+      "tempMax": 35,
+      "tempIdealMin": 24,
+      "tempIdealMax": 30,
+      "humMin": 60,
+      "humMax": 85,
+      "humIdealMin": 70,
+      "humIdealMax": 80
+    },
+    "lumenMin": 25000,
+    "lumenMax": 50000,
+    "waterTempMin": 22,
+    "waterTempMax": 28,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 8
+  },
+  {
+    "id": "guayaba",
+    "nombre": "Guayaba",
+    "variedad": "Blanca",
+    "icon": "\ud83c\udf48",
+    "categoria": "Alimento",
+    "volumenTierra": 30,
+    "aguaBase": 3,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 16,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 100,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 50,
+      "cosechaInicio": 80,
+      "cosechaFin": 110
+    },
+    "clima": {
+      "tempMin": 15,
+      "tempMax": 35,
+      "tempIdealMin": 22,
+      "tempIdealMax": 28,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 5
+  },
+  {
+    "id": "maracuya",
+    "nombre": "Maracuy\u00e1",
+    "variedad": "Amarilla",
+    "icon": "\ud83c\udf48",
+    "categoria": "Alimento",
+    "volumenTierra": 25,
+    "aguaBase": 3,
+    "semanasCicloMin": 7,
+    "semanasCicloMax": 10,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 65,
+        "coef": 1
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 30,
+      "cosechaInicio": 55,
+      "cosechaFin": 75
+    },
+    "clima": {
+      "tempMin": 18,
+      "tempMax": 35,
+      "tempIdealMin": 24,
+      "tempIdealMax": 30,
+      "humMin": 60,
+      "humMax": 85,
+      "humIdealMin": 70,
+      "humIdealMax": 80
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 22,
+    "waterTempMax": 28,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 3
+  },
+  {
+    "id": "mani",
+    "nombre": "Man\u00ed",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83e\udd5c",
+    "categoria": "Alimento",
+    "volumenTierra": 15,
+    "aguaBase": 1.8,
+    "semanasCicloMin": 13,
+    "semanasCicloMax": 18,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 80,
+        "coef": 1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0.5
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 30,
+      "cosechaInicio": 80,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 15,
+      "tempMax": 35,
+      "tempIdealMin": 22,
+      "tempIdealMax": 28,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.05,
+    "rendUnidad": 0.1
+  },
+  {
+    "id": "garbanzo",
+    "nombre": "Garbanzo",
+    "variedad": "Lechoso",
+    "icon": "\ud83e\uded8",
+    "categoria": "Alimento",
+    "volumenTierra": 15,
+    "aguaBase": 1.2,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 16,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 30,
+      "cosechaInicio": 70,
+      "cosechaFin": 90
+    },
+    "clima": {
+      "tempMin": 8,
+      "tempMax": 30,
+      "tempIdealMin": 18,
+      "tempIdealMax": 24,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 15000,
+    "lumenMax": 30000,
+    "waterTempMin": 15,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.03
+  },
+  {
+    "id": "lenteja",
+    "nombre": "Lenteja",
+    "variedad": "Pardina",
+    "icon": "\ud83e\uded8",
+    "categoria": "Alimento",
+    "volumenTierra": 12,
+    "aguaBase": 1,
+    "semanasCicloMin": 9,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 35,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 55,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 25,
+      "cosechaInicio": 55,
+      "cosechaFin": 70
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 28,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 12000,
+    "lumenMax": 25000,
+    "waterTempMin": 14,
+    "waterTempMax": 20,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.02
+  },
+  {
+    "id": "guisante",
+    "nombre": "Guisante",
+    "variedad": "Tirabeque",
+    "icon": "\ud83e\uded8",
+    "categoria": "Alimento",
+    "volumenTierra": 10,
+    "aguaBase": 0.9,
+    "semanasCicloMin": 8,
+    "semanasCicloMax": 11,
+    "fasesRiego": [
+      {
+        "hastaDia": 12,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 30,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 50,
+        "coef": 1
+      },
+      {
+        "hastaDia": 65,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 25,
+      "cosechaInicio": 45,
+      "cosechaFin": 60
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 25,
+      "tempIdealMin": 15,
+      "tempIdealMax": 20,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 10000,
+    "lumenMax": 22000,
+    "waterTempMin": 14,
+    "waterTempMax": 20,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.03
+  },
+  {
+    "id": "haba",
+    "nombre": "Haba",
+    "variedad": "Verde",
+    "icon": "\ud83e\uded8",
+    "categoria": "Alimento",
+    "volumenTierra": 15,
+    "aguaBase": 1.5,
+    "semanasCicloMin": 10,
+    "semanasCicloMax": 14,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 65,
+        "coef": 1
+      },
+      {
+        "hastaDia": 85,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 30,
+      "cosechaInicio": 60,
+      "cosechaFin": 80
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 22,
+      "tempIdealMin": 12,
+      "tempIdealMax": 18,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 12000,
+    "lumenMax": 25000,
+    "waterTempMin": 12,
+    "waterTempMax": 18,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.05
+  },
+  {
+    "id": "trigo",
+    "nombre": "Trigo",
+    "variedad": "Blando",
+    "icon": "\ud83c\udf3e",
+    "categoria": "Alimento",
+    "volumenTierra": 5,
+    "aguaBase": 2.5,
+    "semanasCicloMin": 16,
+    "semanasCicloMax": 22,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 100,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 130,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 40,
+      "cosechaInicio": 100,
+      "cosechaFin": 130
+    },
+    "clima": {
+      "tempMin": 4,
+      "tempMax": 30,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 40,
+      "humMax": 75,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 15,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.5,
+    "rendUnidad": 0.005
+  },
+  {
+    "id": "arroz",
+    "nombre": "Arroz",
+    "variedad": "Largo",
+    "icon": "\ud83c\udf3e",
+    "categoria": "Alimento",
+    "volumenTierra": 10,
+    "aguaBase": 5,
+    "semanasCicloMin": 14,
+    "semanasCicloMax": 18,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 70,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 100,
+        "coef": 1
+      },
+      {
+        "hastaDia": 120,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 40,
+      "cosechaInicio": 90,
+      "cosechaFin": 120
+    },
+    "clima": {
+      "tempMin": 15,
+      "tempMax": 35,
+      "tempIdealMin": 22,
+      "tempIdealMax": 28,
+      "humMin": 60,
+      "humMax": 100,
+      "humIdealMin": 80,
+      "humIdealMax": 95
+    },
+    "lumenMin": 25000,
+    "lumenMax": 50000,
+    "waterTempMin": 22,
+    "waterTempMax": 28,
+    "ratioConsumo": 0.6,
+    "rendUnidad": 0.01
+  },
+  {
+    "id": "avena",
+    "nombre": "Avena",
+    "variedad": "Blanca",
+    "icon": "\ud83c\udf3e",
+    "categoria": "Alimento",
+    "volumenTierra": 5,
+    "aguaBase": 2,
+    "semanasCicloMin": 14,
+    "semanasCicloMax": 18,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 80,
+        "coef": 1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 35,
+      "cosechaInicio": 75,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 3,
+      "tempMax": 25,
+      "tempIdealMin": 12,
+      "tempIdealMax": 18,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 18000,
+    "lumenMax": 35000,
+    "waterTempMin": 15,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.005
+  },
+  {
+    "id": "centeno",
+    "nombre": "Centeno",
+    "variedad": "Invierno",
+    "icon": "\ud83c\udf3e",
+    "categoria": "Alimento",
+    "volumenTierra": 5,
+    "aguaBase": 2,
+    "semanasCicloMin": 16,
+    "semanasCicloMax": 20,
+    "fasesRiego": [
+      {
+        "hastaDia": 25,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 90,
+        "coef": 1
+      },
+      {
+        "hastaDia": 110,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 40,
+      "cosechaInicio": 90,
+      "cosechaFin": 110
+    },
+    "clima": {
+      "tempMin": 0,
+      "tempMax": 22,
+      "tempIdealMin": 10,
+      "tempIdealMax": 16,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 18000,
+    "lumenMax": 35000,
+    "waterTempMin": 12,
+    "waterTempMax": 18,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.005
+  },
+  {
+    "id": "sorgo",
+    "nombre": "Sorgo",
+    "variedad": "Blanco",
+    "icon": "\ud83c\udf3e",
+    "categoria": "Alimento",
+    "volumenTierra": 8,
+    "aguaBase": 2,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 16,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 55,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 80,
+        "coef": 1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 35,
+      "cosechaInicio": 75,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 38,
+      "tempIdealMin": 22,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 25000,
+    "lumenMax": 50000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 0.01
+  },
+  {
+    "id": "mijo",
+    "nombre": "Mijo",
+    "variedad": "Perla",
+    "icon": "\ud83c\udf3e",
+    "categoria": "Alimento",
+    "volumenTierra": 8,
+    "aguaBase": 1.5,
+    "semanasCicloMin": 9,
+    "semanasCicloMax": 12,
+    "fasesRiego": [
+      {
+        "hastaDia": 15,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 40,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 60,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 75,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 25,
+      "cosechaInicio": 55,
+      "cosechaFin": 75
+    },
+    "clima": {
+      "tempMin": 15,
+      "tempMax": 35,
+      "tempIdealMin": 22,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.005
+  },
+  {
+    "id": "quinoa",
+    "nombre": "Quinoa",
+    "variedad": "Blanca",
+    "icon": "\ud83c\udf3e",
+    "categoria": "Alimento",
+    "volumenTierra": 10,
+    "aguaBase": 1.2,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 16,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.4
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.7
+      },
+      {
+        "hastaDia": 80,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 30,
+      "cosechaInicio": 75,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 30,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 65
+    },
+    "lumenMin": 18000,
+    "lumenMax": 35000,
+    "waterTempMin": 15,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 0.01
+  },
+  {
+    "id": "curcuma",
+    "nombre": "C\u00farcuma",
+    "variedad": "Longa",
+    "icon": "\ud83e\udde1",
+    "categoria": "Medicinal",
+    "volumenTierra": 15,
+    "aguaBase": 1.5,
+    "semanasCicloMin": 26,
+    "semanasCicloMax": 34,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 180,
+        "coef": 1
+      },
+      {
+        "hastaDia": 220,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 60,
+      "cosechaInicio": 180,
+      "cosechaFin": 220
+    },
+    "clima": {
+      "tempMin": 20,
+      "tempMax": 35,
+      "tempIdealMin": 25,
+      "tempIdealMax": 30,
+      "humMin": 60,
+      "humMax": 90,
+      "humIdealMin": 70,
+      "humIdealMax": 85
+    },
+    "lumenMin": 15000,
+    "lumenMax": 30000,
+    "waterTempMin": 22,
+    "waterTempMax": 28
+  },
+  {
+    "id": "jengibre",
+    "nombre": "Jengibre",
+    "variedad": "Com\u00fan",
+    "icon": "\ud83e\udd54",
+    "categoria": "Medicinal",
+    "volumenTierra": 15,
+    "aguaBase": 1.5,
+    "semanasCicloMin": 24,
+    "semanasCicloMax": 32,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 180,
+        "coef": 1
+      },
+      {
+        "hastaDia": 200,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 60,
+      "cosechaInicio": 180,
+      "cosechaFin": 200
+    },
+    "clima": {
+      "tempMin": 20,
+      "tempMax": 35,
+      "tempIdealMin": 25,
+      "tempIdealMax": 30,
+      "humMin": 60,
+      "humMax": 90,
+      "humIdealMin": 70,
+      "humIdealMax": 85
+    },
+    "lumenMin": 15000,
+    "lumenMax": 30000,
+    "waterTempMin": 22,
+    "waterTempMax": 28
+  },
+  {
+    "id": "aloevera",
+    "nombre": "Aloe vera",
+    "variedad": "Barbadensis",
+    "icon": "\ud83c\udf31",
+    "categoria": "Medicinal",
+    "volumenTierra": 10,
+    "aguaBase": 0.3,
+    "semanasCicloMin": 20,
+    "semanasCicloMax": 52,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.2
+      },
+      {
+        "hastaDia": 365,
+        "coef": 0.3
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 90,
+      "cosechaInicio": 180,
+      "cosechaFin": 365
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 70,
+      "humIdealMin": 50,
+      "humIdealMax": 60
+    },
+    "lumenMin": 10000,
+    "lumenMax": 25000,
+    "waterTempMin": 18,
+    "waterTempMax": 25
+  },
+  {
+    "id": "stevia",
+    "nombre": "Stevia",
+    "variedad": "Rebaudiana",
+    "icon": "\ud83c\udf3f",
+    "categoria": "Medicinal",
+    "volumenTierra": 10,
+    "aguaBase": 0.6,
+    "semanasCicloMin": 12,
+    "semanasCicloMax": 16,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 70,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0.9
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 40,
+      "cosechaInicio": 70,
+      "cosechaFin": 100
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 18,
+    "waterTempMax": 25
+  },
+  {
+    "id": "champinon",
+    "nombre": "Champi\u00f1\u00f3n",
+    "variedad": "Blanco",
+    "icon": "\ud83c\udf44",
+    "categoria": "Otro",
+    "volumenTierra": 5,
+    "aguaBase": 0.2,
+    "semanasCicloMin": 3,
+    "semanasCicloMax": 5,
+    "fasesRiego": [
+      {
+        "hastaDia": 7,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 14,
+        "coef": 1
+      },
+      {
+        "hastaDia": 21,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 30,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 10,
+      "cosechaInicio": 14,
+      "cosechaFin": 28
+    },
+    "clima": {
+      "tempMin": 15,
+      "tempMax": 25,
+      "tempIdealMin": 18,
+      "tempIdealMax": 22,
+      "humMin": 80,
+      "humMax": 95,
+      "humIdealMin": 85,
+      "humIdealMax": 95
+    },
+    "lumenMin": 0,
+    "lumenMax": 500,
+    "waterTempMin": 18,
+    "waterTempMax": 22
+  },
+  {
+    "id": "setaostra",
+    "nombre": "Seta ostra",
+    "variedad": "Gris",
+    "icon": "\ud83c\udf44",
+    "categoria": "Otro",
+    "volumenTierra": 5,
+    "aguaBase": 0.2,
+    "semanasCicloMin": 3,
+    "semanasCicloMax": 5,
+    "fasesRiego": [
+      {
+        "hastaDia": 7,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 14,
+        "coef": 1
+      },
+      {
+        "hastaDia": 21,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 30,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 5,
+      "crecimiento": 10,
+      "cosechaInicio": 14,
+      "cosechaFin": 28
+    },
+    "clima": {
+      "tempMin": 15,
+      "tempMax": 28,
+      "tempIdealMin": 20,
+      "tempIdealMax": 24,
+      "humMin": 80,
+      "humMax": 95,
+      "humIdealMin": 85,
+      "humIdealMax": 95
+    },
+    "lumenMin": 0,
+    "lumenMax": 500,
+    "waterTempMin": 18,
+    "waterTempMax": 22
+  },
+  {
+    "id": "shiitake",
+    "nombre": "Shiitake",
+    "variedad": "Japon\u00e9s",
+    "icon": "\ud83c\udf44",
+    "categoria": "Otro",
+    "volumenTierra": 5,
+    "aguaBase": 0.2,
+    "semanasCicloMin": 4,
+    "semanasCicloMax": 6,
+    "fasesRiego": [
+      {
+        "hastaDia": 10,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 20,
+        "coef": 1
+      },
+      {
+        "hastaDia": 30,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 42,
+        "coef": 0
+      }
+    ],
+    "hitos": {
+      "germinacion": 7,
+      "crecimiento": 14,
+      "cosechaInicio": 20,
+      "cosechaFin": 40
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 24,
+      "tempIdealMin": 16,
+      "tempIdealMax": 20,
+      "humMin": 80,
+      "humMax": 95,
+      "humIdealMin": 85,
+      "humIdealMax": 95
+    },
+    "lumenMin": 0,
+    "lumenMax": 500,
+    "waterTempMin": 18,
+    "waterTempMax": 22
+  },
+  {
+    "id": "batata",
+    "nombre": "Batata",
+    "variedad": "Blanca",
+    "icon": "\ud83c\udf60",
+    "categoria": "Alimento",
+    "volumenTierra": 20,
+    "aguaBase": 2.2,
+    "semanasCicloMin": 15,
+    "semanasCicloMax": 20,
+    "fasesRiego": [
+      {
+        "hastaDia": 20,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 50,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 80,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 100,
+        "coef": 0.6
+      }
+    ],
+    "hitos": {
+      "germinacion": 10,
+      "crecimiento": 40,
+      "cosechaInicio": 90,
+      "cosechaFin": 120
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 50,
+      "humMax": 85,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 18,
+    "waterTempMax": 25,
+    "ratioConsumo": 0.5,
+    "rendUnidad": 2
+  },
+  {
+    "id": "yuca",
+    "nombre": "Yuca",
+    "variedad": "Dulce",
+    "icon": "\ud83e\udd55",
+    "categoria": "Alimento",
+    "volumenTierra": 30,
+    "aguaBase": 2.5,
+    "semanasCicloMin": 24,
+    "semanasCicloMax": 36,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 180,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 240,
+        "coef": 0.5
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 60,
+      "cosechaInicio": 180,
+      "cosechaFin": 240
+    },
+    "clima": {
+      "tempMin": 18,
+      "tempMax": 35,
+      "tempIdealMin": 24,
+      "tempIdealMax": 30,
+      "humMin": 50,
+      "humMax": 85,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 20000,
+    "lumenMax": 40000,
+    "waterTempMin": 22,
+    "waterTempMax": 28,
+    "ratioConsumo": 0.4,
+    "rendUnidad": 3
+  },
+  {
+    "id": "arandano",
+    "nombre": "Ar\u00e1ndano",
+    "variedad": "Azul",
+    "icon": "\ud83e\uded0",
+    "categoria": "Alimento",
+    "volumenTierra": 15,
+    "aguaBase": 2,
+    "semanasCicloMin": 20,
+    "semanasCicloMax": 30,
+    "fasesRiego": [
+      {
+        "hastaDia": 30,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 90,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 180,
+        "coef": 1.1
+      },
+      {
+        "hastaDia": 270,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 14,
+      "crecimiento": 60,
+      "cosechaInicio": 150,
+      "cosechaFin": 270
+    },
+    "clima": {
+      "tempMin": 5,
+      "tempMax": 30,
+      "tempIdealMin": 15,
+      "tempIdealMax": 22,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 15000,
+    "lumenMax": 35000,
+    "waterTempMin": 15,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 2
+  },
+  {
+    "id": "kiwi",
+    "nombre": "Kiwi",
+    "variedad": "Verde",
+    "icon": "\ud83e\udd5d",
+    "categoria": "Alimento",
+    "volumenTierra": 30,
+    "aguaBase": 3.5,
+    "semanasCicloMin": 26,
+    "semanasCicloMax": 34,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 150,
+        "coef": 0.8
+      },
+      {
+        "hastaDia": 240,
+        "coef": 1.2
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 90,
+      "cosechaInicio": 180,
+      "cosechaFin": 240
+    },
+    "clima": {
+      "tempMin": 10,
+      "tempMax": 30,
+      "tempIdealMin": 18,
+      "tempIdealMax": 25,
+      "humMin": 60,
+      "humMax": 85,
+      "humIdealMin": 65,
+      "humIdealMax": 80
+    },
+    "lumenMin": 18000,
+    "lumenMax": 35000,
+    "waterTempMin": 16,
+    "waterTempMax": 22,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 5
+  },
+  {
+    "id": "pomelo",
+    "nombre": "Pomelo",
+    "variedad": "Blanco",
+    "icon": "\ud83c\udf4a",
+    "categoria": "Alimento",
+    "volumenTierra": 35,
+    "aguaBase": 4.2,
+    "semanasCicloMin": 52,
+    "semanasCicloMax": 104,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 180,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 365,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 730,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 120,
+      "cosechaInicio": 365,
+      "cosechaFin": 730
+    },
+    "clima": {
+      "tempMin": 7,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 80,
+      "humIdealMin": 50,
+      "humIdealMax": 70
+    },
+    "lumenMin": 30000,
+    "lumenMax": 60000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 10
+  },
+  {
+    "id": "mandarina",
+    "nombre": "Mandarina",
+    "variedad": "Clementina",
+    "icon": "\ud83c\udf4a",
+    "categoria": "Alimento",
+    "volumenTierra": 35,
+    "aguaBase": 4,
+    "semanasCicloMin": 52,
+    "semanasCicloMax": 104,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 180,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 365,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 730,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 120,
+      "cosechaInicio": 365,
+      "cosechaFin": 730
+    },
+    "clima": {
+      "tempMin": 8,
+      "tempMax": 35,
+      "tempIdealMin": 20,
+      "tempIdealMax": 28,
+      "humMin": 40,
+      "humMax": 80,
+      "humIdealMin": 50,
+      "humIdealMax": 70
+    },
+    "lumenMin": 28000,
+    "lumenMax": 55000,
+    "waterTempMin": 20,
+    "waterTempMax": 26,
+    "ratioConsumo": 0.2,
+    "rendUnidad": 10
+  },
+  {
+    "id": "lima",
+    "nombre": "Lima",
+    "variedad": "Mejicana",
+    "icon": "\ud83c\udf4b",
+    "categoria": "Alimento",
+    "volumenTierra": 30,
+    "aguaBase": 3.5,
+    "semanasCicloMin": 52,
+    "semanasCicloMax": 104,
+    "fasesRiego": [
+      {
+        "hastaDia": 60,
+        "coef": 0.5
+      },
+      {
+        "hastaDia": 180,
+        "coef": 0.9
+      },
+      {
+        "hastaDia": 365,
+        "coef": 1.2
+      },
+      {
+        "hastaDia": 730,
+        "coef": 0.8
+      }
+    ],
+    "hitos": {
+      "germinacion": 21,
+      "crecimiento": 120,
+      "cosechaInicio": 365,
+      "cosechaFin": 730
+    },
+    "clima": {
+      "tempMin": 12,
+      "tempMax": 35,
+      "tempIdealMin": 22,
+      "tempIdealMax": 30,
+      "humMin": 50,
+      "humMax": 80,
+      "humIdealMin": 60,
+      "humIdealMax": 75
+    },
+    "lumenMin": 28000,
+    "lumenMax": 55000,
+    "waterTempMin": 22,
+    "waterTempMax": 28,
+    "ratioConsumo": 0.05,
+    "rendUnidad": 8
+  },
+  {
+    "id": "coco",
+    "nombre": "Coco",
+    "variedad": "Enano",
+    "icon": "\ud83e\udd65",
+    "categoria": "Alimento",
+    "volumenTierra": 50,
+    "aguaBase": 8,
+    "semanasCicloMin": 104,
+    "semanasCicloMax": 156,
+    "fasesRiego": [
+      {
+        "hastaDia": 90,
+        "coef": 0.6
+      },
+      {
+        "hastaDia": 365,
+        "coef": 1
+      },
+      {
+        "hastaDia": 730,
+        "coef": 1.2
+      }
+    ],
+    "hitos": {
+      "germinacion": 30,
+      "crecimiento": 180,
+      "cosechaInicio": 365,
+      "cosechaFin": 730
+    },
+    "clima": {
+      "tempMin": 22,
+      "tempMax": 35,
+      "tempIdealMin": 25,
+      "tempIdealMax": 30,
+      "humMin": 70,
+      "humMax": 95,
+      "humIdealMin": 80,
+      "humIdealMax": 90
+    },
+    "lumenMin": 35000,
+    "lumenMax": 65000,
+    "waterTempMin": 24,
+    "waterTempMax": 30,
+    "ratioConsumo": 0.1,
+    "rendUnidad": 15
+  }
+]
