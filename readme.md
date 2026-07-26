@@ -1,7 +1,7 @@
 <img width="100" height="100" alt="AgroLogo" src="https://github.com/user-attachments/assets/ee95bc57-b333-4b73-8f09-e03f6765b837" /> 
 
 
-# 🌱 **Céspedes Agro 2.4**
+# 🌱 **Céspedes Agro 2.0**
 
 **Español**  
 Prueba de concepto de un sistema IoT para agricultura urbana. Este repositorio contiene el código y la configuración del proyecto, organizado por versiones. Para una descripción general del proyecto sin detalles técnicos, consulta los PDFs en cada carpeta de versión (español, inglés, ruso).
@@ -14,7 +14,6 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 
 ---
 
-## 🌱 **Céspedes Agro 2.0**
 - [📑 Proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/Proyect.pdf)
 - [📑 Proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/Proyecto.pdf)
 - [📑 Проект (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/проект.pdf)
@@ -55,27 +54,6 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 - Manual de instalación completo.
 
 ---
-
-## 📂 Estructura del repositorio
-Cespedes-Agro/
-├── v2.0/ ← Primera versión del proyecto
-│ ├── esp32/ ← Firmware ESP32
-│ ├── img/ ← Imágenes
-│ ├── pdf/ ← Documentación
-│ └── web/ ← Página web
-├── v2.2/ ← Segunda versión (Junio 2026)
-│ ├── esp32/ ← Firmware ESP32 v2
-│ ├── img/ ← Imágenes
-│ ├── pdf/ ← Documentación
-│ └── web/ ← Página web v2
-└── v2.4/ ← Versión actual (Julio 2026)
-├── firmware_esp32/ ← Firmware ESP32 v2.4
-├── proyecto/ ← Backend Python (API, riego, MQTT)
-├── web/ ← Frontend (HTML + imágenes)
-├── logo/ ← Logos
-├── manual/ ← Manual de instalación
-└── presentacion/ ← Presentación del proyecto
-## 🌱 **Céspedes Agro 2.4**
 
 Imagen hecha con inteligencia artificial / Изображение, созданное искусственным интеллектом / Image created with artificial intelligence
 <img width="832" height="464" alt="IAgro" src="https://github.com/user-attachments/assets/2f7e5e71-6eea-4fe4-a09a-c9d3a263f5df" />
