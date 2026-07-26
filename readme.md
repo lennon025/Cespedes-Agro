@@ -1,7 +1,7 @@
 <img width="100" height="100" alt="AgroLogo" src="https://github.com/user-attachments/assets/ee95bc57-b333-4b73-8f09-e03f6765b837" /> 
 
 
-# 🌱 **Céspedes Agro 2.0**
+# 🌱 **Céspedes Agro**
 
 **Español**  
 Prueba de concepto de un sistema IoT para agricultura urbana. Este repositorio contiene el código y la configuración del proyecto, organizado por versiones. Para una descripción general del proyecto sin detalles técnicos, consulta los PDFs en cada carpeta de versión (español, inglés, ruso).
@@ -13,7 +13,7 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 Подтверждение концепции IoT-системы для городского фермерства. Этот репозиторий содержит код и настройки проекта, организованные по версиям. Для общего описания проекта без технических деталей смотрите PDF-файлы в каждой папке версии (испанский, английский, русский).
 
 ---
-
+## 🌱 **Céspedes Agro 2.0** (Junio 2026)
 - [📑 Proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/Proyect.pdf)
 - [📑 Proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/Proyecto.pdf)
 - [📑 Проект (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/проект.pdf)
