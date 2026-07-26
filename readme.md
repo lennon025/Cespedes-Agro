@@ -1,29 +1,81 @@
 <img width="100" height="100" alt="AgroLogo" src="https://github.com/user-attachments/assets/ee95bc57-b333-4b73-8f09-e03f6765b837" /> 
 
-# 🌱 **Céspedes Agro 2.0**
+
+# 🌱 **Céspedes Agro 2.4**
 
 **Español**  
-Prueba de concepto de un sistema IoT para agricultura urbana. Este repositorio contiene el código y la configuración del proyecto. Para una descripción general del proyecto (qué es, estado actual y objetivos futuros) sin detalles técnicos, consulta los PDFs en la carpeta `pdf/` (español, inglés, ruso).
+Prueba de concepto de un sistema IoT para agricultura urbana. Este repositorio contiene el código y la configuración del proyecto, organizado por versiones. Para una descripción general del proyecto sin detalles técnicos, consulta los PDFs en cada carpeta de versión (español, inglés, ruso).
 
 **English**  
-Proof of concept of an IoT system for urban farming. This repository contains the code and setup. For a non‑technical project description (what it is, current status and future goals), see the PDFs in the `pdf/` folder (Spanish, English, Russian).
+Proof of concept of an IoT system for urban farming. This repository contains the code and setup, organized by version. For a non‑technical project description, see the PDFs in each version folder (Spanish, English, Russian).
 
 **Русский**  
-Подтверждение концепции IoT-системы для городского фермерства. Этот репозиторий содержит код и настройки проекта. Для общего описания проекта (что это, текущее состояние и цели на будущее) без технических деталей, смотрите PDF-файлы в папке `pdf/` (испанский, английский, русский).
+Подтверждение концепции IoT-системы для городского фермерства. Этот репозиторий содержит код и настройки проекта, организованные по версиям. Для общего описания проекта без технических деталей смотрите PDF-файлы в каждой папке версии (испанский, английский, русский).
 
-- [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/проект.pdf)
-- [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto.pdf)
-- [📑 Céspedes Agro (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyect.pdf)
-- [Code ESP32](https://github.com/lennon025/Cespedes-Agro/blob/master/esp32/esp32.ino)
-- **→ [Web Céspedes.Agro](https://htmlpreview.github.io/?https://raw.githubusercontent.com/lennon025/Cespedes-Agro/refs/heads/master/web/index.htm)**
+---
 
-**update — 06 - 2026**  
-## 🌱 **Céspedes Agro 2.2**
-- [📄 Céspedes Agro v2 (Español)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Proyecto%206%20-%202026.pdf)
-- [📄 Céspedes Agro v2 (English)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Project%206%20-%202026.pdf)
-- [📄 Céspedes Agro v2 (Русский)](https://github.com/lennon025/Cespedes-Agro/blob/master/pdf/Проект%206%20-%202026.pdf)
-- [Code ESP32 v2](https://github.com/lennon025/Cespedes-Agro/blob/master/esp32/esp32_v2.cpp)
-- [**→Web v2 Céspedes.Agro (v2)**](https://htmlpreview.github.io/?https://raw.githubusercontent.com/lennon025/Cespedes-Agro/refs/heads/master/web/index_v2.htm)
+## 🌱 **Céspedes Agro 2.0**
+- [📑 Proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/Proyect.pdf)
+- [📑 Proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/Proyecto.pdf)
+- [📑 Проект (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/pdf/проект.pdf)
+- [💻 Código ESP32](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.0/esp32/esp32.ino)
+- [🌐 Web v2.0](https://htmlpreview.github.io/?https://raw.githubusercontent.com/lennon025/Cespedes-Agro/refs/heads/master/v2.0/web/index_v2.0.htm)
+
+---
+
+## 🌱 **Céspedes Agro 2.2** (Junio 2026)
+- [📄 Proyecto v2.2 (Español)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.2/pdf/Proyecto%206%20-%202026.pdf)
+- [📄 Proyecto v2.2 (English)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.2/pdf/Proyecto%206%20-%202026.pdf)
+- [📄 Проект v2.2 (Русский)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.2/pdf/Проект%206%20-%202026.pdf)
+- [💻 Código ESP32 v2.2](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.2/esp32/esp32_v2.cpp)
+- [🌐 Web v2.2](https://htmlpreview.github.io/?https://raw.githubusercontent.com/lennon025/Cespedes-Agro/refs/heads/master/v2.2/web/index_v2.2.htm)
+
+---
+
+## 🌱 **Céspedes Agro 2.4** (Julio 2026) ← ACTUAL
+
+### 📂 Estructura de la versión 2.4
+- [🌐 Web (index.html)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/web/index.html)
+- [📝 Editor de Cultivos](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/web/web/edit.html)
+- [🐍 API Flask](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/proyecto/api.py)
+- [💧 Riego Automático](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/proyecto/riego.py)
+- [🔗 Puente MQTT→API](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/proyecto/mqtt_to_api.py)
+- [📚 Base de datos de cultivos (JSON)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/proyecto/cultivos.json)
+- [💻 Firmware ESP32 v2.4](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/firmware_esp32/cespedes_agro_v2.4.cpp)
+- [📖 Presentación del proyecto (PDF)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/presentacion/Cespedes.Agro%20v2.4.pdf)
+
+### 🆕 Novedades de la versión 2.4
+- Dos modos de cultivo: **Doméstico** y **Estructurado**.
+- Base de datos SQLite para histórico de sensores.
+- Script de riego automático con registro de riegos.
+- Editor de cultivos con más de 80 especies y datos de consumo FAO.
+- Firmware ESP32 con soporte para 6 electroválvulas + 2 relés.
+- Interfaz web multilingüe (ES, EN, RU, PT, FR).
+- Configuración Bluetooth del ESP32 con comandos en 3 idiomas.
+- Manual de instalación completo.
+
+---
+
+## 📂 Estructura del repositorio
+Cespedes-Agro/
+├── v2.0/ ← Primera versión del proyecto
+│ ├── esp32/ ← Firmware ESP32
+│ ├── img/ ← Imágenes
+│ ├── pdf/ ← Documentación
+│ └── web/ ← Página web
+├── v2.2/ ← Segunda versión (Junio 2026)
+│ ├── esp32/ ← Firmware ESP32 v2
+│ ├── img/ ← Imágenes
+│ ├── pdf/ ← Documentación
+│ └── web/ ← Página web v2
+└── v2.4/ ← Versión actual (Julio 2026)
+├── firmware_esp32/ ← Firmware ESP32 v2.4
+├── proyecto/ ← Backend Python (API, riego, MQTT)
+├── web/ ← Frontend (HTML + imágenes)
+├── logo/ ← Logos
+├── manual/ ← Manual de instalación
+└── presentacion/ ← Presentación del proyecto
+## 🌱 **Céspedes Agro 2.4**
 
 Imagen hecha con inteligencia artificial / Изображение, созданное искусственным интеллектом / Image created with artificial intelligence
 <img width="832" height="464" alt="IAgro" src="https://github.com/user-attachments/assets/2f7e5e71-6eea-4fe4-a09a-c9d3a263f5df" />
