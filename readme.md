@@ -34,7 +34,7 @@ Proof of concept of an IoT system for urban farming. This repository contains th
 ## 🌱 **Céspedes Agro 2.4** (Julio 2026) ← ACTUAL
 
 ### 📂 Estructura de la versión 2.4
-- [🌐 Web (index.html)](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/web/index.html)
+- [🌐 Web v2.4](https://htmlpreview.github.io/?https://raw.githubusercontent.com/lennon025/Cespedes-Agro/refs/heads/master/v2.4/web/index.html)
 - [📝 Editor de Cultivos](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/web/web/edit.html)
 - [🐍 API Flask](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/proyecto/api.py)
 - [💧 Riego Automático](https://github.com/lennon025/Cespedes-Agro/blob/master/v2.4/proyecto/riego.py)
